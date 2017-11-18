@@ -4,10 +4,6 @@ package backend;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * @author Ehtisham
- *
- */
 
 public class FacultyMember extends Staff {
 	
@@ -38,6 +34,16 @@ public class FacultyMember extends Staff {
 		this.position = position;
 	}
 	
+	//mark attendance functionality
+	public boolean markAttendance(School sch,String Ccode,String rollno,char SID,LAttendance atd,Semester sem,Date day)
+	{
+	    Student s= sch.getStudent(rollno);
+	    Course c= sch.getCourse(Ccode);
+	    CourseSection cs= c.getCourseSection(sem, SID);
+	    Attendance at= new  Attendance(atd,day,s,cs);	    
+	    boolean check=cs.addAttendance(at);
+		return check;
+	}
 	
 
 }

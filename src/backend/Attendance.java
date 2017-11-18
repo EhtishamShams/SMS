@@ -14,17 +14,24 @@ import java.util.Date;
 public class Attendance{
     LAttendance status;
     Date Day;
-    //CourseSection section;
+    CourseSection section;
     Student student;
 
-    public Attendance(LAttendance status, Date Day, Student student) { //, CourseSection section ) {
-        this.status = status;
-        this.Day = Day;
-        //this.section = section;
-        this.student = student;
+    public Attendance()
+    {
+    	
     }
+    public Attendance(LAttendance atd, Date day2, Student s, CourseSection cs) {
+		// TODO Auto-generated constructor stub
+    	 this.status = atd;
+         this.Day = day2;
+         this.section = cs;
+         this.student = s;
+	}
 
-    public LAttendance getStatus() {
+
+
+	public LAttendance getStatus() {
         return status;
     }
 
@@ -39,14 +46,13 @@ public class Attendance{
     public void setDay(Date Day) {
         this.Day = Day;
     }
+    public CourseSection getSection() {
+        return section;
+    }
 
-//    public CourseSection getSection() {
-//        return section;
-//    }
-//
-//    public void setSection(CourseSection section) {
-//        this.section = section;
-//    }
+    public void setSection(CourseSection section) {
+        this.section = section;
+    }
 
     public Student getStudent() {
         return student;

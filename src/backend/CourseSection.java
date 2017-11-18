@@ -76,5 +76,11 @@ public class CourseSection {
 			return false;
 	}
 	
+	//helper for mark attendance
+	public boolean addAttendance(Attendance a)
+	{
+		this.studentAttendances.add(a);
+		return true;
+	}
 	 
 }

@@ -62,6 +62,33 @@ public class School {
 		this.courses = courses;
 	}
 	
+	//helper for mark attendance
+	public Student getStudent(String s)
+	{
+		for(int i=0 ; i< this.students.size();i++)
+		{
+			if(this.students.get(i).getRollNo().equals(s))
+			{
+				return this.students.get(i);
+			}
+			
+		}
+		return null;
+	}
 	
-
+	//helper for mark attendance
+	public Course getCourse(String s)
+	{
+		for(int i=0 ; i< this.courses.size();i++)
+		{
+			if(this.courses.get(i).getCourseCode().equals(s))
+			{
+				return this.courses.get(i);
+			}
+			
+		}
+		return null;
+	}
+	
+	
 }
