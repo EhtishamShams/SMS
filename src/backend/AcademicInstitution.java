@@ -50,11 +50,7 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
-	void abc()
-	{
-		
-		System.out.println("check me");
-	}
+
 	// dkfbsdkfb
 	
 	
