@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package backend;
 
 /**
  *
@@ -20,8 +21,8 @@ public class Office {
     }
 
     public boolean setID(String ID) { 
-       boolean set=false; String check="";
-       if(!check.equals(ID))
+       boolean set=false;
+       if(!ID.isEmpty())
        {
            this.ID = ID;
            set=true;

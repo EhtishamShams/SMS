@@ -1,3 +1,4 @@
+package backend;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,16 +13,11 @@ public class Student extends User{
 	private int creditsAttempted;
 	public ArrayList<CourseSection> courses;
 	
-	public Student() 
-	{
-		
-	}
 	
-	
-	
-	public Student(String rollNo, String fatherCNIC, String fatherName, float cGPA, int creditsEarned,
-			int creditsAttempted, ArrayList<CourseSection> courses) {
-		super();
+	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
+		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
 		this.fatherName = fatherName;
@@ -30,57 +26,10 @@ public class Student extends User{
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
 	}
-
-
-	public void viewAttendance()
-	{
-		
-	}
-
-	public void viewTranscript()
-	{
-		
-	}
-
-	public boolean updateDetails(String name, Date DOB, String phoneNo, String email,
-			String CNIC, char gender, String emergencyContact, String address, String fatherCNIC, String fatherName)
-	{
-		return true;
-	}
 	
-	public boolean addGrade(Grade g)
-	{
-		return true;
-	}
-	
-	public ArrayList<CourseSection> getStudentCourseSections()
+	public ArrayList<CourseSection> getStudiedCourses()
 	{
 		return courses;
-	}
-	
-	public ArrayList<Attendance> getAttendance(String crsCode, String secID, Semester sem)
-	{
-		return null;
-	}
-	
-	public boolean addCourseSection(CourseSection crs)
-	{
-		return false;
-	}
-	
-	public boolean removeCourseSection(CourseSection crs)
-	{
-		return false;
-	}
-	
-	public CourseSection getCourse(String code, Semester sem)
-	{
-		return null;
-	}
-	
-	public Grade getGrade(CourseSection cs)
-	{
-		return null;
 	}
 	
 	public String getRollNo() 

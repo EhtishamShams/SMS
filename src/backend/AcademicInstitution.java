@@ -1,3 +1,4 @@
+package backend;
 import java.util.*;
 
 /**
@@ -12,17 +13,14 @@ import java.util.*;
 public class AcademicInstitution {
 	private String name;
 	private String location;
-	private ArrayList<Timetable> timetables;
 	private ArrayList<School> schools;
 	private ArrayList<User> users;
 	private ArrayList<Department> depts;
 	
-	public AcademicInstitution(String name, String location, ArrayList<Timetable> timetables, ArrayList<School> schools,
+	public AcademicInstitution(String name, String location, ArrayList<School> schools,
 			ArrayList<User> users, ArrayList<Department> depts) {
-		super();
 		this.name = name;
 		this.location = location;
-		this.timetables = timetables;
 		this.schools = schools;
 		this.users = users;
 		this.depts = depts;
@@ -43,6 +41,15 @@ public class AcademicInstitution {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
+	public ArrayList<Department> getDepts() {
+		return depts;
+	}
+
+	public void setDepts(ArrayList<Department> depts) {
+		this.depts = depts;
+	}
+	
 	
 	
 	

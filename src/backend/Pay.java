@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package backend;
 
 import java.util.Date;
 
@@ -14,10 +14,12 @@ import java.util.Date;
 public class Pay {
     Double amount;
     Date datePaid;
+    Staff staffMember;
 
-    public Pay(Double amount, Date datePaid) {
+    public Pay(Double amount, Date datePaid, Staff st) {
         this.amount = amount;
         this.datePaid = datePaid;
+        this.staffMember = st;
     }
 
     public Double getAmount() {

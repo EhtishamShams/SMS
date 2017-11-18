@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package backend;
 
 import java.util.Date;
 
@@ -14,11 +15,15 @@ public class Fee {
     double amount;
     Date datePaid;
     Date dueDate; 
+    Student student;
+    Semester semester;
 
-    public Fee(double amount, Date datePaid, Date dueDate) {
+    public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
         this.amount = amount;
         this.datePaid = datePaid;
         this.dueDate = dueDate;
+        this.student = st;
+        this.semester = sem;
     }
 
     public double getAmount() {
