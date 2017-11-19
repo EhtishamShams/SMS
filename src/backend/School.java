@@ -62,6 +62,35 @@ public class School {
 		this.courses = courses;
 	}
 	
+	////////////////SECTION//////////////////////////////////////////////////////////////////////////
+	public int courseExists(String code)
+	{
+		int found = 0;
+		for(Course c : this.courses)
+		{
+			  if(code.equals(c.getCourseCode()))
+			  {
+			      found=courses.indexOf(c);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
 	
+		return found;
+	}
+	
+	
+	public Course getCourseFromCourses(int i)
+	{
+		return courses.get(i);
+	}
+	
+	public void updateCourseToCourses(int i,Course c)
+	{
+		 courses.set(i,c);
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
