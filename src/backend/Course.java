@@ -103,6 +103,28 @@ public class Course {
     	return false;
     }
     
+     //////////////////////////////////////////////////////////////////////////////////////
+    public boolean removeCourseSection(char secID) {
+    	for(CourseSection s: this.sections){
+    		if(s.getSectionID()==secID) {
+    			this.sections.remove(s);
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     
+    public boolean updateCourseSection(char secID,FacultyMember f, int max_seats) {
+    	for(CourseSection s: this.sections){
+    		if(s.getSectionID()==secID) {
+    			s.setMaxSeats(max_seats);
+    			s.setFaculty(f);
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
     
 }
