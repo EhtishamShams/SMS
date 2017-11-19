@@ -103,6 +103,16 @@ public class Course {
     	return false;
     }
     
+    public CourseSection getCourseSection(char secID) {
+    	for(CourseSection cs : sections) {
+    		if(cs.getSectionID()==secID)
+    			return cs;
+    	}
+    	
+    	return null;
+    }
+    
+    
     
     
 }

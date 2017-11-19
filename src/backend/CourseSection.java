@@ -55,6 +55,10 @@ public class CourseSection {
 		return studentAttendances;
 	}
 
+	public Semester getSemester() {
+		return semester;
+	}
+
 	public boolean incrementCurrSeats() {
 		if(currSeats!=maxSeats)
 		{
@@ -74,6 +78,14 @@ public class CourseSection {
 		}
 		else
 			return false;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+	
+	public boolean checkSeatAvailibility() {
+		return (this.maxSeats>this.currSeats);
 	}
 	
 	 

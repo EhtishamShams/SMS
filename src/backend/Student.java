@@ -12,6 +12,7 @@ public class Student extends User{
 	private int creditsEarned;
 	private int creditsAttempted;
 	public ArrayList<CourseSection> courses;
+	private Transcript transcript;
 	
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
@@ -25,6 +26,7 @@ public class Student extends User{
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
+		this.transcript = new Transcript();
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -92,4 +94,45 @@ public class Student extends User{
 		this.creditsAttempted = creditsAttempted;
 	}
 
+	public ArrayList<CourseSection> checkSemesterRegistrations(Semester sem) {
+		ArrayList<CourseSection> csList = new ArrayList<>();
+		
+		for(CourseSection cs:courses) {
+			if(cs.getSemester()==sem)
+				csList.add(cs);
+		}
+		
+		return csList;
+	}
+	
+	public boolean checkCoursesPassed(ArrayList<Course> cList) {
+		return transcript.checkCoursesPassed(cList);
+	}
+	
+	public void addStudentCourseRegistration(CourseSection cs) {
+		this.courses.add(cs);
+	}
+	
+	public boolean removeStudentCourseRegistration(CourseSection cs) {
+		if(this.courses.contains(cs)) {
+			this.courses.remove(cs);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public void addGradeToTranscript(CourseSection cs, LGrade L) {
+		Grade g = new Grade(L,cs);
+		this.transcript.addGrade(g);
+	}
+	
+	public boolean removeGradeFromTranscript(CourseSection cs,LGrade L) {
+		Grade g = new Grade(L,cs);
+		return this.transcript.removeGrade(g);
+	}
+	
+	public void updateGradeSection(CourseSection oldCs, CourseSection newCs) {
+		this.transcript.updateGradeSection(oldCs, newCs);
+	}
 }

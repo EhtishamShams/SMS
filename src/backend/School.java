@@ -62,6 +62,75 @@ public class School {
 		this.courses = courses;
 	}
 	
+	public Student getStudent(String rollNo) {
+		for(Student s : students)
+		{
+			if(s.getRollNo()==rollNo)
+				return s;
+		}
+		
+		return null;
+	}
+	
+	public Course getCourse(String courseCode) {
+		for(Course c : courses)
+		{
+			if(c.getCourseCode()==courseCode)
+				return c;
+		}
+		
+		return null;
+	}
+	
+	public CourseSection getCourseSection(Course c, char secID) {
+		return c.getCourseSection(secID);
+	}
+	
+	public boolean registerStudentInCourse(Student s, Course c, CourseSection cs,Semester sem) {
+		
+		if(s.checkSemesterRegistrations(sem).size()<5)
+		{
+			ArrayList<Course> prereq = c.getPrerequisites();
+			
+			boolean passed = s.checkCoursesPassed(prereq);
+			boolean seatAvailibility = cs.checkSeatAvailibility();
+			
+			if(passed && seatAvailibility) {
+				cs.incrementCurrSeats();
+				s.addStudentCourseRegistration(cs);
+				s.addGradeToTranscript(cs, LGrade.I);
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+			return false;
+	}
 	
 
+	public boolean updateStudentCourseRegistration(Student s, CourseSection oldCs, CourseSection newCs) {
+		
+		if(newCs.checkSeatAvailibility()) {
+			newCs.incrementCurrSeats();
+			oldCs.decrementCurrSeats();
+			s.addStudentCourseRegistration(newCs);
+			s.removeStudentCourseRegistration(oldCs);
+			s.updateGradeSection(oldCs, newCs);
+			
+			return true;
+		}
+		else
+			return false;
+	}
+
+	public boolean removeStudentCourseRegistration(Student s, CourseSection cs) {
+		
+		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+			cs.decrementCurrSeats();
+			return true;
+		}
+		else
+			return false;
+	}
 }

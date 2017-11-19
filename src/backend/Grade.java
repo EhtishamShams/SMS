@@ -21,6 +21,12 @@ public class Grade {
 	public CourseSection getCourseSection() {
 		return course;
 	}
+
+	public void setCourseSection(CourseSection course) {
+		this.course = course;
+	}
+	
+	
 	
 
 }
