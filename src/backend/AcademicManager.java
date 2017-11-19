@@ -18,7 +18,102 @@ public class AcademicManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-    
+  ////////////////////////////////ADD SECTION//////////////////////////////////////////////////////////// 
+   public boolean addSection(School school,String c_code,FacultyMember f,char sID,Semester s)
+   {
+	   int index=0; boolean secIndex=false; boolean add=false;
+	   ArrayList<Attendance> attendances=new ArrayList<Attendance>();
+	   index=school.courseExists(c_code);
+	   if(index !=-1)
+	   {
+		  Course tempcourse=school.getCourseFromCourses(index);
+		  secIndex=tempcourse.ifSectionExists(sID); 
+		  if(secIndex==false)
+			  {
+			    CourseSection cs=new CourseSection(sID,50,0,f,s,tempcourse,attendances);
+			  	tempcourse.addCourseSection(cs);
+			  	school.updateCourseToCourses(index,tempcourse);
+			  	add=true;
+			  }
+		  else
+		  {
+			  System.out.println("Section Already Exists");
+			  add=false;
+		  }
+	   }
+	   
+	   else
+	   {
+		   System.out.println("Course Doesnot Exist");
+	   }
+	   
+	  return add; 
+   }
+   
+   //////////////////////////////////////REMOVE SECTION/////////////////////////////////////////////////////////
+   public boolean removeSection(School school, String c_code , char sID)
+   {
+	   int index=0; boolean secIndex=false; boolean remove=false;
+	   index=school.courseExists(c_code);
+	   if(index !=-1)
+	   {
+		  Course tempcourse=school.getCourseFromCourses(index);
+		  secIndex=tempcourse.ifSectionExists(sID); 
+		  if(secIndex==true)
+			  {
+			  
+			  	tempcourse.removeCourseSection(sID);
+			  	school.updateCourseToCourses(index,tempcourse);
+			  	remove=true;
+			  }
+		  else
+		  {
+			  System.out.println("Section Doesnot Exist");
+			  remove=false;
+		  }
+	   }
+		  
+	  else
+		  {
+		  System.out.println("Course Doesnot Exist");
+		  }
+	  
+	   
+	  return remove; 
+   }
+ 
+ ////////////////////////////////////UPDATE SECTION///////////////////////////////////////
+   public boolean updateSection(School school, String c_code, char secID, FacultyMember nf, int maxs, Semester s)
+   {
+	   int index=0; boolean secIndex=false; boolean update=false;
+	   index=school.courseExists(c_code);
+	   if(index !=-1)
+	   {
+		  Course tempcourse=school.getCourseFromCourses(index);
+		  secIndex=tempcourse.ifSectionExists(secID); 
+		  if(secIndex==true)
+			  {
+			  
+			  	tempcourse.updateCourseSection(secID,nf,maxs);
+			  	school.updateCourseToCourses(index,tempcourse);
+			  	update=true;
+			  }
+		  else
+		  {
+			  System.out.println("Section Doesnot Exist");
+			  update=false;
+		  }
+	   }
+		  
+	  else
+		  {
+		  System.out.println("Course Doesnot Exist");
+		  }
+	  
+	   
+	  return update; 
+   }
+   ////////////////////////////////////////////////////////////////////////////////////////  
     
     
 }
