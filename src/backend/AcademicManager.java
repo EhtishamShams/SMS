@@ -112,8 +112,24 @@ public class AcademicManager extends Staff{
 	  
 	   
 	  return update; 
-   }
-   ////////////////////////////////////////////////////////////////////////////////////////  
+   } 
     
-    
+    ////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
+	
+
+	public boolean RegisterFaculty(School s,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String empID, Date dateHired, ArrayList<String> degrees,
+			String position)
+	{
+		int index=s.ifFacultyExists(CNIC);
+    	if(index!=-1)
+    	{
+    		FacultyMember temp=new FacultyMember(name,password,DOB,phoneNo,email,CNIC,gender, emergencyContact, address, empID,dateHired,degrees,position);
+    		return s.addFacultyMember(temp);
+    	}
+    	
+    	else 
+    		return false;
+
+	}
 }
