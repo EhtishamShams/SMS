@@ -62,7 +62,39 @@ public class School {
 		this.courses = courses;
 	}
 	
-	////////////////SECTION//////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
+	
+	public int ifFacultyExists(String CNIC)                  //returning index instead of boolean bcoz coz it later is required for update
+	{
+		int found = 0;
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(CNIC.equals(fm.getCNIC()))
+			  {
+			      found=faculty.indexOf(fm);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
+	
+		return found;
+		
+	}
+	
+	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
+	
+	public boolean addFacultyMember(FacultyMember fm)
+    	{
+    		return faculty.add(fm);
+   	}
+	
+	
+	
+	
+	//////////////////////////////////////SECTION/////////////////////////////////////////////////////////////
 	public int courseExists(String code)
 	{
 		int found = 0;
