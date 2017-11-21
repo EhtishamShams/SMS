@@ -37,15 +37,15 @@ public class AcademicManager extends Staff{
 			  }
 		  else
 		  {
-			  System.out.println("Section Already Exists");
+			 // System.out.println("Section Already Exists");
 			  add=false;
 		  }
 	   }
 	   
-	   else
+	   /*else
 	   {
 		   System.out.println("Course Doesnot Exist");
-	   }
+	   }*/
 	   
 	  return add; 
    }
@@ -68,15 +68,15 @@ public class AcademicManager extends Staff{
 			  }
 		  else
 		  {
-			  System.out.println("Section Doesnot Exist");
+			  //System.out.println("Section Doesnot Exist");
 			  remove=false;
 		  }
 	   }
 		  
-	  else
+	/*  else
 		  {
 		  System.out.println("Course Doesnot Exist");
-		  }
+		  }*/
 	  
 	   
 	  return remove; 
@@ -100,15 +100,15 @@ public class AcademicManager extends Staff{
 			  }
 		  else
 		  {
-			  System.out.println("Section Doesnot Exist");
+			//  System.out.println("Section Doesnot Exist");
 			  update=false;
 		  }
 	   }
 		  
-	  else
+	 /* else
 		  {
 		  System.out.println("Course Doesnot Exist");
-		  }
+		  }*/
 	  
 	   
 	  return update; 
