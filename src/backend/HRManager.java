@@ -18,6 +18,50 @@ public class HRManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
+
+	
+  ///////////////////////////////////////////////// HIRE SATFF///////////////////////////////////////////////////////////
+    public boolean hireEmployee(Department d,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String empID, Date dateHired)
+    {
+    	int index=d.ifStaffExists(CNIC);
+    	if(index!=-1)
+    	{
+    		Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
+    		return d.addStaff(temp);
+    		
+    	}
+    	
+    	else 
+    		return false;
+    
+    }
+    
+   //////////////////////////////////////////////FIRE STAFF////////////////////////////////////////////////////////////
+    
+    public boolean fireEmployee(Department d, String empID)
+    {
+    	return d.removestaff(empID);
+    }
+    
+    ////////////////////////////////////////////////UPDATE STAFF////////////////////////////////////////////////////////
+    
+    public boolean updateStaff(Department d,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String empID, Date dateHired)
+    {
+    	int index=d.ifStaffExists(CNIC);
+    	if(index!=-1)
+    	{
+    		Staff s1= d.getStaffMember(index);
+    		s1.updateDetails(name,password,DOB,phoneNo,email, CNIC,gender,emergencyContact,address,empID,dateHired);
+    		d.updateStaffMemberToStaff(index,s1);
+    		return true;
+    	}
+    	
+    	else 
+    		return false;
+    }
+    
    
     
 }
