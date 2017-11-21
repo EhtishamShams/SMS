@@ -104,7 +104,19 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
-
+        public void viewDetails()     //NO NEED AS HAVE TO UPDATE WITH GUI 
+    {
+    	System.out.println("***** User Information *****");
+    	System.out.println("Name : \t" + name);
+    	System.out.println("DOB : \t" + DOB);
+    	System.out.println("Phone # : \t" + phoneNo);
+    	System.out.println("Email : \t" + email);
+    	System.out.println("CNIC : \t" + CNIC);
+    	System.out.println("Gender : \t" + gender);
+    	System.out.println("Emergency Contact : \t" + emergencyContact);
+    	System.out.println("Address : \t" + address);
+    		
+    }
     
     
 }
