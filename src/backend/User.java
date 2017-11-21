@@ -104,7 +104,23 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
-        public void viewDetails()     //NO NEED AS HAVE TO UPDATE WITH GUI 
+      //////////////////////////////////////USER  UPDATE DETAILS HELPER//////////////////////////////////////
+    
+    public void updateDetails(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender, String emergencyContact, String address) 
+    {
+    	this.name = name;
+        this.password = password;
+        this.DOB = DOB;
+        this.phoneNo = phoneNo;
+        this.email = email;
+        this.CNIC = CNIC;
+        this.gender = gender;
+        this.emergencyContact = emergencyContact;
+        this.address = address;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    public void viewDetails()     //NO NEED AS HAVE TO UPDATE WITH GUI 
     {
     	System.out.println("***** User Information *****");
     	System.out.println("Name : \t" + name);
@@ -117,6 +133,4 @@ public class User {
     	System.out.println("Address : \t" + address);
     		
     }
-    
-    
 }
