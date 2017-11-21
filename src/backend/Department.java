@@ -36,4 +36,63 @@ public class Department {
         this.name = name;
         this.staff = staff;
     }
+    
+    ///////////////////////////////////////////////////ADD STAFF//////////////////////////////////////////////////
+    public int ifStaffExists(String cnic)
+    {
+    	int found = 0;
+		for(Staff s : this.staff)
+		{
+			  if(cnic.equals(s.getCNIC()))
+			  {
+			      found=staff.indexOf(s);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
+	
+		return found;
+    }
+    
+    public boolean addStaff(Staff f)
+    {
+    	return staff.add(f);
+    }
+    
+    
+    //////////////////////////////////////////REMOVE STAFF/////////////////////////////////////////////////////////
+    public boolean removestaff(String empID)
+    {
+    	for(Staff s : staff)
+		{
+			if(empID.equals(s.getEmpID()))
+			{
+				this.staff.remove(s);
+			    return true;
+			}
+			    
+			else 
+				break;
+		}
+    	
+    	return false;
+    }
+    
+   /////////////////////////////////////////////UPDATE STAFF ///////////////////////////////////////////////////////////////
+    
+    public Staff getStaffMember(int i)
+    {
+    	return this.staff.get(i);
+    }
+    
+    public void updateStaffMemberToStaff(int i,Staff s)
+	{
+	     staff.set(i,s);
+	}
+   
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 }
