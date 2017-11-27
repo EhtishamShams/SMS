@@ -90,13 +90,14 @@ public class School {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
 			conn.setAutoCommit(false);
 			
-			String query = "Insert Into course Values(?,?,?,?,?)";
+			String query = "Insert Into course Values(?,?,?,?,?,?)";
 			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setString(1, c.getCourseCode());
 			pst.setString(2, c.getCourseName());
 			pst.setInt(3, c.getCreditHours());
 			pst.setString(4, c.getDescription());
 			pst.setString(5, this.id);
+			pst.setBoolean(6, true);
 			pst.execute();
 			
 			query = "Insert into CoursePrerequisites Values(?, ?)";
@@ -123,5 +124,36 @@ public class School {
 		return true;
 	}
 	
+	public boolean removeCourse(Course c) {
+		
+		//Updating course status in database
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
+			conn.setAutoCommit(false);
+			
+			String query = "Update course Set IsOffered=? where CourseCode=?";
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setBoolean(1, false);
+			pst.setString(2, c.getCourseCode());
+			pst.executeUpdate();
+			
+			query = "Delete from coursesection Where CourseCode = (Select CourseCode From (Select * From coursesection) As A join semester s where s.IsActive=true and s.CourseCode=?)";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, c.getCourseCode());
+			pst.execute();
+			
+			conn.commit();
+			conn.close();
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+			return false;
+		}
+		
+		//CHECK IF UPDATING REQUIRED FOR OSOFFERED IN OBJECT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return true;
+	}
 
 }
