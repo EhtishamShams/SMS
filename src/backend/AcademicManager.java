@@ -5,7 +5,10 @@
  */
 package backend;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+
 
 /**
  *
@@ -18,7 +21,18 @@ public class AcademicManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-    
+	public boolean addCourse(School s, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+		
+		//Checks if course code is already taken
+		if(s.ifCourseExists(code))
+			return false;
+		
+		//Creating new course object
+		Course crs = new Course(code, name, creditHours, desc, preReqs);
+		
+		//Adds course in school
+		return s.addCourse(crs);
+	}
     
     
 }
