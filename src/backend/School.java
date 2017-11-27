@@ -34,6 +34,16 @@ public class School {
 	public String getName() {
 		return name;
 	}
+	
+	public Course getCourse(String code) {
+		
+		for(Course c:this.courses) {
+			if(c.getCourseCode()==code)
+				return c;
+		}
+		
+		return null;
+	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -78,6 +88,8 @@ public class School {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
+			conn.setAutoCommit(false);
+			
 			String query = "Insert Into course Values(?,?,?,?,?)";
 			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setString(1, c.getCourseCode());
@@ -86,6 +98,18 @@ public class School {
 			pst.setString(4, c.getDescription());
 			pst.setString(5, this.id);
 			pst.execute();
+			
+			query = "Insert into CoursePrerequisites Values(?, ?)";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, c.getCourseCode());
+			
+			for(Course pReq:c.getPrerequisites()) {
+				
+				pst.setString(2,  pReq.getCourseCode());
+				pst.execute();
+			}
+			
+			conn.commit();
 			conn.close();
 		}
 		catch(Exception e) {
