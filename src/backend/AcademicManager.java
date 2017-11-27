@@ -87,5 +87,28 @@ public class AcademicManager extends Staff{
 		return true;
 	}
     
+	public boolean removeCourse(School s, String code) {
+		
+		//retrieving course object from school
+		Course crs = s.getCourse(code);
+		
+		//Returns if invalid course id provided
+		if(crs == null)
+			return false;
+		
+		return s.removeCourse(crs);
+		
+	}
     
+	public boolean removeFaculty(School sch, String empID, String repEmpID) {
+		
+		if(!sch.findFaculty(empID))
+			return false;
+		
+		if(!sch.findFaculty(repEmpID))
+			return false;
+		
+		return sch.removeFaculty(empID, repEmpID);
+		
+	}
 }

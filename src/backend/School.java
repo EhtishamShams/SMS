@@ -82,6 +82,16 @@ public class School {
 		return false;
 	}
 	
+	public boolean findFaculty(String empID) {
+		
+		for(FacultyMember FM:faculty) {
+			if(FM.getEmpID()==empID)
+				return true;
+		}
+		
+		return false;
+	}
+	
 	public boolean addCourse(Course c) {
 		
 		//Adding in Database
@@ -152,8 +162,58 @@ public class School {
 			return false;
 		}
 		
-		//CHECK IF UPDATING REQUIRED FOR OSOFFERED IN OBJECT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//CHECK IF UPDATING REQUIRED FOR ISOFFERED IN OBJECT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return true;
 	}
-
+	
+	public boolean removeFaculty(String empID, String repEmpID) {
+		
+		String userID;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
+			conn.setAutoCommit(false);
+			
+			String query = "Select UserID From User Where UserID = (Select S.UserID From (Select * From User) As U join Staff S Where U.UserID=S.UserID and S.EmpID=?)";
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, empID);
+			ResultSet rs = pst.executeQuery();
+			rs.next();
+			userID = rs.getString(1);
+			
+			query = "Update CourseSection Set TeacherID=? Where TeacherID=? and session=(select session from Semester where IsActive=1)";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, repEmpID);
+			pst.setString(2, empID);
+			pst.executeUpdate();
+		
+			query = "Delete from FacultyMember Where EmpID=?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, empID);
+			pst.execute();
+			
+			query = "Delete from Staff Where EmpID=?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, empID);
+			pst.execute();
+			
+			query = "Delete from User Where UserID=?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, userID);
+			pst.execute();		
+			
+			conn.commit();
+			conn.close();
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+			return false;
+		}
+		
+		faculty.remove(empID);
+		return true;
+	}
+	
 }
