@@ -44,47 +44,8 @@ public class AcademicManager extends Staff{
 		if(crs == null)
 			return false;
 		
-		//Updating in database
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Update Course Set CourseName=?, CreditHours=?, Description=? Where CourseCode=?";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, name);
-			pst.setInt(2, creditHours);
-			pst.setString(3, desc);
-			pst.setString(4, code);
-			pst.executeUpdate();
-			
-			query = "Delete From CoursePrerequisites Where CourseCode=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, code);
-			pst.execute();
-			
-			query = "Insert into CoursePrerequisites Values(?, ?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, code);
-			
-			for(Course pReq:preReqs) {
-				
-				pst.setString(2,  pReq.getCourseCode());
-				pst.execute();
-			}
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
-			return false;
-		}
-		
-		//Updating Object
-		crs.updateDetails(name, creditHours, desc, preReqs);
-		return true;
+		//Updating
+		return crs.updateDetails(name, creditHours, desc, preReqs);
 	}
     
 	public boolean removeCourse(School s, String code) {
@@ -109,6 +70,37 @@ public class AcademicManager extends Staff{
 			return false;
 		
 		return sch.removeFaculty(empID, repEmpID);
+		
+	}
+	
+	public boolean registerStudent(School sch, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+		
+		if(!sch.validateStudent(fCNIC))
+			return false;
+		
+		Student std = new Student(name, null, DOB, phone, email, CNIC, gender, eCont, address, null, fCNIC, fName, 0, 0, 0, null);
+		
+		return sch.addStudent(std);
+		
+		
+	}
+	
+	public boolean updateStudent(School sch, String rollNo, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+		
+		Student std = sch.getStudent(rollNo);
+		
+		if(std==null)
+			return false;
+		
+		if(!sch.validateUpdateStudent(CNIC, std))
+			return false;
+		
+		return std.updateDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName);
+	}
+	
+	public boolean removeStudent(String rollNo, School sch) {
+		
+		
 		
 	}
 }

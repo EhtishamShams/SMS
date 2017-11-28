@@ -4,6 +4,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.sql.*;
 
 /**
@@ -73,6 +74,26 @@ public class School {
 		this.courses = courses;
 	}
 	
+	public boolean validateStudent(String CNIC) {
+		
+		for(Student st:students) {
+			if(st.getCNIC()==CNIC)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean validateUpdateStudent(String CNIC, Student obj) {
+		
+		for(Student st:students) {
+			if(st.getCNIC()==CNIC && st!=obj)
+				return false;
+		}
+		
+		return true;
+	}
+	
 	public boolean ifCourseExists(String code) {
 		
 		for(Course c:this.courses) {
@@ -90,6 +111,16 @@ public class School {
 		}
 		
 		return false;
+	}
+	
+	public Student getStudent(String rollNo) {
+		
+		for(Student stu:students) {
+			if(stu.getRollNo()==rollNo)
+				return stu;
+		}
+		
+		return null;
 	}
 	
 	public boolean addCourse(Course c) {
@@ -131,6 +162,56 @@ public class School {
 		
 		//Adding in ArrayList
 		this.courses.add(c);
+		return true;
+	}
+	
+	public boolean addStudent(Student std) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
+			conn.setAutoCommit(false);
+			
+			String query = "Insert into User(Name, DateOfBirth, PhoneNo, CNIC, email, gender, emergencyContact, Address) Values(?,?,?,?,?,?,?,?)";
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, std.getName());
+			pst.setDate(2, (java.sql.Date) std.getDOB());
+			pst.setString(3, std.getPhoneNo());
+			pst.setString(4, std.getCNIC());
+			pst.setString(5, std.getEmail());
+			pst.setString(6, Character.toString(std.getGender()));
+			pst.setString(7, std.getEmergencyContact());
+			pst.setString(8, std.getAddress());
+			pst.execute();
+			
+			query = "Select UserID From User Where CNIC=?";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, std.getCNIC());
+			ResultSet rs = pst.executeQuery();
+			rs.next();
+			String userID = rs.getString(1);
+			
+			query = "Insert into Student(UserID, FatherName, FatherCNIC, CGPA, CreditsEarned, CreditsAttempted, SchoolID) Values(?,?,?,?,?,?,?)";
+			pst = conn.prepareStatement(query);
+			pst.setString(1, userID);
+			pst.setString(2, std.getFatherName());
+			pst.setString(3, std.getFatherCNIC());
+			pst.setDouble(4, std.getCGPA());
+			pst.setInt(5, std.getCreditsEarned());
+			pst.setInt(6, std.getCreditsAttempted());
+			pst.setString(7, this.id);
+			pst.execute();
+			
+			conn.commit();
+			conn.close();
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+			return false;
+		}
+		
+		students.add(std);
 		return true;
 	}
 	
@@ -212,7 +293,11 @@ public class School {
 			return false;
 		}
 		
-		faculty.remove(empID);
+		for(FacultyMember fac:faculty) {
+			if(fac.getEmpID() == empID)
+				faculty.remove(fac);
+		}
+		
 		return true;
 	}
 	
