@@ -22,7 +22,7 @@ public class AcademicManager extends Staff{
 	////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
 	
 
-	public boolean RegisterFaculty(School s,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+	protected boolean RegisterFaculty(School s,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, Date dateHired, ArrayList<String> degrees,
 			String position)
 	{
@@ -44,7 +44,7 @@ public class AcademicManager extends Staff{
 	}
 	
    ////////////////////////////////ADD SECTION//////////////////////////////////////////////////////////// 
-   public boolean addSection(School school,String c_code,FacultyMember f,char sID,Semester s)
+  protected boolean addSection(School school,String c_code,FacultyMember f,char sID,Semester s)
    {
 	   int index=0; boolean secIndex=false; boolean add=false;
 	   ArrayList<Attendance> attendances=new ArrayList<Attendance>();
@@ -81,7 +81,7 @@ public class AcademicManager extends Staff{
    }
    
    //////////////////////////////////////REMOVE SECTION/////////////////////////////////////////////////////////
-   public boolean removeSection(School school, String c_code , char sID,Semester semester)
+   protected boolean removeSection(School school, String c_code , char sID,Semester semester)
    {
 	   int index=0; boolean secIndex=false; boolean remove=false;
 	   index=school.courseExists(c_code);
@@ -120,7 +120,7 @@ public class AcademicManager extends Staff{
    }
  
  ////////////////////////////////////UPDATE SECTION///////////////////////////////////////
-   public boolean updateSection(School school, String c_code, char secID, FacultyMember nf, int maxs, Semester s)
+   protected boolean updateSection(School school, String c_code, char secID, FacultyMember nf, int maxs, Semester s)
    {
 	   int index=0; boolean secIndex=false; boolean update=false;
 	   index=school.courseExists(c_code);
