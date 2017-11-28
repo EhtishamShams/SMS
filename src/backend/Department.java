@@ -38,12 +38,12 @@ public class Department {
     }
     
   ///////////////////////////////////////////////////ADD STAFF HELPER//////////////////////////////////////////////////
-    public int ifStaffExists(String cnic)
+    protected int ifStaffExists(String id)
     {
     	int found = 0;
 		for(Staff s : this.staff)
 		{
-			  if(cnic.equals(s.getCNIC()))
+			  if(id.equals(s.getEmpID()))
 			  {
 			      found=staff.indexOf(s);
 				  break;
@@ -56,14 +56,25 @@ public class Department {
 		return found;
     }
     
-    public boolean addStaff(Staff f)
+    protected boolean addStaff(Staff f)
     {
     	return staff.add(f);
     }
     
+    protected Staff getEmp(String id)
+    {
+    	for(int i=0; i< staff.size();i++)
+    	{
+    		if(staff.get(i).getEmpID().equals(id))
+    		{
+    			return  staff.get(i);
+    		}		
+    	}
+    	return null;
+    }
     
     //////////////////////////////////////////REMOVE STAFF/////////////////////////////////////////////////////////
-    public boolean removestaff(String empID)
+    protected boolean removestaff(String empID)
     {
     	for(Staff s : staff)
 		{
@@ -82,12 +93,12 @@ public class Department {
     
    /////////////////////////////////////////////UPDATE STAFF ///////////////////////////////////////////////////////////////
     
-    public Staff getStaffMember(int i)
+    protected Staff getStaffMember(int i)
     {
     	return this.staff.get(i);
     }
     
-    public void updateStaffMemberToStaff(int i,Staff s)
+    protected void updateStaffMemberToStaff(int i,Staff s)
 	{
 	     staff.set(i,s);
 	}
