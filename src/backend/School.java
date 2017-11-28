@@ -87,14 +87,12 @@ public class School {
 	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
 	
 	public boolean addFacultyMember(FacultyMember fm)
-    	{
-    		return faculty.add(fm);
-   	}
+    {
+    	return faculty.add(fm);
+    }
 	
 	
-	
-	
-	//////////////////////////////////////SECTION/////////////////////////////////////////////////////////////
+	////////////////SECTION//////////////////////////////////////////////////////////////////////////
 	public int courseExists(String code)
 	{
 		int found = 0;
@@ -123,6 +121,20 @@ public class School {
 	{
 		 courses.set(i,c);
 	}
+	
+	public boolean facultyExists(FacultyMember f)
+	{
+		boolean found=false;
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(f.getEmpID().equals(fm.getEmpID()))
+			  {
+			      found=true;
+				  break;
+			  }
+		 
+		}
+		 return found;
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 }
