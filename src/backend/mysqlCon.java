@@ -243,7 +243,7 @@ public class mysqlCon {
 		return false;
 	}
 	
-	public boolean updateStaff(String n_name, String n_password, Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
+	public boolean updateStaff(String n_name, /*String n_password,*/ Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
 			String n_emergencyContact, String n_address, String empID, Date n_dateHired)
 	{
 		try {
@@ -259,11 +259,13 @@ public class mysqlCon {
 			if(userid!=0)
 			{
 				stmt.executeUpdate("UPDATE USER 	\r\n" + 
-						"SET NAME='"+n_name+"',PASSWORD='"+n_password+"',DateOfBirth='"+n_DOB+"',PhoneNo='"+n_phoneNo+"',Email='"+n_email+"',CNIC='"+n_CNIC+"',Gender='"+n_gender+"',EmergencyContact='"+n_emergencyContact+"',Address='"+n_address+"' WHERE UserID=+"+userid+";");
+						"SET NAME='"+n_name+"',DateOfBirth='"+n_DOB+"',PhoneNo='"+n_phoneNo+"',Email='"+n_email+"',CNIC='"+n_CNIC+"',Gender='"+n_gender+"',EmergencyContact='"+n_emergencyContact+"',Address='"+n_address+"' WHERE UserID=+"+userid+";");
 						   
 				stmt.executeUpdate("UPDATE staff SET DateHired='"+n_dateHired+"'  WHERE EmpID='"+empID+"';");
 				con.close(); 
 				return true;
+				
+				//,PASSWORD='"+n_password+"'
 			}
 			
 			con.close(); 
@@ -274,3 +276,4 @@ public class mysqlCon {
 	}
 
 }
+ 
