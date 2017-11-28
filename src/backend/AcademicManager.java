@@ -98,7 +98,7 @@ public class AcademicManager extends Staff{
 			  	//SQL CON/////
 			  	
 			  	mysqlCon con1= new mysqlCon();
-	    	     con1.removeSection(school, c_code ,sID,semester.getSession());
+	    	     con1.removeSection(school, c_code ,sID,semester);
 	    	     
 	    	     
 			  	remove=true;
