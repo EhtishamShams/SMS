@@ -86,7 +86,7 @@ public class School {
 	
 	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
 	
-	public boolean addFacultyMember(FacultyMember fm)
+	protected boolean addFacultyMember(FacultyMember fm)
     {
     	return faculty.add(fm);
     }
@@ -112,17 +112,17 @@ public class School {
 	}
 	
 	
-	public Course getCourseFromCourses(int i)
+	protected Course getCourseFromCourses(int i)
 	{
 		return courses.get(i);
 	}
 	
-	public void updateCourseToCourses(int i,Course c)
+	protected void updateCourseToCourses(int i,Course c)
 	{
 		 courses.set(i,c);
 	}
 	
-	public boolean facultyExists(FacultyMember f)
+	protected boolean facultyExists(FacultyMember f)
 	{
 		boolean found=false;
 		for(FacultyMember fm : this.faculty)
