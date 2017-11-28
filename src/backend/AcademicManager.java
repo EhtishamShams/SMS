@@ -24,16 +24,16 @@ public class AcademicManager extends Staff{
 
 	protected boolean RegisterFaculty(School s,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, Date dateHired, ArrayList<String> degrees,
-			String position)
+			String position,String EmpID)
 	{
-		int index=s.ifFacultyExists(CNIC);
+		int index=s.ifFacultyExists(EmpID);
     	if(index!=-1)
     	{
-    		FacultyMember temp=new FacultyMember(name,password,DOB,phoneNo,email,CNIC,gender, emergencyContact, address, empID,dateHired,degrees,position);
+    		FacultyMember temp=new FacultyMember(name,password,DOB,phoneNo,email,CNIC,gender, emergencyContact, address, EmpID,dateHired,degrees,position);
     		
     		////SQL CONN/////////////////
     		mysqlCon con1= new mysqlCon();
-    	     con1.addFaculty(s,name, password, DOB,phoneNo, email, CNIC, gender,emergencyContact,address, empID, dateHired,  degrees,position);
+    	     con1.addFaculty(s,name, password, DOB,phoneNo, email, CNIC, gender,emergencyContact,address, EmpID, dateHired,  degrees,position);
     	     
     	     return s.addFacultyMember(temp);
     	}
@@ -55,6 +55,8 @@ public class AcademicManager extends Staff{
 		  secIndex=tempcourse.ifSectionExists(sID); 
 		  if(secIndex==false)
 			  {
+			  if(school.facultyExists(f)==true) {
+			  
 			    CourseSection cs=new CourseSection(sID,50,0,f,s,tempcourse,attendances);
 			  	tempcourse.addCourseSection(cs);
 			  	
@@ -64,6 +66,7 @@ public class AcademicManager extends Staff{
 	    	     
 			  	school.updateCourseToCourses(index,tempcourse);
 			  	add=true;
+			  }
 			  }
 		  else
 		  {
