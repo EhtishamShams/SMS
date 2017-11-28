@@ -18,9 +18,7 @@ public class HRManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-
-	
-  ///////////////////////////////////////////////// HIRE SATFF///////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////// HIRE SATFF///////////////////////////////////////////////////////////
     public boolean hireEmployee(Department d,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired)
     {
@@ -28,7 +26,13 @@ public class HRManager extends Staff{
     	if(index!=-1)
     	{
     		Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
-    		return d.addStaff(temp);
+    		 d.addStaff(temp);
+    		//SQL CON/////
+			  	
+			  	mysqlCon con1= new mysqlCon();
+	    	     con1.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
+    		 
+    		 return true;
     		
     	}
     	
@@ -41,27 +45,31 @@ public class HRManager extends Staff{
     
     public boolean fireEmployee(Department d, String empID)
     {
+    	///SQL CON//
+    	mysqlCon con1= new mysqlCon();
+	     con1.removeStaff(empID);
     	return d.removestaff(empID);
     }
     
     ////////////////////////////////////////////////UPDATE STAFF////////////////////////////////////////////////////////
     
-    public boolean updateStaff(Department d,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
-			String emergencyContact, String address, String empID, Date dateHired)
+    public boolean updateStaff(Department d,String n_name, String n_password, Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
+			String n_emergencyContact, String n_address, String empID, Date n_dateHired)
     {
     	int index=d.ifStaffExists(CNIC);
     	if(index!=-1)
     	{
     		Staff s1= d.getStaffMember(index);
-    		s1.updateDetails(name,password,DOB,phoneNo,email, CNIC,gender,emergencyContact,address,empID,dateHired);
+    		s1.updateDetails(n_name,n_password,n_DOB,n_phoneNo,n_email, n_CNIC,n_gender,n_emergencyContact,n_address, empID,n_dateHired);
     		d.updateStaffMemberToStaff(index,s1);
+    		
+    	//SQL CON//	
+         mysqlCon con1= new mysqlCon();
+   	     con1.updateStaff(n_name, n_password, n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
     		return true;
-    	}
-    	
+    	}	 
     	else 
     		return false;
     }
-    
-   
     
 }
