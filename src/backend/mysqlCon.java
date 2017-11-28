@@ -136,16 +136,24 @@ public class mysqlCon {
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
 			Statement stmt=con.createStatement();  
 			
-			int secid=0;
-			ResultSet rs=stmt.executeQuery("select* from coursesection where SectionID='"+sectionID+"'AND CourseCode='"+course.getCourseCode()+"'"); 
-			while(rs.next()) 
-		        secid=rs.getInt(1); 
+			int secid=0; String code="";
+			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
+  			while(rs.next()) 
+  		        code=rs.getString(1);
+  			
+  			if(code !="") {
+  						code="";
 			
-			if(secid==0)
-			{
-				stmt.executeUpdate("INSERT INTO coursesection(`SectionID`,`CurrSeats`,`TeacherID`,`CourseCode`,`Session`) "
-						            + "VALUES('"+sectionID+"','"+currSeats+"','"+sectionTeacher.getEmpID()+"','"+course.getCourseCode()+"','"+semester.getSession()+"');");
-			}
+					rs=stmt.executeQuery("select* from coursesection where SectionID='"+sectionID+"'AND CourseCode='"+course.getCourseCode()+"'"); 
+					while(rs.next()) 
+				        secid=rs.getInt(1); 
+					
+					if(secid==0)
+					{
+						stmt.executeUpdate("INSERT INTO coursesection(`SectionID`,`CurrSeats`,`TeacherID`,`CourseCode`,`Session`) "
+								            + "VALUES('"+sectionID+"','"+currSeats+"','"+sectionTeacher.getEmpID()+"','"+course.getCourseCode()+"','"+semester.getSession()+"');");
+					}
+  			}
 			con.close();  
 			
 			}catch(Exception e){ System.out.println(e);}  
@@ -204,7 +212,7 @@ public class mysqlCon {
 			Statement stmt=con.createStatement();  
 			
 			int secid=0; String empid="";
-			ResultSet rs=stmt.executeQuery("select* from coursesection where SectionID='"+secID+"'AND CourseCode='"+c_code+"'"); 
+			ResultSet rs=stmt.executeQuery("select* from coursesection where SectionID='"+secID+"'AND CourseCode='"+c_code+"'AND Session='"+s.getSession()+"';"); 
 			while(rs.next()) 
 		        secid=rs.getInt(1); 
 			
