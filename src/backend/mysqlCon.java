@@ -136,13 +136,16 @@ public class mysqlCon {
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
 			Statement stmt=con.createStatement();  
 			
-			int secid=0; String code="";
+			int secid=0; String code="";int check_sem=0;
 			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
   			while(rs.next()) 
   		        code=rs.getString(1);
   			
-  			if(code !="") {
-  						code="";
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
+  			check_sem=rs.getInt(1);
+  			
+  			if(code !="" && check_sem==1) {
+  						code=""; 
 			
 					rs=stmt.executeQuery("select* from coursesection where SectionID='"+sectionID+"'AND CourseCode='"+course.getCourseCode()+"'"); 
 					while(rs.next()) 
@@ -167,13 +170,16 @@ public class mysqlCon {
   			Class.forName("com.mysql.jdbc.Driver");  
   			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
   			Statement stmt=con.createStatement();  
-  			String code=""; int secid=0;
+  			String code=""; int secid=0; int check_sem=0;
   			
   			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+c_code+"' AND IsOffered = 1");  
   			while(rs.next()) 
   		        code=rs.getString(1);
   			
-  			if(code !="") {
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester+"' AND IsActive = 1");  
+  			check_sem=rs.getInt(1);
+  			
+  			if(code !="" && check_sem==1) {
   						code="";
 		  			 rs=stmt.executeQuery("select CourseCode from coursesection where CourseCode='"+c_code+"'");  
 		  			while(rs.next()) 
@@ -211,12 +217,15 @@ public class mysqlCon {
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
 			Statement stmt=con.createStatement();  
 			
-			int secid=0; String empid="";
+			int secid=0; String empid=""; int check_sem=0;
 			ResultSet rs=stmt.executeQuery("select* from coursesection where SectionID='"+secID+"'AND CourseCode='"+c_code+"'AND Session='"+s.getSession()+"';"); 
 			while(rs.next()) 
 		        secid=rs.getInt(1); 
 			
-			if(secid!=0)
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+s.getSession()+"' AND IsActive = 1");  
+  			check_sem=rs.getInt(1);
+			
+			if(secid!=0 && check_sem==1)
 			{
 				rs=stmt.executeQuery("select EmpID from facultymember where EmpID='"+nf.getEmpID()+"'"); 
 				while(rs.next()) 
