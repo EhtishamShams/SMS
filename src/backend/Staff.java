@@ -37,15 +37,15 @@ public class Staff extends User{
 		this.dateHired = dateHired;
 	}
 	
-	/////////////////////////////////UPDATE STAFF DETAILS///////////////////////////////////////////////////////
-	public void updateDetails(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+	
+/////////////////////////////////UPDATE STAFF DETAILS///////////////////////////////////////////////////////
+	public void updateDetails(String name,/* String password,*/ Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired)
 	{
-		super.updateDetails(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
+		super.updateDetails(name,/* password,*/ DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.empID = empID;
 		this.dateHired = dateHired;
 		
 	}
-	
 }
 
