@@ -164,7 +164,7 @@ public class mysqlCon {
 		return false;
 	}
 	
-      public boolean removeSection(School school, String c_code , char sID,String semester)
+      public boolean removeSection(School school, String c_code , char sID,Semester semester)
       {
     	  try {
   			Class.forName("com.mysql.jdbc.Driver");  
@@ -176,7 +176,7 @@ public class mysqlCon {
   			while(rs.next()) 
   		        code=rs.getString(1);
   			
-  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester+"' AND IsActive = 1");  
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
   			check_sem=rs.getInt(1);
   			
   			if(code !="" && check_sem==1) {
