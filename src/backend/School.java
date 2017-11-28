@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package backend;
 
 import java.util.ArrayList;
@@ -63,12 +65,12 @@ public class School {
 	
 	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
 	
-	public int ifFacultyExists(String CNIC)                  //returning index instead of boolean bcoz coz it later is required for update
+	public int ifFacultyExists(String empID)                  //returning index instead of boolean bcoz coz it later is required for update
 	{
 		int found = 0;
 		for(FacultyMember fm : this.faculty)
 		{
-			  if(CNIC.equals(fm.getCNIC()))
+			  if(empID.equals(fm.getEmpID()))
 			  {
 			      found=faculty.indexOf(fm);
 				  break;
