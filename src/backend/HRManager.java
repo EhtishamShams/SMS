@@ -56,7 +56,7 @@ public class HRManager extends Staff{
     protected boolean updateStaff(Department d,String n_name,/* String n_password, */Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
 			String n_emergencyContact, String n_address, String empID, Date n_dateHired)
     {
-    	int index=d.ifStaffExists(CNIC);
+    	int index=d.ifStaffExists(empID);
     	if(index!=-1)
     	{
     		Staff s1= d.getStaffMember(index);
