@@ -159,28 +159,36 @@ public class mysqlCon {
   			Class.forName("com.mysql.jdbc.Driver");  
   			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
   			Statement stmt=con.createStatement();  
-  			
   			String code=""; int secid=0;
-  			ResultSet rs=stmt.executeQuery("select CourseCode from coursesection where CourseCode='"+c_code+"'");  
-  			while(rs.next()) 
-  		        code=rs.getString(1); 
-  				
-  			if(code!="")
-  			{
-  				
-  	  			rs=stmt.executeQuery("select* from coursesection where SectionID='"+sID+"'"); 
-  	  			while(rs.next()) 
-  	  		        secid=rs.getInt(1); 
-  	  			
-  	  			if(secid!=0)
-  	  			{
-  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester+"'");
-  	  				con.close();
-  	  				return true;
-  	  		    }	
-  			}
   			
-  			con.close();  
+  			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+c_code+"' AND IsOffered = 1");  
+  			while(rs.next()) 
+  		        code=rs.getString(1);
+  			
+  			if(code !="") {
+  						code="";
+		  			 rs=stmt.executeQuery("select CourseCode from coursesection where CourseCode='"+c_code+"'");  
+		  			while(rs.next()) 
+		  		        code=rs.getString(1); 
+		  				
+		  			if(code!="")
+		  			{
+		  				
+		  	  			rs=stmt.executeQuery("select* from coursesection where SectionID='"+sID+"'"); 
+		  	  			while(rs.next()) 
+		  	  		        secid=rs.getInt(1); 
+		  	  			
+		  	  			if(secid!=0)
+		  	  			{
+		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester+"'");
+		  	  				con.close();
+		  	  				return true;
+		  	  		    }	
+		  			}
+		  			
+  			}
+		  			
+		  			con.close();  
   		
   			}catch(Exception e){ System.out.println(e);}  
   		
