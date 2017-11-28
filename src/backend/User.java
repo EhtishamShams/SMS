@@ -104,12 +104,13 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
-      //////////////////////////////////////USER  UPDATE DETAILS HELPER//////////////////////////////////////
+
+    //////////////////////////////////////USER  UPDATE DETAILS//////////////////////////////////////
     
-    public void updateDetails(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender, String emergencyContact, String address) 
+ protected void updateDetails(String name, /*String password,*/ Date DOB, String phoneNo, String email, String CNIC, char gender, String emergencyContact, String address) 
     {
     	this.name = name;
-        this.password = password;
+     //   this.password = password;
         this.DOB = DOB;
         this.phoneNo = phoneNo;
         this.email = email;
@@ -133,4 +134,5 @@ public class User {
     	System.out.println("Address : \t" + address);
     		
     }
+    
 }
