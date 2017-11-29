@@ -37,7 +37,7 @@ public class DAL {
 					stmt.executeUpdate("INSERT INTO facultymemberdegrees (EmpID,Degree) VALUES ('"+empID+"','"+d+"');"); 
 				}
 			
-				
+				DBAccess.getConnection().commit();
 				return true;
 			}
 			
@@ -67,7 +67,7 @@ public class DAL {
 				userid=rs1.getInt(1);  
 				
 				stmt.executeUpdate("INSERT INTO staff (UserID,EmpID,DateHired) VALUES ('"+userid+"','"+empID+"','"+dateHired+"');");
-				
+				DBAccess.getConnection().commit();
 				return true;
 			}
 			
@@ -95,7 +95,7 @@ public class DAL {
 						"SET NAME='"+n_name+"',DateOfBirth='"+n_DOB+"',PhoneNo='"+n_phoneNo+"',Email='"+n_email+"',CNIC='"+n_CNIC+"',Gender='"+n_gender+"',EmergencyContact='"+n_emergencyContact+"',Address='"+n_address+"' WHERE UserID=+"+userid+";");
 						   
 				stmt.executeUpdate("UPDATE staff SET DateHired='"+n_dateHired+"'  WHERE EmpID='"+empID+"';");
-				
+				DBAccess.getConnection().commit();
 				return true;
 				
 				//,PASSWORD='"+n_password+"'
@@ -128,6 +128,7 @@ public class DAL {
 				
 				stmt.executeUpdate("Delete from staff where EmpID='"+empID+"'");
 				stmt.executeUpdate("Delete from user where UserID='"+userid+"'");
+				DBAccess.getConnection().commit();
 				return true;
 				
 			}
@@ -142,6 +143,7 @@ public class DAL {
 				if(userid>0) {
 					stmt.executeUpdate("Delete from staff where EmpID='"+empID+"'");
 					stmt.executeUpdate("Delete from user where UserID='"+userid+"'");
+					DBAccess.getConnection().commit();
 					return true;
 				}
 
@@ -178,7 +180,8 @@ public class DAL {
 					{
 						stmt.executeUpdate("INSERT INTO coursesection(`SectionID`,`CurrSeats`,`TeacherID`,`CourseCode`,`Session`) "
 								            + "VALUES('"+sectionID+"','"+currSeats+"','"+sectionTeacher.getEmpID()+"','"+course.getCourseCode()+"','"+semester.getSession()+"');");
-					return true;
+						DBAccess.getConnection().commit();
+						return true;
 					}
 				}
 	
@@ -207,7 +210,8 @@ public class DAL {
 				if(empid!="") {
 					stmt.executeUpdate("UPDATE coursesection SET MaxSeats = '"+maxs+"' WHERE SectionID='"+secID+"'AND CourseCode='"+c_code+"'");
 					stmt.executeUpdate("UPDATE coursesection SET TeacherID = '"+nf.getEmpID()+"' WHERE SectionID='"+secID+"'AND CourseCode='"+c_code+"'");
-				     return true;
+					DBAccess.getConnection().commit();
+					return true;
 				     }
 				}
 	 
@@ -244,6 +248,7 @@ public class DAL {
 		  	  			if(secid!=0)
 		  	  			{
 		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester+"'");
+		  	  			DBAccess.getConnection().commit();
 		  	  				return true;
 		  	  		    }	
 		  			}
@@ -278,6 +283,8 @@ public class DAL {
 					  }
 				}
 			}
+			
+			DBAccess.getConnection().commit();
 		}catch(Exception e){ System.out.println(e);}
 
     }
