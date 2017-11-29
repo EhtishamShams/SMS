@@ -12,11 +12,11 @@ import java.util.Date;
  * @author HumnaGul
  */
 public class Fee {
-    double amount;
-    Date datePaid;
-    Date dueDate; 
-    Student student;
-    Semester semester;
+    private double amount;
+    private Date datePaid;
+    private Date dueDate; 
+    private Student student;
+    private Semester semester;
 
     public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
         this.amount = amount;
