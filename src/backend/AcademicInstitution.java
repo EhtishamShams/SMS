@@ -50,7 +50,18 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
+	public School getSchool(String school_id)
+	{
 
+		for(School sch : this.schools)
+		{
+			  if(school_id.equals(sch.getId()))
+			  {
+			      return sch;
+			  }
+		}
+		return null;
+	}
 
 	
 	

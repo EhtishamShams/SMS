@@ -92,4 +92,17 @@ public class Student extends User{
 		this.creditsAttempted = creditsAttempted;
 	}
 
+	public void viewDetails()
+	{
+		super.viewDetails();
+		System.out.println("RollNo : \t" + rollNo);
+		System.out.println("FatherCNIC : \t" + fatherCNIC);
+		System.out.println("FatherName : \t" + fatherName);
+		System.out.println("CGPA : \t" + CGPA);
+		System.out.println("Credits Earned : \t" + creditsEarned);
+		System.out.println("Credits Attempted : \t" + creditsAttempted);
+		
+		
+    	
+	}
 }

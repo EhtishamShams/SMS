@@ -10,7 +10,6 @@ import java.util.Date;
  */
 
 public class FacultyMember extends Staff {
-	
 	private ArrayList<String> degrees;
 	private String position;
 	

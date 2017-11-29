@@ -84,6 +84,18 @@ public class School {
 		
 	}
 	
+	public FacultyMember getFacultyfromList(String empID)
+	{
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(empID.equals(fm.getEmpID()))
+			  {
+			      return fm;
+			  }
+		}
+		return null;
+	}
+
 	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
 	
 	protected boolean addFacultyMember(FacultyMember fm)

@@ -38,6 +38,9 @@ public class AccountsDepartment extends Department{
         this.fees = fees;
     }
     
-    
+    public void searchforStaff(String EmpID)
+    {
+    	
+    }
     
 }

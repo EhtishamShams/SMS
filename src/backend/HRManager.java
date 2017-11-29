@@ -7,6 +7,8 @@ package backend;
 
 import java.util.Date;
 
+import dal.DAL;
+
 /**
  *
  * @author Advisor
@@ -19,18 +21,17 @@ public class HRManager extends Staff{
 	}
     
    ///////////////////////////////////////////////// HIRE SATFF///////////////////////////////////////////////////////////
-    protected boolean hireEmployee(Department d,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
-			String emergencyContact, String address, String empID, Date dateHired)
+    protected boolean hireEmployee(String name, String password, Date DOB, String phoneNo, String email, 
+    		String CNIC, char gender,String emergencyContact, String address, String empID, Date dateHired)
     {
-    	int index=d.ifStaffExists(empID);
+    	int index=Session.getHrDept().ifStaffExists(empID);
     	if(index!=-1)
     	{
     		Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
-    		 d.addStaff(temp);
+    		Session.getHrDept().addStaff(temp);
     		//SQL CON/////
-			  	
-			  	mysqlCon con1= new mysqlCon();
-	    	     con1.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
+			 
+	    	    DAL.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
     		 
     		 return true;
     		
@@ -43,29 +44,28 @@ public class HRManager extends Staff{
     
    //////////////////////////////////////////////FIRE STAFF////////////////////////////////////////////////////////////
     
-    protected boolean fireEmployee(Department d, String empID)
+    protected boolean fireEmployee(String empID)
     {
     	///SQL CON//
-    	mysqlCon con1= new mysqlCon();
-	     con1.removeStaff(empID);
-    	return d.removestaff(empID);
+	    DAL.removeStaff(empID);
+    	return Session.getHrDept().removestaff(empID);
     }
     
     ////////////////////////////////////////////////UPDATE STAFF////////////////////////////////////////////////////////
     
-    protected boolean updateStaff(Department d,String n_name,/* String n_password, */Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
-			String n_emergencyContact, String n_address, String empID, Date n_dateHired)
+    protected boolean updateStaff(String n_name,/* String n_password, */Date n_DOB, String n_phoneNo, 
+    		String n_email, String n_CNIC, char n_gender,String n_emergencyContact, String n_address, String empID, 
+    		Date n_dateHired)
     {
-    	int index=d.ifStaffExists(empID);
+    	int index=Session.getHrDept().ifStaffExists(empID);
     	if(index!=-1)
     	{
-    		Staff s1= d.getStaffMember(index);
+    		Staff s1= Session.getHrDept().getStaffMember(index);
     		s1.updateDetails(n_name,/*n_password,*/n_DOB,n_phoneNo,n_email, n_CNIC,n_gender,n_emergencyContact,n_address, empID,n_dateHired);
-    		d.updateStaffMemberToStaff(index,s1);
+    		Session.getHrDept().updateStaffMemberToStaff(index,s1);
     		
     	//SQL CON//	
-         mysqlCon con1= new mysqlCon();
-   	     con1.updateStaff(n_name,/* n_password,*/ n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
+   	     DAL.updateStaff(n_name,/* n_password,*/ n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
     		return true;
     	}	 
     	else 

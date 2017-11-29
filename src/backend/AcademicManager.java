@@ -8,6 +8,8 @@ package backend;
 import java.util.ArrayList;
 import java.util.Date;
 
+import dal.DAL;
+
 /**
  *
  * @author Advisor
@@ -20,51 +22,58 @@ public class AcademicManager extends Staff{
 	}
 	
 	////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
-	
-
-	protected boolean RegisterFaculty(School s,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+ boolean RegisterFaculty(String schoolid,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, Date dateHired, ArrayList<String> degrees,
 			String position,String EmpID)
 	{
-		int index=s.ifFacultyExists(EmpID);
-    	if(index!=-1)
-    	{
-    		FacultyMember temp=new FacultyMember(name,password,DOB,phoneNo,email,CNIC,gender, emergencyContact, address, EmpID,dateHired,degrees,position);
-    		
-    		////SQL CONN/////////////////
-    		mysqlCon con1= new mysqlCon();
-    	     con1.addFaculty(s,name, password, DOB,phoneNo, email, CNIC, gender,emergencyContact,address, EmpID, dateHired,  degrees,position);
-    	     
-    	     return s.addFacultyMember(temp);
-    	}
+	 	
+	    int index=Session.getHrDept().ifStaffExists(EmpID);
+	    if(index!=-1) {
+
+					 index=Session.getInst().getSchool(schoolid).ifFacultyExists(EmpID);
+			    	if(index!=-1)
+			    	{
+			    		Staff stf = new Staff(name,password,DOB, phoneNo, email,CNIC, gender, emergencyContact, address,EmpID,dateHired);
+			    		FacultyMember temp=new FacultyMember(name,password,DOB,phoneNo,email,CNIC,gender, emergencyContact, address, EmpID,dateHired,degrees,position);
+			    		////SQL CONN/////////////////
+			    	    DAL.addFaculty(Session.getSchl(),name, password, DOB,phoneNo, email, CNIC, gender,emergencyContact,address, EmpID, dateHired,  degrees,position);   
+			    	    
+			    	    Session.getInst().getSchool(schoolid).addFacultyMember(temp);
+			    	    Session.getHrDept().addStaff(stf);			    	   
+			    	    return true;
+			    	}
+	    }
     	
-    	else 
-    		return false;
+		return false;
 
 	}
 	
    ////////////////////////////////ADD SECTION//////////////////////////////////////////////////////////// 
-  protected boolean addSection(School school,String c_code,FacultyMember f,char sID,Semester s)
+  protected boolean addSection(String schoolid,String c_code,String EmpID,char sID)
    {
 	   int index=0; boolean secIndex=false; boolean add=false;
 	   ArrayList<Attendance> attendances=new ArrayList<Attendance>();
-	   index=school.courseExists(c_code);
+	   index=Session.getInst().getSchool(schoolid).courseExists(c_code);
+	   
+	   FacultyMember f= Session.getSchl().getFacultyfromList(EmpID);
+	   
+	   
+	   
 	   if(index !=-1)
 	   {
-		  Course tempcourse=school.getCourseFromCourses(index);
+		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
 		  secIndex=tempcourse.ifSectionExists(sID); 
 		  if(secIndex==false)
 			  {
-			  if(school.facultyExists(f)==true) {
+			  if(Session.getSchl().facultyExists(f)==true) {
 			  
-			    CourseSection cs=new CourseSection(sID,50,0,f,s,tempcourse,attendances);
+			    CourseSection cs=new CourseSection(sID,50,0,f,Session.getSem(),tempcourse,attendances);
 			  	tempcourse.addCourseSection(cs);
 			  	
 			  	////SQL CONN/////////////////
-			  	 mysqlCon con1= new mysqlCon();
-	    	     con1.addSection(sID, 50, 0, f,s,tempcourse);
+	    	     DAL.addSection(sID, 50, 0, f,Session.getSem(),tempcourse);
 	    	     
-			  	school.updateCourseToCourses(index,tempcourse);
+	    	     Session.getInst().getSchool(schoolid).updateCourseToCourses(index,tempcourse);
 			  	add=true;
 			  }
 			  }
@@ -73,6 +82,7 @@ public class AcademicManager extends Staff{
 		//	  System.out.println("Section Already Exists");
 			  add=false;
 		  }
+		  
 	   }
 	   
 	  /* else
@@ -84,24 +94,24 @@ public class AcademicManager extends Staff{
    }
    
    //////////////////////////////////////REMOVE SECTION/////////////////////////////////////////////////////////
-   protected boolean removeSection(School school, String c_code , char sID,Semester semester)
+   protected boolean removeSection(String schoolid, String c_code , char sID)
    {
 	   int index=0; boolean secIndex=false; boolean remove=false;
-	   index=school.courseExists(c_code);
+	   index=Session.getInst().getSchool(schoolid).courseExists(c_code);
 	   if(index !=-1)
 	   {
-		  Course tempcourse=school.getCourseFromCourses(index);
+		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
 		  secIndex=tempcourse.ifSectionExists(sID); 
 		  if(secIndex==true)
 			  {
 			  
 			  	tempcourse.removeCourseSection(sID);
-			  	school.updateCourseToCourses(index,tempcourse);
+			  	Session.getSchl().updateCourseToCourses(index,tempcourse);
 			  	
 			  	//SQL CON/////
 			  	
-			  	mysqlCon con1= new mysqlCon();
-	    	     con1.removeSection(school, c_code ,sID,semester);
+			  
+	    	     DAL.removeSection(Session.getSchl(), c_code ,sID,Session.getSem());
 	    	     
 	    	     
 			  	remove=true;
@@ -123,23 +133,26 @@ public class AcademicManager extends Staff{
    }
  
  ////////////////////////////////////UPDATE SECTION///////////////////////////////////////
-   protected boolean updateSection(School school, String c_code, char secID, FacultyMember nf, int maxs, Semester s)
+   protected boolean updateSection(String schoolid,String c_code, char secID, String EmpID, int maxs)
    {
+	   
 	   int index=0; boolean secIndex=false; boolean update=false;
-	   index=school.courseExists(c_code);
+	   
+	   FacultyMember nf=Session.getInst().getSchool(schoolid).getFacultyfromList(EmpID);
+	   index=Session.getSchl().courseExists(c_code);
 	   if(index !=-1)
 	   {
-		  Course tempcourse=school.getCourseFromCourses(index);
+		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
 		  secIndex=tempcourse.ifSectionExists(secID); 
 		  if(secIndex==true)
 			  {
-				  if(school.facultyExists(nf)==true) {
+				  if(Session.getSchl().facultyExists(nf)==true) {
 				  	tempcourse.updateCourseSection(secID,nf,maxs);
-				  	school.updateCourseToCourses(index,tempcourse);
+				  	Session.getSchl().updateCourseToCourses(index,tempcourse);
 				  	
 				  	////SQL CONN/////////////////
-				  	 mysqlCon con1= new mysqlCon();
-		    	     con1.updateSection(school, c_code,secID,nf,maxs,s);
+				  	
+		    	     DAL.updateSection(c_code,secID,nf,maxs,Session.getSem());
 
 				  	update=true;
 				  }
