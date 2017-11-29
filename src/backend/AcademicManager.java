@@ -7,6 +7,9 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import dal.DAL;
+
 import java.sql.*;
 
 
@@ -22,7 +25,13 @@ public class AcademicManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-	public boolean addCourse(School s, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+		
+		School s = null;
+		for(School sch:Session.getInst().getSchools()) {
+			if(sch.getId()==schoolID)
+				s = sch;
+		}
 		
 		//Checks if course code is already taken
 		if(s.ifCourseExists(code))
@@ -35,7 +44,13 @@ public class AcademicManager extends Staff{
 		return s.addCourse(crs);
 	}
 	
-	public boolean updateCourse(School s, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+		
+		School s = null;
+		for(School sch:Session.getInst().getSchools()) {
+			if(sch.getId()==schoolID)
+				s = sch;
+		}
 		
 		//retrieving course object from school
 		Course crs = s.getCourse(code);
@@ -44,11 +59,21 @@ public class AcademicManager extends Staff{
 		if(crs == null)
 			return false;
 		
-		//Updating
-		return crs.updateDetails(name, creditHours, desc, preReqs);
+		if(!DAL.updateCourseDetails(name, creditHours, desc, preReqs, crs))
+			return false;
+		
+		//Updating in ArrayList
+		crs.updateDetails(name, creditHours, desc, preReqs);
+		return true;
 	}
     
-	public boolean removeCourse(School s, String code) {
+	public boolean removeCourse(String schoolID, String code) {
+		
+		School s = null;
+		for(School sch:Session.getInst().getSchools()) {
+			if(sch.getId()==schoolID)
+				s = sch;
+		}
 		
 		//retrieving course object from school
 		Course crs = s.getCourse(code);
@@ -61,7 +86,13 @@ public class AcademicManager extends Staff{
 		
 	}
     
-	public boolean removeFaculty(School sch, String empID, String repEmpID) {
+	public boolean removeFaculty(String schoolID, String empID, String repEmpID) {
+		
+		School sch = null;
+		for(School s:Session.getInst().getSchools()) {
+			if(s.getId()==schoolID)
+				sch = s;
+		}
 		
 		if(!sch.findFaculty(empID))
 			return false;
@@ -73,7 +104,13 @@ public class AcademicManager extends Staff{
 		
 	}
 	
-	public boolean registerStudent(School sch, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+	public boolean registerStudent(String schoolID, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+		
+		School sch = null;
+		for(School s:Session.getInst().getSchools()) {
+			if(s.getId()==schoolID)
+				sch = s;
+		}
 		
 		if(!sch.validateStudent(fCNIC))
 			return false;
@@ -85,7 +122,13 @@ public class AcademicManager extends Staff{
 		
 	}
 	
-	public boolean updateStudent(School sch, String rollNo, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+	public boolean updateStudent(String schoolID, String rollNo, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+		
+		School sch = null;
+		for(School s:Session.getInst().getSchools()) {
+			if(s.getId()==schoolID)
+				sch = s;
+		}
 		
 		Student std = sch.getStudent(rollNo);
 		
@@ -95,12 +138,27 @@ public class AcademicManager extends Staff{
 		if(!sch.validateUpdateStudent(CNIC, std))
 			return false;
 		
-		return std.updateDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName);
+		if(!DAL.updateStudentDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName, std))
+			return false;
+		
+		std.updateDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName);
+		return true;
 	}
 	
-	public boolean removeStudent(String rollNo, School sch) {
+	public boolean removeStudent(String rollNo, String schoolID) {
 		
+		School sch = null;
+		for(School s:Session.getInst().getSchools()) {
+			if(s.getId()==schoolID)
+				sch = s;
+		}
 		
+		Student std = sch.getStudent(rollNo);
 		
+		if(std==null)
+			return false;
+		
+		return sch.removeStudent(std);
 	}
+	
 }

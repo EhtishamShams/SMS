@@ -15,8 +15,8 @@ public class Student extends User{
 	private float CGPA;
 	private int creditsEarned;
 	private int creditsAttempted;
-	public ArrayList<CourseSection> courses;
-	
+	private ArrayList<CourseSection> courses;
+	private Transcript transcript;
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
@@ -29,6 +29,7 @@ public class Student extends User{
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
+		this.transcript = new Transcript();
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -98,39 +99,7 @@ public class Student extends User{
 	
 	public boolean updateDetails(String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
 		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Update User Set Name=?, DateOfBirth=?, PhoneNo=?, CNIC=?, email=?, gender=?, emergencyContact=?, Address=? Where CNIC=?)";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, name);
-			pst.setDate(2, (java.sql.Date) DOB);
-			pst.setString(3, phone);
-			pst.setString(4, CNIC);
-			pst.setString(5, email);
-			pst.setString(6, Character.toString(gender));
-			pst.setString(7, eCont);
-			pst.setString(8, address);
-			pst.setString(9, this.getCNIC());
-			pst.execute();
-			
-			query = "Update Student Set FatherName=?, FatherCNIC=? Where RollNo=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, fName);
-			pst.setString(2, fCNIC);
-			pst.setString(3, this.rollNo);
-			pst.execute();
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
-			return false;
-		}
+		
 		
 		this.name = name;
 		this.DOB = DOB;
@@ -145,5 +114,26 @@ public class Student extends User{
 		
 		return true;
 	}
+	
+	public double computeGPA(ArrayList<Grade> grades) {
+		
+		double ret = 0;
+		int credits = 0;
+		
+		for(Grade g:grades) {
+			int grCreds = g.getCourseSection().getCourse().getCreditHours();
+			credits+= grCreds;
+			ret += g.getGrade().getGpa() * grCreds;
+		}
+		
+		return ret/credits;
+	}
+	
+//	public double computeCGPA() {
+//		
+//		for(Grade gr:transcript.getGrades()) {
+//			
+//		}
+//	}
 
 }

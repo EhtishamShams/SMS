@@ -25,6 +25,11 @@ public class AcademicInstitution {
 		this.users = users;
 		this.depts = depts;
 	}
+	
+	public ArrayList<School> getSchools(){
+		
+		return schools;
+	}
 
 	public String getName() {
 		return name;

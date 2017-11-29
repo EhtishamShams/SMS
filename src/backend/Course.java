@@ -83,51 +83,12 @@ public class Course {
         this.prerequisites = prerequisites;
     }
     
-    public boolean updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {
+    public void updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {
         
-    	try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Update Course Set CourseName=?, CreditHours=?, Description=? Where CourseCode=?";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, courseName);
-			pst.setInt(2, creditHours);
-			pst.setString(3, description);
-			pst.setString(4, this.courseCode);
-			pst.executeUpdate();
-			
-			query = "Delete From CoursePrerequisites Where CourseCode=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, this.courseCode);
-			pst.execute();
-			
-			query = "Insert into CoursePrerequisites Values(?, ?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, this.courseCode);
-			
-			for(Course pReq:prerequisites) {
-				
-				pst.setString(2,  pReq.getCourseCode());
-				pst.execute();
-			}
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
-			return false;
-		}
-		
-    	
     	this.courseName = courseName;
         this.creditHours = creditHours;
         this.description = description;
         this.prerequisites = prerequisites;
-        return true;
     }
     
     public boolean addCourseSection(CourseSection section) {

@@ -12,7 +12,7 @@ import java.util.Date;
 public class Semester {
 	private String session;
 	
-	public Semester(String session, Date year) {
+	public Semester(String session) {
 		this.session = session;
 	}
 

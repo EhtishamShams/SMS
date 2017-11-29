@@ -7,11 +7,16 @@ public class CourseSection {
 	private char sectionID;
 	private int maxSeats;
 	private int currSeats;
-	FacultyMember sectionTeacher;
-	Semester semester;
-	Course course;
+	private FacultyMember sectionTeacher;
+	private Semester semester;
+	private Course course;
 	private ArrayList<Attendance> studentAttendances;
-	 
+	
+	public Course getCourse() {
+		
+		return course;
+	}
+	
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
 		this.sectionID = sectionID;
 		this.maxSeats = maxSeats;

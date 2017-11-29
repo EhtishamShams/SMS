@@ -5,6 +5,10 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import dal.DAL;
+import dal.DBAccess;
+
 import java.sql.*;
 
 /**
@@ -39,7 +43,7 @@ public class School {
 	public Course getCourse(String code) {
 		
 		for(Course c:this.courses) {
-			if(c.getCourseCode()==code)
+			if(c.getCourseCode().equals(code))
 				return c;
 		}
 		
@@ -77,7 +81,7 @@ public class School {
 	public boolean validateStudent(String CNIC) {
 		
 		for(Student st:students) {
-			if(st.getCNIC()==CNIC)
+			if(st.getCNIC().equals(CNIC))
 				return false;
 		}
 		
@@ -87,7 +91,7 @@ public class School {
 	public boolean validateUpdateStudent(String CNIC, Student obj) {
 		
 		for(Student st:students) {
-			if(st.getCNIC()==CNIC && st!=obj)
+			if(st.getCNIC().equals(CNIC) && st!=obj)
 				return false;
 		}
 		
@@ -97,7 +101,7 @@ public class School {
 	public boolean ifCourseExists(String code) {
 		
 		for(Course c:this.courses) {
-			if(c.getCourseCode()==code)
+			if(c.getCourseCode().equals(code))
 				return true;
 		}
 		return false;
@@ -106,7 +110,7 @@ public class School {
 	public boolean findFaculty(String empID) {
 		
 		for(FacultyMember FM:faculty) {
-			if(FM.getEmpID()==empID)
+			if(FM.getEmpID().equals(empID))
 				return true;
 		}
 		
@@ -116,7 +120,7 @@ public class School {
 	public Student getStudent(String rollNo) {
 		
 		for(Student stu:students) {
-			if(stu.getRollNo()==rollNo)
+			if(stu.getRollNo().equals(rollNo))
 				return stu;
 		}
 		
@@ -125,40 +129,9 @@ public class School {
 	
 	public boolean addCourse(Course c) {
 		
-		//Adding in Database
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Insert Into course Values(?,?,?,?,?,?)";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, c.getCourseCode());
-			pst.setString(2, c.getCourseName());
-			pst.setInt(3, c.getCreditHours());
-			pst.setString(4, c.getDescription());
-			pst.setString(5, this.id);
-			pst.setBoolean(6, true);
-			pst.execute();
-			
-			query = "Insert into CoursePrerequisites Values(?, ?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, c.getCourseCode());
-			
-			for(Course pReq:c.getPrerequisites()) {
-				
-				pst.setString(2,  pReq.getCourseCode());
-				pst.execute();
-			}
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
+		//Adding in database
+		if(!DAL.addCourse(c, this))
 			return false;
-		}
 		
 		//Adding in ArrayList
 		this.courses.add(c);
@@ -167,49 +140,8 @@ public class School {
 	
 	public boolean addStudent(Student std) {
 		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Insert into User(Name, DateOfBirth, PhoneNo, CNIC, email, gender, emergencyContact, Address) Values(?,?,?,?,?,?,?,?)";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, std.getName());
-			pst.setDate(2, (java.sql.Date) std.getDOB());
-			pst.setString(3, std.getPhoneNo());
-			pst.setString(4, std.getCNIC());
-			pst.setString(5, std.getEmail());
-			pst.setString(6, Character.toString(std.getGender()));
-			pst.setString(7, std.getEmergencyContact());
-			pst.setString(8, std.getAddress());
-			pst.execute();
-			
-			query = "Select UserID From User Where CNIC=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, std.getCNIC());
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			String userID = rs.getString(1);
-			
-			query = "Insert into Student(UserID, FatherName, FatherCNIC, CGPA, CreditsEarned, CreditsAttempted, SchoolID) Values(?,?,?,?,?,?,?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, userID);
-			pst.setString(2, std.getFatherName());
-			pst.setString(3, std.getFatherCNIC());
-			pst.setDouble(4, std.getCGPA());
-			pst.setInt(5, std.getCreditsEarned());
-			pst.setInt(6, std.getCreditsAttempted());
-			pst.setString(7, this.id);
-			pst.execute();
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
+		if(!DAL.addStudent(std, this))
 			return false;
-		}
 		
 		students.add(std);
 		return true;
@@ -217,31 +149,8 @@ public class School {
 	
 	public boolean removeCourse(Course c) {
 		
-		//Updating course status in database
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Update course Set IsOffered=? where CourseCode=?";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setBoolean(1, false);
-			pst.setString(2, c.getCourseCode());
-			pst.executeUpdate();
-			
-			query = "Delete from coursesection Where CourseCode = (Select CourseCode From (Select * From coursesection) As A join semester s where s.IsActive=true and s.CourseCode=?)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, c.getCourseCode());
-			pst.execute();
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
+		if(!DAL.removeCourse(c))
 			return false;
-		}
 		
 		//CHECK IF UPDATING REQUIRED FOR ISOFFERED IN OBJECT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return true;
@@ -249,56 +158,30 @@ public class School {
 	
 	public boolean removeFaculty(String empID, String repEmpID) {
 		
-		String userID;
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","abcd");
-			conn.setAutoCommit(false);
-			
-			String query = "Select UserID From User Where UserID = (Select S.UserID From (Select * From User) As U join Staff S Where U.UserID=S.UserID and S.EmpID=?)";
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.setString(1, empID);
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			userID = rs.getString(1);
-			
-			query = "Update CourseSection Set TeacherID=? Where TeacherID=? and session=(select session from Semester where IsActive=1)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, repEmpID);
-			pst.setString(2, empID);
-			pst.executeUpdate();
-		
-			query = "Delete from FacultyMember Where EmpID=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, empID);
-			pst.execute();
-			
-			query = "Delete from Staff Where EmpID=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, empID);
-			pst.execute();
-			
-			query = "Delete from User Where UserID=?";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, userID);
-			pst.execute();		
-			
-			conn.commit();
-			conn.close();
-		}
-		catch(Exception e) {
-			
-			System.out.println(e);
-			return false;
-		}
-		
 		for(FacultyMember fac:faculty) {
-			if(fac.getEmpID() == empID)
+			if(fac.getEmpID().equals(empID))
 				faculty.remove(fac);
 		}
 		
 		return true;
+	}
+	
+	public boolean removeStudent(Student std) {
+		
+		if(!DAL.removeStudent(std))
+			return false;
+		
+		students.remove(std);
+		return true;
+	}
+	
+	public static void main(String[] args) {
+		
+		DBAccess db = new DBAccess();
+		DBAccess.createConnection();
+		Student std = new Student("sdf", "sfklj", new Date(), "adsf", "sdf", "sdf", 'a', "asd", "asd", "as", "sdf", "sdf", 0, 0, 0, null);
+		std.setRollNo("1");
+		DAL.removeStudent(std);
 	}
 	
 }
