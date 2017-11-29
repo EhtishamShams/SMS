@@ -5,6 +5,7 @@
  */
 package backend;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ public class AcademicManager extends Staff{
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection cs = s.getCourseSection(c, secID);
+    		CourseSection cs = s.getCourseSection(c, secID,sem);
     		
     		if(cs!=null)
     			return s.registerStudentInCourse(std, c, cs, sem);
@@ -36,18 +37,18 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean updateStudentCourseRegistration(School s, String rollNo, String courseCode,char oldID,char newID) {
+    public boolean updateStudentCourseRegistration(School s, String rollNo, String courseCode,char oldID,char newID,  Semester sem) {
     	
     	Student std = s.getStudent(rollNo);
     	Course c = s.getCourse(courseCode);
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection oldCs = s.getCourseSection(c, oldID);
-    		CourseSection newCs = s.getCourseSection(c, newID);
+    		CourseSection oldCs = s.getCourseSection(c, oldID,sem);
+    		CourseSection newCs = s.getCourseSection(c, newID,sem);
     		
     		if(oldCs!=null && newCs!=null)
-    			return s.updateStudentCourseRegistration(std, oldCs, newCs);
+    			return s.updateStudentCourseRegistration(std, oldCs, newCs,sem);
     		else
     			return false;
     	}
@@ -55,16 +56,16 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean removeStudentCourseRegistration(School s, String rollNo, String courseCode,char secID) {
+    public boolean removeStudentCourseRegistration(School s, String rollNo, String courseCode,char secID, Semester sem) {
     	Student std = s.getStudent(rollNo);
     	Course c = s.getCourse(courseCode);
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection cs = s.getCourseSection(c, secID);
+    		CourseSection cs = s.getCourseSection(c, secID,sem);
     		
     		if(cs!=null)
-    			return s.removeStudentCourseRegistration(std, cs);
+    			return s.removeStudentCourseRegistration(std, cs,sem);
     		else
     			return false;
     	}
@@ -72,4 +73,18 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
+    /*
+    public FacultyMember getFacultyMember(AcademicInstitution AI, String empID) {
+    	return AI.getFacultyMember(empID);
+    	
+    }
+    
+    public School getStudentSchool(AcademicInstitution AI, String rollNo) {
+    	return AI.getStudentSchool(rollNo);
+    }
+    
+    public ArrayList<CourseSection> getStudentCourseSections(AcademicInstitution AI, String rollNo,Semester sem){
+    	return AI.getStudentCourseSections(rollNo, sem);
+    }
+    */
 }

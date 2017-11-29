@@ -3,6 +3,7 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.Date;
+import dal.DAL;
 
 /**
  * @author Ehtisham
@@ -39,5 +40,24 @@ public class FacultyMember extends Staff {
 	}
 	
 	
+	public boolean updateDetails(String name, Date DOB, String phoneNo, String email,String CNIC,char gender,
+			String emergencyContact, String address, ArrayList<String> degrees, String position) {
+		this.name = name;
+		this.DOB = DOB;
+		this.phoneNo = phoneNo;
+		this.email = email;
+		this.CNIC = CNIC;
+		this.gender = gender;
+		this.emergencyContact = emergencyContact;
+		this.address = address;
+		this.degrees = degrees;
+		this.position = position;
+		
+		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, degrees, position);
+		
+		return true;
+	}
+	
 
+	
 }

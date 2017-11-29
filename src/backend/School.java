@@ -5,6 +5,8 @@ package backend;
 
 import java.util.ArrayList;
 
+import dal.DAL;
+
 /**
  * @author Ehtisham
  *
@@ -65,7 +67,7 @@ public class School {
 	public Student getStudent(String rollNo) {
 		for(Student s : students)
 		{
-			if(s.getRollNo()==rollNo)
+			if(s.getRollNo().equals(rollNo))
 				return s;
 		}
 		
@@ -75,15 +77,15 @@ public class School {
 	public Course getCourse(String courseCode) {
 		for(Course c : courses)
 		{
-			if(c.getCourseCode()==courseCode)
+			if(c.getCourseCode().equals(courseCode))
 				return c;
 		}
 		
 		return null;
 	}
 	
-	public CourseSection getCourseSection(Course c, char secID) {
-		return c.getCourseSection(secID);
+	public CourseSection getCourseSection(Course c, char secID,Semester sem) {
+		return c.getCourseSection(secID,sem);
 	}
 	
 	public boolean registerStudentInCourse(Student s, Course c, CourseSection cs,Semester sem) {
@@ -96,9 +98,17 @@ public class School {
 			boolean seatAvailibility = cs.checkSeatAvailibility();
 			
 			if(passed && seatAvailibility) {
+				int sectionKey = DAL.getSectionKey(cs.getSectionID(), c.getCourseCode(), sem.getSession());
+				
 				cs.incrementCurrSeats();
+				DAL.incrementCurrSeats(sectionKey);
+				
 				s.addStudentCourseRegistration(cs);
+				DAL.addStudentCourseRegistration(s.getRollNo(), sectionKey);
+				
 				s.addGradeToTranscript(cs, LGrade.I);
+				DAL.addGradeToTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
+				
 				return true;
 			}
 			else
@@ -109,14 +119,23 @@ public class School {
 	}
 	
 
-	public boolean updateStudentCourseRegistration(Student s, CourseSection oldCs, CourseSection newCs) {
+	public boolean updateStudentCourseRegistration(Student s, CourseSection oldCs, CourseSection newCs, Semester sem) {
 		
 		if(newCs.checkSeatAvailibility()) {
+			int oldSectionKey = DAL.getSectionKey(oldCs.getSectionID(), oldCs.getCourse().getCourseCode(), sem.getSession());
+			int newSectionKey = DAL.getSectionKey(newCs.getSectionID(), newCs.getCourse().getCourseCode(), sem.getSession());
+			
 			newCs.incrementCurrSeats();
+			DAL.incrementCurrSeats(newSectionKey);
 			oldCs.decrementCurrSeats();
+			DAL.decrementCurrSeats(oldSectionKey);
+			
 			s.addStudentCourseRegistration(newCs);
+			DAL.addStudentCourseRegistration(s.getRollNo(), newSectionKey);
 			s.removeStudentCourseRegistration(oldCs);
+			DAL.removeStudentCourseRegistration(s.getRollNo(), oldSectionKey);
 			s.updateGradeSection(oldCs, newCs);
+			DAL.updateGradeSection(LGrade.I.toString(), oldSectionKey, newSectionKey, s.getRollNo(), sem.getSession());
 			
 			return true;
 		}
@@ -124,13 +143,32 @@ public class School {
 			return false;
 	}
 
-	public boolean removeStudentCourseRegistration(Student s, CourseSection cs) {
+	public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Semester sem) {
+		
+		int sectionKey = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
 		
 		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
+			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
 			cs.decrementCurrSeats();
+			DAL.decrementCurrSeats(sectionKey);
 			return true;
 		}
 		else
 			return false;
 	}
+	
+	/*
+	public FacultyMember getFacultyMember(String empID) {
+		for(FacultyMember f : faculty) {
+			if(f.getEmpID().equals(empID))
+				return f;
+		}
+		
+		return null;
+	}
+	*/
+
 }
+
+

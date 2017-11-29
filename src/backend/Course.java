@@ -103,9 +103,9 @@ public class Course {
     	return false;
     }
     
-    public CourseSection getCourseSection(char secID) {
+    public CourseSection getCourseSection(char secID,Semester sem) {
     	for(CourseSection cs : sections) {
-    		if(cs.getSectionID()==secID)
+    		if(cs.getSectionID()==secID && cs.getSemester().equals(sem))
     			return cs;
     	}
     	

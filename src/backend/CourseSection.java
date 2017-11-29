@@ -88,5 +88,15 @@ public class CourseSection {
 		return (this.maxSeats>this.currSeats);
 	}
 	
-	 
+	public ArrayList<Attendance> getStudentAttendance(String rollNo){
+		ArrayList<Attendance> attendance = new ArrayList<>();
+		
+		for(Attendance attd : studentAttendances) {
+			if(attd.getStudent().getRollNo().equals(rollNo)) {
+				attendance.add(attd);
+			}
+		}
+		
+		return attendance;
+	}
 }

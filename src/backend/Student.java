@@ -98,7 +98,7 @@ public class Student extends User{
 		ArrayList<CourseSection> csList = new ArrayList<>();
 		
 		for(CourseSection cs:courses) {
-			if(cs.getSemester()==sem)
+			if(cs.getSemester().equals(sem))
 				csList.add(cs);
 		}
 		

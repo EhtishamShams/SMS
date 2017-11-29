@@ -50,8 +50,39 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
-
-
+	public School getStudentSchool(String rollNo) {
+		for(School sch : schools) {
+			for(Student std : sch.getStudents()) {
+				if(std.getRollNo().equals(rollNo))
+					return sch;
+			}
+		}
+		
+		return null;
+	}
+	
+	public FacultyMember getFacultyMember(String empID) {
+		for(School sch : schools) {
+			for(FacultyMember f : sch.getFaculty()) {
+				if(f.getEmpID().equals(empID))
+					return f;
+			}
+		}
+		
+		return null;
+	}
+	
+	/*
+	public ArrayList<CourseSection> getStudentCourseSections(String rollNo,Semester sem){
+		for(School sch : schools) {
+			for(Student std : sch.getStudents()){
+				if(std.getRollNo().equals(rollNo))
+					return std.checkSemesterRegistrations(sem);
+			}
+		}
+		
+		return null;
+	}*/
 	
 	
 	

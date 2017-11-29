@@ -11,7 +11,7 @@ public class Transcript {
 		
 	}
 
-	public Transcript(Student s, ArrayList<Grade> grades) {
+	public Transcript(ArrayList<Grade> grades) {
 		this.grades = grades;
 	}
 	
@@ -60,9 +60,9 @@ public class Transcript {
 			return false;
 	}
 
-//	public ArrayList<Grade> getGrades() {
-//		return grades;
-//	}
+	public ArrayList<Grade> getGrades() {
+		return grades;
+	}
 	
 	
 
