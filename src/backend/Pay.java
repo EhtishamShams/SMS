@@ -12,9 +12,9 @@ import java.util.Date;
  * @author HumnaGul
  */
 public class Pay {
-    Double amount;
-    Date datePaid;
-    Staff staffMember;
+    private Double amount;
+    private Date datePaid;
+    private Staff staffMember;
 
     public Pay(Double amount, Date datePaid, Staff st) {
         this.amount = amount;
