@@ -27,6 +27,8 @@ public class AcademicDepartment extends Department{
     public void setTimeTables(ArrayList<Timetable> timeTables) {
         this.timeTables = timeTables;
     }
+
+
     
     
 }

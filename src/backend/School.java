@@ -25,6 +25,14 @@ public class School {
 		this.students = students;
 		this.courses = courses;
 	}
+	
+	public School(String sid, String n) {
+		this.id = sid;
+		this.name = n;
+		this.faculty = new ArrayList<FacultyMember>();
+		this.students = new ArrayList<Student>();
+		this.courses = new ArrayList<Course>();
+	}
 
 	public String getId() {
 		return id;
@@ -91,4 +99,24 @@ public class School {
 	}
 	
 	
+   public  ArrayList<CourseSection> getCourseSection(String id)
+   {
+	   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
+	   Semester current=Session.getSem();  
+	    
+	   for(int i=0; i<this.courses.size();i++)   
+	   {
+		   for(int j=0;j<courses.get(i).getSections().size();j++)
+		   {
+			   if(courses.get(i).getSections().get(j).sectionTeacher.empID.equals(id)  &&  courses.get(i).getSections().get(j).semester.getSession().equals(current.getSession()))
+			   {
+				   sec.add(courses.get(i).getSections().get(j));
+			   }
+			   
+		   }
+	   }
+   
+	   return sec;
+	   
+   }
 }

@@ -4,12 +4,11 @@ package backend;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 public class FacultyMember extends Staff {
-	
+
 	private ArrayList<String> degrees;
 	private String position;
-	
+
 	public FacultyMember(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired, ArrayList<String> degrees,
 			String position) {
@@ -33,17 +32,55 @@ public class FacultyMember extends Staff {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	
-	//mark attendance functionality
-	public boolean markAttendance(School sch,String Ccode,String rollno,char SID,LAttendance atd,Semester sem,Date day)
-	{
-	    Student s= sch.getStudent(rollno);
-	    Course c= sch.getCourse(Ccode);
-	    CourseSection cs= c.getCourseSection(sem, SID);
-	    Attendance at= new  Attendance(atd,day,s,cs);	    
-	    boolean check=cs.addAttendance(at);
+
+	// mark attendance functionality
+	public boolean markAttendance(School sch, String Ccode, String rollno, char SID, LAttendance atd, Semester sem,
+			Date day) {
+		Student s = sch.getStudent(rollno);
+		Course c = sch.getCourse(Ccode);
+		CourseSection cs = c.getCourseSection(sem, SID);
+		String eid = cs.sectionTeacher.empID;
+		// int key= getSectionKey(SID,eid,Ccode,sem.session);
+		Attendance at = new Attendance(atd, day, s, cs);
+
+		boolean check = cs.addAttendance(at);
+		if (check) {
+			// check=markAttendanceDB(key,rollno,day,atd);
+		}
 		return check;
 	}
-	
 
+	public ArrayList<CourseSection> getCourseSections() {
+		ArrayList<CourseSection> sec = new ArrayList<CourseSection>();
+		School sch = Session.getSchl();
+		sec = sch.getCourseSection(this.empID);
+		return sec;
+	}
+
+
+    public boolean addAttendance(CourseSection b, Date d, String CID)
+    {
+    	//boolean check;
+    	
+   // int key=	getSectionKey(b.getSectionID(),CID,b.semester.getSession()); db call
+    	School sc= Session.getSchl();
+    	
+    	
+    	for(int i =0; i< sc.getStudents().size();i++)
+    	{
+    		for(int j=0; j<sc.getStudents().get(i).getStudiedCourses().size();j++)
+    		{
+    			
+    			if(sc.getStudents().get(i).getStudiedCourses().get(j).equals(b))
+    			{
+    				Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i),  b);
+    				b.addAtd(a);
+    			// dbcall	addAttendanceDB(LAttendance.P , sc.getStudents().get(i).getRollNo(), key, d );
+    			}
+    		}
+    		
+    	}
+    	
+    	return true;
+    }
 }

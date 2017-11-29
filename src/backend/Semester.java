@@ -11,11 +11,11 @@ import java.util.Date;
  */
 public class Semester {
 	private String session;
-	private Date year;
+
 	
 	public Semester(String session, Date year) {
 		this.session = session;
-		this.year = year;
+	
 	}
 
 	public String getSession() {
@@ -26,12 +26,5 @@ public class Semester {
 		this.session = session;
 	}
 
-	public Date getYear() {
-		return year;
-	}
-
-	public void setYear(Date year) {
-		this.year = year;
-	}
-	
 }
+	

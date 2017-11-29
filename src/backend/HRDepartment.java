@@ -63,7 +63,7 @@ public class HRDepartment extends Department{
     //helper for Update Allotment
     public Allotment getAllotment(Staff s)
     {
-    	
+       
     	for(int i=0; i<this.allotments.size();i++)
     	{
     		if(this.allotments.get(i).allotedTo.equals(s))
@@ -102,6 +102,9 @@ public class HRDepartment extends Department{
     	}
     	return false;
     }
+    
+
+    
 }
 
 
