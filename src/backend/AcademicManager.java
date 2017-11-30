@@ -27,6 +27,11 @@ public class AcademicManager extends Staff{
     
 	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
 		
+		for(Course pCrs:preReqs) {
+			if(pCrs.getCourseCode()==code)
+				preReqs.remove(pCrs);
+		}
+		
 		School s = null;
 		for(School sch:Session.getInst().getSchools()) {
 			if(sch.getId()==schoolID)
@@ -45,6 +50,11 @@ public class AcademicManager extends Staff{
 	}
 	
 	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
+		
+		for(Course pCrs:preReqs) {
+			if(pCrs.getCourseCode()==code)
+				preReqs.remove(pCrs);
+		}
 		
 		School s = null;
 		for(School sch:Session.getInst().getSchools()) {
