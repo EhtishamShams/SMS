@@ -15,8 +15,8 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	{
 		try {
 			Statement stmt=DBAccess.getStatement(); 
-			String allotment=null;   //just a typo
-			String temp=null;
+			String allotment="";   //just a typo
+			String temp="";
 			
 			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+Empid+"'"); 
 			while(rs.next()) 
@@ -27,7 +27,7 @@ public static boolean addAllotmentDB(String oid, String Empid)
 		        temp=rs1.getString(1);  //() <-this cannot be empty 
 			
 			
-			if(allotment==null && temp==null)
+			if(allotment=="" && temp=="")
 			{
 				
 					stmt.executeUpdate("INSERT INTO Allotment (OfficeID,EmpID)"
@@ -46,12 +46,12 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	 {
 		 try {
 			Statement stmt=DBAccess.getStatement();  
-			String allotment=null;
+			String allotment="";
 			
 			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+empid+"'"); 
 			while(rs.next()) 
 		        allotment=rs.getString(1); 
-			if(allotment!=null)
+			if(allotment!="")
 			{
 				stmt.executeUpdate("delete from Allotment where EmpID='"+empid+"'");
 				return true;
@@ -65,12 +65,12 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	 {
 		 	try {
 			Statement stmt=DBAccess.getStatement();
-			String allotment=null;
+			String allotment="";
 			
 			ResultSet rs=stmt.executeQuery("select* from Allotment where OfficeID='"+oid+"'"); 
 			while(rs.next()) 
 		        allotment=rs.getString(1); 
-			if(allotment==null)
+			if(allotment=="")
 			{
 				stmt.executeUpdate("UPDATE Allotment SET OfficeID='"+oid+"' where EmpID='"+eid+"'");
 				return true;
@@ -83,8 +83,8 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	 {
 		try {
 			Statement stmt=DBAccess.getStatement(); 
-			String sch=null;
-			String temp=null;
+			String sch="";
+			String temp="";
 			
 			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
 			while(rs.next()) 
@@ -94,7 +94,7 @@ public static boolean addAllotmentDB(String oid, String Empid)
 			while(rs.next()) 
 		        temp=rs.getString(1); 
 			
-			if(sch==null && temp==null)
+			if(sch=="" && temp=="")
 			{
 				stmt.executeUpdate("INSERT INTO School (SchoolID,Name)"
 								+ "VALUES('"+sid+"','"+name+"');");
@@ -109,13 +109,13 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	 {
 		try {
 			Statement stmt=DBAccess.getStatement();
-			String sch=null;
+			String sch="";
 		
 			
 			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
 			while(rs.next()) 
 		       sch=rs.getString(1); 
-			if(sch!=null)
+			if(sch!="")
 			{
 				stmt.executeUpdate("UPDATE School SET Name = '"+name+"' WHERE SchoolID='"+sid+"'");
 				 
@@ -195,4 +195,3 @@ public static boolean addAllotmentDB(String oid, String Empid)
 	 }
 	 
 }
-	
