@@ -18,6 +18,13 @@ public class HRManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-   
+    public boolean addOffice(String officeID) {
+    		HRDepartment dept = Session.getHrDept(); 
+    		if (!dept.ifOfficeExists(officeID)) {
+    			Office o = new Office(officeID);
+    			return dept.addOffice(o);
+    		}
+    		return false;
+    }
     
 }

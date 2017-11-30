@@ -62,6 +62,14 @@ public class School {
 		this.courses = courses;
 	}
 	
+	public boolean ifStudentExists(String rollNum) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNum))
+				return true;
+		}
+		return false;
+	}
+	
 	
 
 }

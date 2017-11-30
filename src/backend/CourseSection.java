@@ -7,9 +7,9 @@ public class CourseSection {
 	private char sectionID;
 	private int maxSeats;
 	private int currSeats;
-	FacultyMember sectionTeacher;
-	Semester semester;
-	Course course;
+	private FacultyMember sectionTeacher;
+	private Semester semester;
+	private Course course;
 	private ArrayList<Attendance> studentAttendances;
 	 
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
@@ -75,6 +75,24 @@ public class CourseSection {
 		else
 			return false;
 	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Semester getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semester semester) {
+		this.semester = semester;
+	}
+	
+	
 	
 	 
 }

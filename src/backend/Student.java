@@ -11,12 +11,12 @@ public class Student extends User{
 	private float CGPA;
 	private int creditsEarned;
 	private int creditsAttempted;
-	public ArrayList<CourseSection> courses;
-	
+	private ArrayList<CourseSection> courses;
+	private Transcript trans;
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses, Transcript trans) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
@@ -25,6 +25,7 @@ public class Student extends User{
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
+		this.trans = trans;
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -90,6 +91,10 @@ public class Student extends User{
 	public void setCreditsAttempted(int creditsAttempted) 
 	{
 		this.creditsAttempted = creditsAttempted;
+	}
+	
+	public Grade getCourseGrade(String courseCode) {
+		return trans.getGrade(courseCode);
 	}
 
 }

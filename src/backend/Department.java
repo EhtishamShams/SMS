@@ -36,4 +36,13 @@ public class Department {
         this.name = name;
         this.staff = staff;
     }
+    
+	public Staff getEmp(String id) {
+		for (int i = 0; i < staff.size(); i++) {
+			if (staff.get(i).getEmpID().equals(id)) {
+				return staff.get(i);
+			}
+		}
+		return null;
+	}
 }

@@ -5,7 +5,11 @@
  */
 package backend;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import dal.DBAccess;
 
 /**
  *
@@ -38,5 +42,19 @@ public class HRDepartment extends Department{
         this.allotments = allotments;
     }
     
+    public boolean ifOfficeExists(String officeID) {
+    		for (Office o : offices) {
+    			if (o.getID().equals(officeID))
+    				return true;
+    		}
+    		return false;
+    }
+    
+    public boolean addOffice(Office o) {
+    		boolean check = Session.getDal().addOffice(o);
+    		if (check)
+    			offices.add(o);
+    		return check;
+    }
     
 }

@@ -38,6 +38,18 @@ public class FacultyMember extends Staff {
 		this.position = position;
 	}
 	
+	public boolean updateGrade(String rollNum, String grade, String courseCode, String secID, String semester) {
+		Student stu = Session.getInst().getStudent(rollNum);
+		Grade g = stu.getCourseGrade(courseCode);
+		LGrade oldVal = g.getGrade();
+		g.setGrade(LGrade.valueOf(grade));
+		boolean check = Session.getDal().updateGrade(g,stu.getRollNo());
+		if (!check)
+			g.setGrade(oldVal);
+		return check;
+		
+		
+	}
 	
 
 }

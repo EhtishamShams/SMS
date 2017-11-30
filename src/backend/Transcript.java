@@ -16,10 +16,17 @@ public class Transcript {
 	
 	
 
-//	public ArrayList<Grade> getGrades() {
-//		return grades;
-//	}
+	public ArrayList<Grade> getGrades() {
+		return grades;
+	}
 	
+	public Grade getGrade(String courseCode) {
+		for (Grade g : grades) {
+			if (g.getCourseSection().getCourse().getCourseCode().equals(courseCode))
+				return g;
+		}
+		return null;
+	}
 	
 
 }

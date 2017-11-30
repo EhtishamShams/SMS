@@ -5,7 +5,11 @@
  */
 package backend;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
+
+import dal.DBAccess;
 
 /**
  *
@@ -105,6 +109,14 @@ public class User {
         this.address = address;
     }
 
-    
+	public boolean changePassword(String old, String newPass) {
+		if (matchPassword(old)) {
+			boolean check = Session.getDal().changePassword(newPass, CNIC);
+			if (check)
+				password = new String(newPass);
+			return check;
+		} else
+			return false;
+	}
     
 }
