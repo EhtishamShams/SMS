@@ -1,7 +1,7 @@
 package backend;
 
 import java.util.*;
-
+import dal.DAL;
 /**
  * 
  */
@@ -86,7 +86,7 @@ public class AcademicInstitution {
 				check = false;
 			}
 		}
-		// check=updateSchoolDB(id,n);
+		 check=DAL.updateSchoolDB(id,n);
 		if (check) {
 			School temp = new School(id, n);
 			schools.add(temp);

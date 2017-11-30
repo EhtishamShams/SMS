@@ -6,17 +6,17 @@ import java.util.Date;
 import backend.*;
 
 /**
- * @author HumnaGul
+ * @author Advisor
  *
  */
+public class DAL {
 
-
-public boolean addAllotmentDB(String oid, String Empid)
+public static boolean addAllotmentDB(String oid, String Empid)
 	{
 		try {
 			Statement stmt=DBAccess.getStatement(); 
-			String allotment /*userid*/=null;   //just a typo
-			String temp=""/*0*/; //string cant be equal to a int
+			String allotment=null;   //just a typo
+			String temp=null;
 			
 			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+Empid+"'"); 
 			while(rs.next()) 
@@ -42,7 +42,7 @@ public boolean addAllotmentDB(String oid, String Empid)
      }
 	 
 	
-	public boolean deleteAllotmentDB(String empid)
+	public static boolean deleteAllotmentDB(String empid)
 	 {
 		 try {
 			Statement stmt=DBAccess.getStatement();  
@@ -61,7 +61,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 	 
 	 }
 	 
-	 public boolean updateAllotmentDB(int oid, String eid)
+	 public static boolean updateAllotmentDB(String oid, String eid)
 	 {
 		 	try {
 			Statement stmt=DBAccess.getStatement();
@@ -79,7 +79,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 			return false;
 
 	 }
-	 public boolean addSchoolDB(String sid, String name)
+	 public static boolean addSchoolDB(String sid, String name)
 	 {
 		try {
 			Statement stmt=DBAccess.getStatement(); 
@@ -105,12 +105,12 @@ public boolean addAllotmentDB(String oid, String Empid)
 
 	 }
 	 
-	 public boolean updateSchoolDB(String sid, String name)
+	 public static boolean updateSchoolDB(String sid, String name)
 	 {
 		try {
 			Statement stmt=DBAccess.getStatement();
 			String sch=null;
-			String temp=null;
+		
 			
 			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
 			while(rs.next()) 
@@ -125,7 +125,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 			}catch(Exception e){ System.out.println(e);}  
 			return false;
 	 }
-	 public boolean markAttendanceDB(int sid, String rollno, Date d, LAttendance a)
+	 public static boolean markAttendanceDB(int sid, String rollno, Date d, LAttendance a)
 	 {
 		try {
 			
@@ -141,7 +141,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 
 	 }
 	 
-	 public int getSectionKey(char sectionID,String courseCode,String session) {
+	 public static int getSectionKey(char sectionID,String courseCode,String session) {
 		int sectionKey = -1;
 		
 		try{  
@@ -159,7 +159,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 		} 
 	}
 	
-	public boolean addAttendanceDB(String atd , String rollno,int  key, Date d)
+	public static boolean addAttendanceDB(LAttendance atd , String rollno,int  key, Date d)
 	{
 		try {
 			Statement stmt=DBAccess.getStatement(); 
@@ -173,7 +173,7 @@ public boolean addAllotmentDB(String oid, String Empid)
 		return false;
      }
 	 
-	 public ArrayList<String> returnCourse(String code)
+	 public static ArrayList<String> returnCourse(String code)
 	 {	
 		ArrayList<String> codes = new ArrayList<String>();
 		 try{  
@@ -194,4 +194,5 @@ public boolean addAllotmentDB(String oid, String Empid)
 		 
 	 }
 	 
+}
 	

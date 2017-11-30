@@ -6,6 +6,7 @@
 package backend;
 
 import java.util.Date;
+import dal.DAL;
 
 /**
  *
@@ -29,7 +30,7 @@ public class HRManager extends Staff {
 
 		Allotment temp = new Allotment(a, s);
 
-		// check=addAllotmentDB(oid,s.empID);
+		 check=DAL.addAllotmentDB(oid,s.empID);
 		if (check) {
 			d.addAllotment(temp);
 		}
@@ -48,7 +49,7 @@ public class HRManager extends Staff {
 			boolean check = false;
 			Office a = d.getOffice(id);
 			Allotment temp = d.getAllotment(s);
-			// check=updateAllotmentDB(id, s.empID);
+			 check=DAL.updateAllotmentDB(id, s.empID);
 			if (check) {
 				d.setAllotedOffice(a, temp);
 			}
@@ -64,7 +65,7 @@ public class HRManager extends Staff {
 		Staff s = k.getStaff(eid);
 		if (s != null) {
 			boolean check = false;
-			// check=deleteAllotmentDB(s.empID);
+			check=DAL.deleteAllotmentDB(s.empID);
 			if (check) {
 				d.removeAllotment(s);
 			}

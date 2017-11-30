@@ -5,8 +5,9 @@
  */
 package backend;
 
-import java.util.Date;
 
+import dal.DAL;
+import java.sql.Date;
 /**
  *
  * @author Advisor
@@ -26,12 +27,12 @@ public class AcademicManager extends Staff{
 			
 			if(check)
 			{
-				//return updateSchoolDB(id,name);
-				//return true;
+				 DAL.updateSchoolDB(id,name);
+				return true;
 			}
 		return check;
 	}
-    // function for adding another school in the institution 
+    //function for adding another school in the institution 
 	
 	boolean addSchool(String id, String name,AcademicInstitution a)
 	{

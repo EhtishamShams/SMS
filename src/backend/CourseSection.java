@@ -32,6 +32,10 @@ public class CourseSection {
 		this.studentAttendances = studentAttendances;
 	}
 
+	public Course getCouese()
+	{
+		return this.course;
+	}
 	public int getMaxSeats() {
 		return maxSeats;
 	}

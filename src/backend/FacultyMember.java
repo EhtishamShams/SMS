@@ -1,5 +1,6 @@
 
 package backend;
+import dal.DAL;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,13 +40,13 @@ public class FacultyMember extends Staff {
 		Student s = sch.getStudent(rollno);
 		Course c = sch.getCourse(Ccode);
 		CourseSection cs = c.getCourseSection(sem, SID);
-		String eid = cs.sectionTeacher.empID;
-		// int key= getSectionKey(SID,eid,Ccode,sem.session);
+	
+		 int key= DAL.getSectionKey(SID,Ccode,sem.getSession());
 		Attendance at = new Attendance(atd, day, s, cs);
 
 		boolean check = cs.addAttendance(at);
 		if (check) {
-			// check=markAttendanceDB(key,rollno,day,atd);
+			 check=DAL.markAttendanceDB(key,rollno,day,atd);
 		}
 		return check;
 	}
@@ -60,9 +61,9 @@ public class FacultyMember extends Staff {
 
     public boolean addAttendance(CourseSection b, Date d, String CID)
     {
-    	//boolean check;
+
     	
-   // int key=	getSectionKey(b.getSectionID(),CID,b.semester.getSession()); db call
+    int key=	DAL.getSectionKey(b.getSectionID(),CID,b.semester.getSession());
     	School sc= Session.getSchl();
     	
     	
@@ -75,7 +76,7 @@ public class FacultyMember extends Staff {
     			{
     				Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i),  b);
     				b.addAtd(a);
-    			// dbcall	addAttendanceDB(LAttendance.P , sc.getStudents().get(i).getRollNo(), key, d );
+    			DAL.addAttendanceDB(LAttendance.P , sc.getStudents().get(i).getRollNo(), key, d );
     			}
     		}
     		
