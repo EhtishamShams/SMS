@@ -36,7 +36,6 @@ public class DAL {
 				{
 					stmt.executeUpdate("INSERT INTO facultymemberdegrees (EmpID,Degree) VALUES ('"+empID+"','"+d+"');"); 
 				}
-			
 				DBAccess.getConnection().commit();
 				return true;
 			}
@@ -84,7 +83,7 @@ public class DAL {
 	{
 		try {
 			int userid=0;
-			Statement stmt = DBAccess.getStatement();
+			Statement stmt = DBAccess.getStatement();			
 			ResultSet rs=stmt.executeQuery("select UserID from staff where EmpID='"+empID+"'"); 
 			while(rs.next()) 
 		        userid=rs.getInt(1); 
@@ -94,7 +93,7 @@ public class DAL {
 				stmt.executeUpdate("UPDATE USER 	\r\n" + 
 						"SET NAME='"+n_name+"',DateOfBirth='"+n_DOB+"',PhoneNo='"+n_phoneNo+"',Email='"+n_email+"',CNIC='"+n_CNIC+"',Gender='"+n_gender+"',EmergencyContact='"+n_emergencyContact+"',Address='"+n_address+"' WHERE UserID=+"+userid+";");
 						   
-				stmt.executeUpdate("UPDATE staff SET DateHired='"+n_dateHired+"'  WHERE EmpID='"+empID+"';");
+				stmt.executeUpdate("UPDATE staff SET DateHired='"+n_dateHired+"'  WHERE EmpID='"+empID+"';"); 
 				DBAccess.getConnection().commit();
 				return true;
 				
@@ -149,6 +148,7 @@ public class DAL {
 
 			
 			}	
+	
 
 			}catch(Exception e){ System.out.println(e);}  
 		
@@ -160,31 +160,30 @@ public class DAL {
 		{
 		    try {
 		    	Statement stmt = DBAccess.getStatement(); 
-				int secid=0; String code="";int check_sem=0;
-				ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
+		    	int secid=0; String code="";int check_sem=0;
+				ResultSet rs=stmt.executeQuery("select CourseCode from course where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
+	  			while(rs.next()) 
+	  		        code=rs.getString(1);
+	  			
+	  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive=1");  
+	  			while(rs.next()) 
+	  			check_sem=rs.getInt(1);
+	  			
+	  			if(code !="" && check_sem==1) {
+	  						code=""; 
 				
-				while(rs.next()) 
-					code=rs.getString(1);
-				
-				rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
-				check_sem=rs.getInt(1);
-				
-				if(code !="" && check_sem==1) 
-				{
-					code=""; 
-					rs=stmt.executeQuery("select* from coursesection where SectionID='"+sectionID+"'AND CourseCode='"+course.getCourseCode()+"'"); 
-					while(rs.next()) 
-					    secid=rs.getInt(1); 
-					
-					if(secid==0)
-					{
-						stmt.executeUpdate("INSERT INTO coursesection(`SectionID`,`CurrSeats`,`TeacherID`,`CourseCode`,`Session`) "
-								            + "VALUES('"+sectionID+"','"+currSeats+"','"+sectionTeacher.getEmpID()+"','"+course.getCourseCode()+"','"+semester.getSession()+"');");
-						DBAccess.getConnection().commit();
-						return true;
-					}
-				}
-	
+						rs=stmt.executeQuery("select* from coursesection where SectionID='"+sectionID+"'AND CourseCode='"+course.getCourseCode()+"'"); 
+						while(rs.next()) 
+					        secid=rs.getInt(1); 
+						
+						if(secid==0)
+						{
+							stmt.executeUpdate("INSERT INTO coursesection(`SectionID`,`CurrSeats`,`TeacherID`,`CourseCode`,`Session`) "
+									            + "VALUES('"+sectionID+"','"+currSeats+"','"+sectionTeacher.getEmpID()+"','"+course.getCourseCode()+"','"+semester.getSession()+"');");
+							DBAccess.getConnection().commit();
+							return true;
+						}
+	  			}
 			}catch(Exception e){ System.out.println(e);}  
 			
 			return false;
@@ -200,6 +199,7 @@ public class DAL {
 		        secid=rs.getInt(1); 
 			
   			rs=stmt.executeQuery("select IsActive from semester where Session='"+s.getSession()+"' AND IsActive = 1");  
+  			while(rs.next())
   			check_sem=rs.getInt(1);
 			
 			if(secid!=0 && check_sem==1)
@@ -220,35 +220,40 @@ public class DAL {
 		return false;
 	}
 	
-    public static boolean removeSection(School school, String c_code , char sID,Semester semester)
+    public static boolean removeSection(String c_code , char sID,Semester semester)
     {
   	  try { 
-			String code=""; int secid=0; int check_sem=0;
 			Statement stmt = DBAccess.getStatement();
-			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+c_code+"' AND IsOffered = 1");  
-			while(rs.next()) 
-		        code=rs.getString(1);
-			
-			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
-			check_sem=rs.getInt(1);
-			
-			if(code !="" && check_sem==1) {
-						code="";
+String code=""; int secid=0; int check_sem=0;
+  			
+  			ResultSet rs=stmt.executeQuery("select CourseCode from course where CourseCode='"+c_code+"' AND IsOffered = 1");  
+  			while(rs.next()) 
+  		        code=rs.getString(1);
+  			
+  			
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
+  			while(rs.next()) 
+  			check_sem=rs.getInt(1);
+  			
+  			
+  			
+  			if(code !="" && check_sem==1) {
+  						code="";
 		  			 rs=stmt.executeQuery("select CourseCode from coursesection where CourseCode='"+c_code+"'");  
 		  			while(rs.next()) 
 		  		        code=rs.getString(1); 
-		  				
+		  			
 		  			if(code!="")
 		  			{
 		  				
 		  	  			rs=stmt.executeQuery("select* from coursesection where SectionID='"+sID+"'"); 
 		  	  			while(rs.next()) 
 		  	  		        secid=rs.getInt(1); 
-		  	  			
+		  	  		System.out.println(secid);
 		  	  			if(secid!=0)
 		  	  			{
-		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester+"'");
-		  	  			DBAccess.getConnection().commit();
+		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester.getSession()+"'");
+		  	  				DBAccess.getConnection().commit();
 		  	  				return true;
 		  	  		    }	
 		  			}
