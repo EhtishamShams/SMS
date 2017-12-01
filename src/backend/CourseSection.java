@@ -97,6 +97,9 @@ public class CourseSection {
 			}
 		}
 		
+		if(attendance.size()==0)
+			return null;
+		
 		return attendance;
 	}
 	

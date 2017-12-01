@@ -118,6 +118,9 @@ public class Student extends User{
 				csList.add(cs);
 		}
 		
+		if(csList.size()==0)
+			return null;
+		
 		return csList;
 	}
 	
