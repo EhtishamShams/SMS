@@ -4,7 +4,7 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 import dal.DAL;
 import dal.DBAccess;
@@ -152,16 +152,81 @@ public class School {
 		if(!DAL.removeCourse(c))
 			return false;
 		
-		//CHECK IF UPDATING REQUIRED FOR ISOFFERED IN OBJECT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		for(CourseSection cSec:c.getSections()) {
+			if(cSec.getSemester().getSession().equals(Session.getSem().getSession()))
+				;//TODO: Call Humna's RemoveCourseSection function here on cSec
+		}
+		
+		
+		c.setIsOffered(false);
+		
 		return true;
 	}
 	
 	public boolean removeFaculty(String empID, String repEmpID) {
 		
+		FacultyMember facM = null;
+		
+		for(FacultyMember fac:faculty) {
+			if(fac.getEmpID()==empID)
+				facM = fac;
+		}
+		
+		//need to get replacement if the employee is currently teaching a course
+		if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
+			return false;
+		
+		if(!DAL.removeFaculty(empID, repEmpID))
+			return false;
+		
+		
+		
+		
+		//Removing Staff
+		for(Staff u:Session.getAcademicDept().getStaff()) {
+			if(u.getCNIC().equals(facM.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+		
+		//Removing User
+		for(User u:Session.getInst().getUsers()) {
+			if(u.getCNIC().equals(facM.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+		
+		//Removing Pay
+		for(Pay pay:Session.getAccountDept().getPays()) {
+			if(pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
+				Session.getAccountDept().getPays().remove(pay);
+		}
+		
+		//Removing From School
 		for(FacultyMember fac:faculty) {
 			if(fac.getEmpID().equals(empID))
 				faculty.remove(fac);
 		}
+		
+		//Replacing current courses
+		if(repEmpID!=null) {
+			
+			FacultyMember replacement = null;
+			
+			for(FacultyMember fac:faculty) {
+				if(fac.getEmpID()==repEmpID)
+					replacement = fac;
+			}
+			
+			for(Course crs:courses) {
+				for(CourseSection crsSec:crs.getSections()) {
+					if(crsSec.getSemester().getSession().equals(Session.getSem().getSession()) && crsSec.getTeacher().getEmpID().equals(empID))
+						crsSec.setTeacher(replacement);
+						
+				}
+			}
+		}
+		
 		
 		return true;
 	}
@@ -171,17 +236,30 @@ public class School {
 		if(!DAL.removeStudent(std))
 			return false;
 		
+		//Removing User
+		for(User u:Session.getInst().getUsers()) {
+			if(u.getCNIC().equals(std.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+		
+		//Removing Attendance
+		for(CourseSection crs:std.getStudiedCourses()) {
+			for(Attendance att:crs.getStudentAttendance()) {
+				if(att.getStudent()==std)
+					crs.getStudentAttendance().remove(att);
+			}
+		}
+		
+		//Removing Fee
+		for(Fee fee:Session.getAccountDept().getFees()) {
+			if(fee.getStudent()==std)
+				Session.getAccountDept().getFees().remove(fee);
+		}
+		
 		students.remove(std);
 		return true;
 	}
 	
-	public static void main(String[] args) {
-		
-		DBAccess db = new DBAccess();
-		DBAccess.createConnection();
-		Student std = new Student("sdf", "sfklj", new Date(), "adsf", "sdf", "sdf", 'a', "asd", "asd", "as", "sdf", "sdf", 0, 0, 0, null);
-		std.setRollNo("1");
-		DAL.removeStudent(std);
-	}
 	
 }

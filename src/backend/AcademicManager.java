@@ -6,7 +6,7 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 import dal.DAL;
 
@@ -28,13 +28,13 @@ public class AcademicManager extends Staff{
 	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
 		
 		for(Course pCrs:preReqs) {
-			if(pCrs.getCourseCode()==code)
+			if(pCrs.getCourseCode().equals(code))
 				preReqs.remove(pCrs);
 		}
 		
 		School s = null;
 		for(School sch:Session.getInst().getSchools()) {
-			if(sch.getId()==schoolID)
+			if(sch.getId().equals(schoolID))
 				s = sch;
 		}
 		
@@ -43,7 +43,7 @@ public class AcademicManager extends Staff{
 			return false;
 		
 		//Creating new course object
-		Course crs = new Course(code, name, creditHours, desc, preReqs);
+		Course crs = new Course(code, name, creditHours, desc, preReqs, true);
 		
 		//Adds course in school
 		return s.addCourse(crs);
@@ -52,13 +52,13 @@ public class AcademicManager extends Staff{
 	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
 		
 		for(Course pCrs:preReqs) {
-			if(pCrs.getCourseCode()==code)
+			if(pCrs.getCourseCode().equals(code))
 				preReqs.remove(pCrs);
 		}
 		
 		School s = null;
 		for(School sch:Session.getInst().getSchools()) {
-			if(sch.getId()==schoolID)
+			if(sch.getId().equals(schoolID))
 				s = sch;
 		}
 		
@@ -81,7 +81,7 @@ public class AcademicManager extends Staff{
 		
 		School s = null;
 		for(School sch:Session.getInst().getSchools()) {
-			if(sch.getId()==schoolID)
+			if(sch.getId().equals(schoolID))
 				s = sch;
 		}
 		
@@ -100,14 +100,15 @@ public class AcademicManager extends Staff{
 		
 		School sch = null;
 		for(School s:Session.getInst().getSchools()) {
-			if(s.getId()==schoolID)
+			if(s.getId().equals(schoolID))
 				sch = s;
 		}
 		
 		if(!sch.findFaculty(empID))
 			return false;
 		
-		if(!sch.findFaculty(repEmpID))
+		//replacement not found in school
+		if(repEmpID!=null && !sch.findFaculty(repEmpID))
 			return false;
 		
 		return sch.removeFaculty(empID, repEmpID);
@@ -118,7 +119,7 @@ public class AcademicManager extends Staff{
 		
 		School sch = null;
 		for(School s:Session.getInst().getSchools()) {
-			if(s.getId()==schoolID)
+			if(s.getId().equals(schoolID))
 				sch = s;
 		}
 		
@@ -136,7 +137,7 @@ public class AcademicManager extends Staff{
 		
 		School sch = null;
 		for(School s:Session.getInst().getSchools()) {
-			if(s.getId()==schoolID)
+			if(s.getId().equals(schoolID))
 				sch = s;
 		}
 		
@@ -159,7 +160,7 @@ public class AcademicManager extends Staff{
 		
 		School sch = null;
 		for(School s:Session.getInst().getSchools()) {
-			if(s.getId()==schoolID)
+			if(s.getId().equals(schoolID))
 				sch = s;
 		}
 		

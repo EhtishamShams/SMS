@@ -44,6 +44,14 @@ public class Pay {
         this.datePaid = datePaid;
         return true;
     }
+
+	public Staff getStaffMember() {
+		return staffMember;
+	}
+
+	public void setStaffMember(Staff staffMember) {
+		this.staffMember = staffMember;
+	}
     
-    
+     
 }

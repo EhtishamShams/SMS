@@ -47,6 +47,10 @@ public class CourseSection {
 	public int getCurrSeats() {
 		return currSeats;
 	}
+	
+	public Semester getSemester() {
+		return semester;
+	}
 
 	public void setCurrSeats(int currSeats) {
 		this.currSeats = currSeats;
@@ -54,6 +58,14 @@ public class CourseSection {
 
 	public char getSectionID() {
 		return sectionID;
+	}
+	
+	public FacultyMember getTeacher() {
+		return sectionTeacher;
+	}
+	
+	public void setTeacher(FacultyMember FM) {
+		sectionTeacher = FM;
 	}
 
 	public ArrayList<Attendance> getStudentAttendance() {

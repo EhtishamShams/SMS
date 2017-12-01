@@ -59,5 +59,9 @@ public class Fee {
         
     }
     
+    public Student getStudent() {
+    	return student;
+    }
+    
     
 }

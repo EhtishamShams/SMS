@@ -17,14 +17,16 @@ public class Course {
 	private String description;
 	private ArrayList<Course> prerequisites;
 	private ArrayList<CourseSection> sections;
+	private boolean isOffered;
 
-    public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {
+    public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites, boolean isOffered) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.creditHours = creditHours;
         this.description = description;
         this.prerequisites = prerequisites;
         this.sections = new ArrayList<>();
+        this.isOffered = isOffered;
     }
     
     public Course(String courseCode, String courseName, int creditHours, String description,
@@ -37,7 +39,9 @@ public class Course {
 		this.sections = sections;
 	}
 
-
+    public boolean getIsOffered() {
+    	return isOffered;
+    }
 
 	public String getCourseCode() {
         return courseCode;
@@ -81,6 +85,10 @@ public class Course {
 
     public void setPrerequisites(ArrayList<Course> prerequisites) {
         this.prerequisites = prerequisites;
+    }
+    
+    public void setIsOffered(boolean isOffered) {
+    	this.isOffered = isOffered;
     }
     
     public void updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {

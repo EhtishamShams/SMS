@@ -29,7 +29,7 @@ public class Student extends User{
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
-		this.transcript = new Transcript();
+		//this.transcript = new Transcript();
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()

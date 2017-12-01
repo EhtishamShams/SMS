@@ -136,11 +136,14 @@ public class DAL {
 			rs.next();
 			userID = rs.getString(1);
 			
-			query = "Update CourseSection Set TeacherID=? Where TeacherID=? and session=(select session from Semester where IsActive=1)";
-			pst = conn.prepareStatement(query);
-			pst.setString(1, repEmpID);
-			pst.setString(2, empID);
-			pst.executeUpdate();
+			if(repEmpID!=null) {
+				query = "Update CourseSection Set TeacherID=? Where TeacherID=? and session=(select session from Semester where IsActive=1)";
+				pst = conn.prepareStatement(query);
+				pst.setString(1, repEmpID);
+				pst.setString(2, empID);
+				pst.executeUpdate();
+			}
+			
 		
 			query = "Delete from FacultyMember Where EmpID=?";
 			pst = conn.prepareStatement(query);

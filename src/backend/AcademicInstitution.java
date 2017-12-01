@@ -55,10 +55,10 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
-
-
-	
-	
+	public ArrayList<User> getUsers(){
+		
+		return users;
+	}
 	
 }
 
