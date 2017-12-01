@@ -27,7 +27,7 @@ public class DAL {
 		boolean check = true;
 		Statement stmnt = DBAccess.getStatement();
 		try {
-			stmnt.executeUpdate("UPDATE Fee SET DatePaid = " +f.getDatePaid() + " WHERE RollNo = '" + f.getStudent().getRollNo()
+			stmnt.executeUpdate("UPDATE Fee SET DatePaid = '" +f.getDatePaid() + "' WHERE RollNo = '" + f.getStudent().getRollNo()
 					+ "' AND Session = '" + f.getSemester().getSession() + "'");
 			DBAccess.getConnection().commit();
 		} catch (SQLException e) {
