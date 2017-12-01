@@ -50,7 +50,7 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
-	public School getStudentSchool(String rollNo) {
+	public School getStudentSchoolFromRollNo(String rollNo) {
 		for(School sch : schools) {
 			for(Student std : sch.getStudents()) {
 				if(std.getRollNo().equals(rollNo))
@@ -71,18 +71,6 @@ public class AcademicInstitution {
 		
 		return null;
 	}
-	
-	/*
-	public ArrayList<CourseSection> getStudentCourseSections(String rollNo,Semester sem){
-		for(School sch : schools) {
-			for(Student std : sch.getStudents()){
-				if(std.getRollNo().equals(rollNo))
-					return std.checkSemesterRegistrations(sem);
-			}
-		}
-		
-		return null;
-	}*/
 	
 	
 	

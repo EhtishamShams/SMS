@@ -6,7 +6,7 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -73,18 +73,4 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    /*
-    public FacultyMember getFacultyMember(AcademicInstitution AI, String empID) {
-    	return AI.getFacultyMember(empID);
-    	
-    }
-    
-    public School getStudentSchool(AcademicInstitution AI, String rollNo) {
-    	return AI.getStudentSchool(rollNo);
-    }
-    
-    public ArrayList<CourseSection> getStudentCourseSections(AcademicInstitution AI, String rollNo,Semester sem){
-    	return AI.getStudentCourseSections(rollNo, sem);
-    }
-    */
 }
