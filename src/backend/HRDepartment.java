@@ -38,13 +38,13 @@ public class HRDepartment extends Department{
         this.allotments = allotments;
     }
     
-    //Helper function for add allotment 
+     //Helper function for add allotment 
     public Office getOffice(String Oid)
     {
     	
     	for(int i=0 ; i<(this.offices.size());i++)
     	{  
-    		if(this.offices.get(i).ID==Oid)
+    		if(this.offices.get(i).getID()==Oid)
     		{
     			return offices.get(i);
     			
@@ -66,7 +66,7 @@ public class HRDepartment extends Department{
        
     	for(int i=0; i<this.allotments.size();i++)
     	{
-    		if(this.allotments.get(i).allotedTo.equals(s))
+    		if(this.allotments.get(i).getAllotedTo().equals(s))
     		{
     			return this.allotments.get(i);
     		}
@@ -75,26 +75,13 @@ public class HRDepartment extends Department{
 		return null;	
     }
     
-    //Helper for Update Allotment 
-    public boolean setAllotedOffice(Office a, Allotment b)
-    {
-    	for(int i=0; i<this.allotments.size();i++)
-    	{
-    		if(this.allotments.get(i).equals(b))
-    		{
-    			 this.allotments.get(i).allotedOffice= a;
-    			 return true;
-    		}
-    	
-    	}
-    	return false;
-    }
-    //Helper for remove Allotment
+    
+  //Helper for remove Allotment  (MUAZ)
     public boolean removeAllotment(Staff s)
     {
     	for(int i=0; i<this.allotments.size();i++)
     	{
-    		if(this.allotments.get(i).allotedTo.equals(s))
+    		if(this.allotments.get(i).getAllotedTo().equals(s))
     		{
     			this.allotments.remove(i);
     			return true;
@@ -102,7 +89,20 @@ public class HRDepartment extends Department{
     	}
     	return false;
     }
-    
+    //Helper for Update Allotment 
+    public boolean setAllotedOffice(Office a, Allotment b)
+    {
+    	for(int i=0; i<this.allotments.size();i++)
+    	{
+    		if(this.allotments.get(i).equals(b))
+    		{
+    			 this.allotments.get(i).setAllotedOffice(a);
+    			 return true;
+    		}
+    	
+    	}
+    	return false;
+    }
 
     
 }
