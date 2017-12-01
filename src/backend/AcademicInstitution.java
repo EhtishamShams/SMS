@@ -60,5 +60,12 @@ public class AcademicInstitution {
 		return users;
 	}
 	
+	public School getSchool(String sID) {
+		for (School s : schools) {
+			if (s.getId().equals(sID))
+				return s;
+		}
+		return null;
+	}
 }
 
