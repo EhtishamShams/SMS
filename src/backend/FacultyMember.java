@@ -2,7 +2,7 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import dal.DAL;
 
 /**

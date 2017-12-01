@@ -2,7 +2,7 @@ package dal;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 import backend.*;
 
@@ -20,6 +20,8 @@ public class DAL {
 			while(rs.next())  
 				sectionKey = rs.getInt(1);
 			
+			con.commit();
+			
 			return sectionKey;
 		}catch(Exception e){ 
 			System.out.println(e);
@@ -33,6 +35,8 @@ public class DAL {
 			Statement stmt = DBAccess.getStatement();
 			
 			stmt.executeUpdate("Update coursesection Set CurrSeats = CurrSeats+1 Where SectionKey ="+ sectionKey+";");
+			
+			con.commit();
 			  
 			return true;
 		}catch(Exception e){ 
@@ -47,6 +51,8 @@ public class DAL {
 			Statement stmt = DBAccess.getStatement();
 			
 			stmt.executeUpdate("Update coursesection Set CurrSeats = CurrSeats-1 Where SectionKey ="+ sectionKey+";");
+			
+			con.commit();
 			  
 			return true;
 		}catch(Exception e){ 
@@ -62,6 +68,8 @@ public class DAL {
 			Statement stmt = DBAccess.getStatement();
 			
 			stmt.executeUpdate("insert into studentcoursesection (RollNo,SectionKey) values ('"+rollNo+"',"+sectionKey+");");
+			
+			con.commit();
 			 
 			return true;
 		}catch(Exception e){ 
@@ -76,6 +84,8 @@ public class DAL {
 			Statement stmt = DBAccess.getStatement();
 			
 			stmt.executeUpdate("delete from studentcoursesection where RollNo='"+rollNo+"' and SectionKey="+sectionKey+";");
+			
+			con.commit();
 			 
 			return true;
 		}catch(Exception e){ 
@@ -92,6 +102,8 @@ public class DAL {
 			stmt.executeUpdate("insert into grade (Grade,SectionKey,RollNo,Session) values ('"+grade
 					+"',"+sectionKey+",'"+rollNo+"','"+session+"');");
 			 
+			con.commit();
+			
 			return true;
 		}catch(Exception e){ 
 			System.out.println(e);
@@ -106,6 +118,8 @@ public class DAL {
 			
 			stmt.executeUpdate("delete from grade where Grade ='"+grade
 					+"' and sectionKey = "+sectionKey+" and RollNo='"+rollNo+"' and Session='"+session+"';");
+			
+			con.commit();
 			  
 			return true;
 		}catch(Exception e){ 
@@ -121,6 +135,8 @@ public class DAL {
 			
 			stmt.executeUpdate("update grade set SectionKey ="+newSectionKey
 					+" where Grade = '" + grade+"' and SectionKey = "+oldSectionKey+" and RollNo='"+rollNo+"' and Session='"+session+"';");
+			
+			con.commit();
 			 
 			return true;
 		}catch(Exception e){ 
@@ -140,6 +156,8 @@ public class DAL {
 			while(rs.next())  
 				userID = rs.getInt(1);
 			
+			con.commit();
+			
 			return userID;
 		}catch(Exception e){ 
 			System.out.println(e);
@@ -152,8 +170,6 @@ public class DAL {
 		try {
 			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			
-			con.setAutoCommit(false);
 			
 			int userID = getUserIDFacultyMember(empID);
 			stmt.executeUpdate("update user set name ='"+name+"',DateOfBirth = '"+DOB
@@ -180,29 +196,4 @@ public class DAL {
 		} 
 	}
 	
-	public ArrayList<Student> getStudents(School school){
-		ArrayList<Student> stdList = new ArrayList<>();
-		
-		try{  
-			Connection con = DBAccess.getConnection();
-			Statement stmt = DBAccess.getStatement(); 
-			 
-			ResultSet rs = stmt.executeQuery("select * from user inner join student on user.UserID = student.UserID where student.SchoolID='"+school.getId()+"';");  
-			
-			String rollNo,fatherCNIC,fatherName;
-			float CGPA;
-			int creditsEarned,creditsAttempted;
-			ArrayList<CourseSection> courses;
-			
-			while(rs.next())  
-			{
-				sectionKey = rs.getInt(1);
-			}
-			
-			return sectionKey;
-		}catch(Exception e){ 
-			System.out.println(e);
-			return sectionKey;
-		} 
-	}
 }

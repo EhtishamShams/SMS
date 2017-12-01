@@ -17,16 +17,16 @@ public class Student extends User{
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses,Transcript transcript) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
 		this.fatherName = fatherName;
-		CGPA = cGPA;
+		this.CGPA = cGPA;
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
-		this.transcript = new Transcript();
+		this.transcript = transcript;
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -92,6 +92,22 @@ public class Student extends User{
 	public void setCreditsAttempted(int creditsAttempted) 
 	{
 		this.creditsAttempted = creditsAttempted;
+	}
+
+	public ArrayList<CourseSection> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(ArrayList<CourseSection> courses) {
+		this.courses = courses;
+	}
+
+	public Transcript getTranscript() {
+		return transcript;
+	}
+
+	public void setTranscript(Transcript transcript) {
+		this.transcript = transcript;
 	}
 
 	public ArrayList<CourseSection> checkSemesterRegistrations(Semester sem) {
