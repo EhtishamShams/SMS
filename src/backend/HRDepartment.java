@@ -44,7 +44,7 @@ public class HRDepartment extends Department{
     	
     	for(int i=0 ; i<(this.offices.size());i++)
     	{  
-    		if(this.offices.get(i).getID()==Oid)
+    		if(this.offices.get(i).getID().equals(Oid))
     		{
     			return offices.get(i);
     			

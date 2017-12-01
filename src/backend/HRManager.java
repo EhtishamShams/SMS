@@ -42,15 +42,15 @@ public class HRManager extends Staff {
 
 	// update allotment functionality
 
-	boolean updateAllotment(String eid, String id) {
+	boolean updateAllotment(String eid, String oid) {
 		AcademicInstitution k = Session.getInst();
 		HRDepartment d = Session.getHrDept();
 		Staff s = k.getStaff(eid);
 		if (s != null) {
 			boolean check = false;
-			Office a = d.getOffice(id);
+			Office a = d.getOffice(oid);
 			Allotment temp = d.getAllotment(s);
-			check = DAL.updateAllotmentDB(id, s.empID);
+			check = DAL.updateAllotmentDB(oid, s.empID);
 			if (check) {
 				d.setAllotedOffice(a, temp);
 			}
@@ -139,7 +139,7 @@ public class HRManager extends Staff {
 		{
 			for(int j=0; j<a.getAllotments().size();j++)
 			{
-			    if(a.getOffices().get(i).equals(a.getAllotments().get(j)))
+			    if(a.getOffices().get(i).equals(a.getAllotments().get(j).allotedOffice))
 			    {
 			    	check= true;
 			    }

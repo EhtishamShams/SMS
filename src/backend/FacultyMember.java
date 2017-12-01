@@ -35,13 +35,13 @@ public class FacultyMember extends Staff {
 	}
 
 	// mark attendance functionality
-	public boolean markAttendance(School sch, String Ccode, String rollno, char SID, LAttendance atd, Semester sem,
-			Date day) {
+	public boolean markAttendance(  String rollno,  LAttendance atd, Date day, CourseSection cs) {
+		Semester sem= Session.getSem();
+		School sch= Session.getSchl();
 		Student s = sch.getStudent(rollno);
-		Course c = sch.getCourse(Ccode);
-		CourseSection cs = c.getCourseSection(sem, SID);
+		
 	
-		 int key= DAL.getSectionKey(SID,Ccode,sem.getSession());
+		 int key= DAL.getSectionKey(cs.getSectionID(),cs.getCourse().getCourseCode(),sem.getSession());
 		Attendance at = new Attendance(atd, day, s, cs);
 
 		boolean check = cs.addAttendance(at);
@@ -52,16 +52,16 @@ public class FacultyMember extends Staff {
 	}
 
 	public ArrayList<CourseSection> getCurrentSemesterCourseSections() {
-		ArrayList<CourseSection> sec = new ArrayList<CourseSection>();
+		ArrayList<CourseSection> sec;
 		School sch = Session.getSchl();
 		sec = sch.getCourseSection(this.empID);
 		return sec;
 	}
 
 
-	public boolean addAttendance(CourseSection b, String date) {
+	public boolean addAttendance(CourseSection b, Date d) {
 		
-		Date d = Date.valueOf(date);
+		
         String CID = b.getCourse().getCourseCode();
 		int key = DAL.getSectionKey(b.getSectionID(), CID, b.semester.getSession());
 		School sc = Session.getSchl();
@@ -79,5 +79,50 @@ public class FacultyMember extends Staff {
 		}
 
 		return true;
+	}
+	
+	public ArrayList<Date> extractDate(CourseSection a)
+	{
+		ArrayList<Date> abc = new ArrayList<Date>();
+		
+		for(int i =0; i< a.getStudentAttendance().size();i++)
+		{
+			  if(abc.contains(a.getStudentAttendance().get(i).Day))
+			  {
+				  
+			  }
+			  else
+			  {
+				  abc.add(a.getStudentAttendance().get(i).Day);
+			  }
+			
+		}
+		
+		
+		if(abc.size()==0)
+		{
+			return null;
+		}
+		else
+			return abc;
+	}
+	
+	public ArrayList<Attendance> getAttendanceByDate(CourseSection a, Date d)
+	{
+		ArrayList<Attendance> abc = new ArrayList<Attendance>();
+		
+		for(int i =0; i< a.getStudentAttendance().size();i++)
+		{
+			if(a.getStudentAttendance().get(i).Day.equals(d))
+			{
+				abc.add(a.getStudentAttendance().get(i));
+			}
+		}
+		if(abc.size()==0)
+		{
+			return null;
+		}
+		else
+			return abc;
 	}
 }
