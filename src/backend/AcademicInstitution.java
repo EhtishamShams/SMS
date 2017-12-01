@@ -122,6 +122,14 @@ public class AcademicInstitution {
 		return null;
 	}
 	
+	public School getFacultySchool(String empID) {
+		for (School s : schools) {
+			if (s.ifFacultyExists(empID))
+				return s;
+		}
+		return null;
+	}
+	
 	public School getSchool(String sID) {
 		for (School s : schools) {
 			if (s.getId().equals(sID))
@@ -137,6 +145,14 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
+	
+	public void loadFaculty(ArrayList<FacultyMember> arr) {
+		for (FacultyMember f : arr) {
+			users.add(f);
+		}
+	}
+	
+	
 	
 }
 

@@ -19,10 +19,10 @@ public class FinanceManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
 	
-    public boolean payStaff(String empID, String datePaid, String payMonth, double amount) {
+    public boolean payStaff(String empID, String datePaid, double amount) {
     		AccountsDepartment dept = Session.getAccountsDept();
     		
-    		if (!dept.checkPay(empID, Date.valueOf(payMonth))) {
+    		if (!dept.checkPay(empID, Date.valueOf(datePaid))) {
         		Staff s = Session.getInst().getStaff(empID);
     			Pay p = new Pay(amount, Date.valueOf(datePaid), s);
     			return dept.addPay(p);
@@ -31,7 +31,7 @@ public class FinanceManager extends Staff{
     }
     
     
-    public boolean acceptFee(String rollNum, String datePaid, String semester) {
+    public boolean updateFee(String rollNum, String datePaid, String semester) {
     		Fee f = Session.getAccountsDept().getFee(rollNum, semester);
     		Date oldDate = f.getDatePaid();
     		f.setDatePaid(Date.valueOf(datePaid));
@@ -41,5 +41,12 @@ public class FinanceManager extends Staff{
     		return check;
     }
     
+    public ArrayList<Pay> getPays(String empID){
+    		return Session.getAccountsDept().getPays(empID);
+    }
+    
+    public ArrayList<Fee> getFees(String rollNum){
+		return Session.getAccountsDept().getFees(rollNum);
+	}
     
 }

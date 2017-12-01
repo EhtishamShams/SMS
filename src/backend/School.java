@@ -69,6 +69,14 @@ public class School {
 		}
 		return false;
 	}
+
+	public boolean ifFacultyExists(String empID) {
+		for (FacultyMember f : faculty) {
+			if (f.getEmpID().equals(empID))
+				return true;
+		}
+		return false;
+	}
 	
 	
 
