@@ -45,8 +45,9 @@ public class HRManager extends Staff{
    //////////////////////////////////////////////FIRE STAFF////////////////////////////////////////////////////////////
     
     protected boolean fireEmployee(String empID)
-    {
+    {	
     	///SQL CON//
+    	deleteAllotment(empID); // (Muaz Functionality)
 	    DAL.removeStaff(empID);
     	return Session.getHrDept().removestaff(empID);
     }
@@ -71,5 +72,5 @@ public class HRManager extends Staff{
     	else 
     		return false;
     }
-    
+       
 }

@@ -91,7 +91,25 @@ public class Student extends User{
 	{
 		this.creditsAttempted = creditsAttempted;
 	}
-
+	
+	
+	
+	//////////////////////////REMOVE SECTION HELPER/////////////////////////////////
+	public boolean ifSectionExists(char SectionID)
+	{
+		
+		for(CourseSection cs : this.courses)
+		{
+			  if(cs.getSectionID()==SectionID)
+			  {
+			     return true;
+			  }
+		}
+	
+		return false;
+	}
+	
+	
 	public void viewDetails()
 	{
 		super.viewDetails();

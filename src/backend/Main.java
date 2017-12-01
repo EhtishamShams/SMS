@@ -27,7 +27,7 @@ public class Main {
 		/*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		java.util.Date yourDate = sdf.parse("04/08/1996");*/
 		
-		DAL con1= new DAL();
+		///DAL con1= new DAL();
 		//mysqlCon con1= new mysqlCon();
 	
 		Calendar c = Calendar.getInstance();
@@ -61,7 +61,7 @@ public class Main {
         
         ArrayList<Attendance> sa=null;
         
-        FacultyMember f= new FacultyMember("Sara", "123",d, "03008264529","huny@gmail.com","35202-98732-83734",'F',"03884629231","56D2","L810",d, deg,
+        FacultyMember f= new FacultyMember("Sara", "123",d, "03008264529","huny@gmail.com","35202-98732-83734",'F',"03884629231","56D2","L123",d, deg,
     			"Visisting");
         ArrayList<FacultyMember>fm = new  ArrayList<FacultyMember>();
         fm.add(f);
@@ -87,16 +87,26 @@ public class Main {
         School sch=new School("BSCS", "compsc", fm,std1,lc);
         
       //  mysqlCon con1= new mysqlCon();
-        //con1.addFaculty(sch,"ALi", "ehfheriu", d,"020202021", "jun@hotmail.com", "35202-745", 'F',
-        	//	"03884629231","56D2","L654", d, deg,"senior proff");
+        mysqlCon con= new mysqlCon(); 
+       // con.addFaculty(sch,"ALi", "ehfheriu", d,"020202021", "jun@hotmail.com", "35202-745", 'F',
+        //		"03884629231","56D2","L009", d, deg,"senior proff");
         
-        //con1.removeStaff("L810");
-       // con1.addSection('B', 50, 50, f, s, c2);
+      //  con.removeStaff("L810");
+       
+      // con.addSection('B', 50, 50, f, s, c2);
         
-       //con1.removeSection(sch,"CS202",'A',s.getSession());
-      // con1.updateSection(sch, "CS201", 'A', f,60,s);
-       // con1.updateStaff("Hunyboo", d, "3456789876", "tjhbgfh","kjh", 'M',
-    		//	"37462", "kmfkr", "L987",d);
+     // con.removeSection("CS202",'B',s);
+     //  con.updateSection("CS202", 'B', f,100,s);
+        con.updateStaff("Hunyboo", d, "3456789876", "tjhbgfh","kjh", 'M',
+    			"37462", "kmfkr", "L987",d);
+        
+        
+       //on.addSchoolDB("1", "BSCS");
+      // con.markAttendanceDB("1", "l154164", d, LAttendance.P);
+      // con.deleteAllotmentDB("L12");    //updateAllotmentDB("1", "L123");
+        //con.updateAllotmentDB("2","L123");
+      // con.addAllotmentDB("1","L567");
+      // con.addAllotmentDB("2","L810");
        
 	}
 

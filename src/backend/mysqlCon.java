@@ -1,7 +1,9 @@
 package backend;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date; 
+import java.util.Date;
+
+import dal.DBAccess; 
 
 public class mysqlCon {
 	
@@ -9,8 +11,8 @@ public class mysqlCon {
 			String emergencyContact, String address, String empID, Date dateHired, ArrayList<String> degrees,String position)
 	{
 		try {
-			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Class.forName("com.mysql.jdbc.Driver");   
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			int userid=0;
 			
@@ -49,7 +51,7 @@ public class mysqlCon {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			int userid=0;
 			
@@ -81,7 +83,7 @@ public class mysqlCon {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			int userid=0; String eid="";
 			
@@ -133,15 +135,16 @@ public class mysqlCon {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			
 			int secid=0; String code="";int check_sem=0;
-			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
+			ResultSet rs=stmt.executeQuery("select CourseCode from course where CourseCode='"+course.getCourseCode()+"' AND IsOffered = 1");  
   			while(rs.next()) 
   		        code=rs.getString(1);
   			
-  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
+  			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive=1");  
+  			while(rs.next()) 
   			check_sem=rs.getInt(1);
   			
   			if(code !="" && check_sem==1) {
@@ -164,37 +167,41 @@ public class mysqlCon {
 		return false;
 	}
 	
-      public boolean removeSection(School school, String c_code , char sID,Semester semester)
+      public boolean removeSection(String c_code , char sID,Semester semester)
       {
     	  try {
   			Class.forName("com.mysql.jdbc.Driver");  
-  			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+  			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
   			Statement stmt=con.createStatement();  
   			String code=""; int secid=0; int check_sem=0;
   			
-  			ResultSet rs=stmt.executeQuery("select CourseCode from courses where CourseCode='"+c_code+"' AND IsOffered = 1");  
+  			ResultSet rs=stmt.executeQuery("select CourseCode from course where CourseCode='"+c_code+"' AND IsOffered = 1");  
   			while(rs.next()) 
   		        code=rs.getString(1);
   			
+  			
   			rs=stmt.executeQuery("select IsActive from semester where Session='"+semester.getSession()+"' AND IsActive = 1");  
+  			while(rs.next()) 
   			check_sem=rs.getInt(1);
+  			
+  			
   			
   			if(code !="" && check_sem==1) {
   						code="";
 		  			 rs=stmt.executeQuery("select CourseCode from coursesection where CourseCode='"+c_code+"'");  
 		  			while(rs.next()) 
 		  		        code=rs.getString(1); 
-		  				
+		  			
 		  			if(code!="")
 		  			{
 		  				
 		  	  			rs=stmt.executeQuery("select* from coursesection where SectionID='"+sID+"'"); 
 		  	  			while(rs.next()) 
 		  	  		        secid=rs.getInt(1); 
-		  	  			
+		  	  		System.out.println(secid);
 		  	  			if(secid!=0)
 		  	  			{
-		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester+"'");
+		  	  				stmt.executeUpdate("Delete from coursesection where SectionID='"+sID+"'AND CourseCode='"+c_code+"'AND Session='"+semester.getSession()+"'");
 		  	  				con.close();
 		  	  				return true;
 		  	  		    }	
@@ -210,11 +217,11 @@ public class mysqlCon {
     	  
       }
 	
-	public boolean updateSection(School school, String c_code, char secID, FacultyMember nf, int maxs, Semester s)
+	public boolean updateSection( String c_code, char secID, FacultyMember nf, int maxs, Semester s)
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			
 			int secid=0; String empid=""; int check_sem=0;
@@ -223,6 +230,7 @@ public class mysqlCon {
 		        secid=rs.getInt(1); 
 			
   			rs=stmt.executeQuery("select IsActive from semester where Session='"+s.getSession()+"' AND IsActive = 1");  
+  			while(rs.next())
   			check_sem=rs.getInt(1);
 			
 			if(secid!=0 && check_sem==1)
@@ -248,7 +256,7 @@ public class mysqlCon {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","mysql"); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
 			Statement stmt=con.createStatement();  
 			int userid=0;
 			
@@ -274,6 +282,205 @@ public class mysqlCon {
 		
 		return false;
 	}
+//////////////////////////////////////////////////MUAZ///////////////////////////////////////////////////
+	
+	public boolean addAllotmentDB(String oid, String Empid)
+	{
+		try {
+			Class.forName("com.mysql.jdbc.Driver");   
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
+			Statement stmt=con.createStatement();  
+			String allotment /*userid*/="";   //just a typo
+			String temp=""/*0*/; //string cant be equal to a int
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+Empid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1);  //() <-this cannot be empty 
+			System.out.println("LALALA"+allotment);
+			
+			ResultSet rs1=stmt.executeQuery("select* from Allotment where OfficeID='"+oid+"'"); 
+			while(rs1.next()) 
+		        temp=rs1.getString(1);  //() <-this cannot be empty 
+			System.out.println("LALALA"+temp);
+			
+			if(allotment=="" && temp=="")    //null to empty string null not working and its not entering the loop
+			{
+				System.out.println("LOOP ENTERED");
+					stmt.executeUpdate("INSERT INTO Allotment (OfficeID,EmpID)"
+								+ "VALUES('"+oid+"','"+Empid+"');");
+					 
+				
+					return true;
 
+			} 
+
+			}catch(Exception e){ System.out.println(e);}  
+		
+		return false;
+     }
+	 
+	
+	public boolean deleteAllotmentDB(String empid)
+	 {
+		 try {
+			 
+			 Class.forName("com.mysql.jdbc.Driver");   
+				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
+				Statement stmt=con.createStatement(); 
+			String allotment="";
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+empid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1); 
+			if(allotment!="")
+			{
+				stmt.executeUpdate("delete from Allotment where EmpID='"+empid+"'");
+				return true;
+			}
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+	 
+	 }
+	 
+	 public boolean updateAllotmentDB(String oid/*int oid*/, String eid)
+	 {
+		 	try {
+				Class.forName("com.mysql.jdbc.Driver");   
+				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
+				Statement stmt=con.createStatement();  
+			String allotment="";
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where OfficeID='"+oid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1); 
+			if(allotment=="")
+			{
+				stmt.executeUpdate("UPDATE Allotment SET OfficeID='"+oid+"' where EmpID='"+eid+"'");
+				return true;
+			} 
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 public boolean addSchoolDB(String sid, String name)
+	 {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");   
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
+			Statement stmt=con.createStatement(); 
+			String sch="";
+			String temp="";
+			
+			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
+			while(rs.next()) 
+		        sch=rs.getString(1); 
+			
+		    rs=stmt.executeQuery("select* from School where Name='"+name+"'"); 
+			while(rs.next()) 
+		        temp=rs.getString(1); 
+			
+			if(sch=="" && temp=="")
+			{
+				stmt.executeUpdate("INSERT INTO School (SchoolID,Name)"
+								+ "VALUES('"+sid+"','"+name+"');");
+				return true;
+			}
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 
+	 public boolean updateSchoolDB(String sid, String name)
+	 {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");   
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sms","root","open1234"); 
+			Statement stmt=con.createStatement(); 
+			String sch="";
+			String temp="";
+			
+			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
+			while(rs.next()) 
+		       sch=rs.getString(1); 
+			if(sch!="")
+			{
+				stmt.executeUpdate("UPDATE School SET Name = '"+name+"' WHERE SchoolID='"+sid+"'");
+				 
+				return true;
+			}
+			
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+	 }
+	 public boolean markAttendanceDB(String sid, String rollno, Date d, LAttendance a)
+	 {
+		try {
+			
+			Statement stmt=DBAccess.getStatement();
+			
+				stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)"
+								+ "VALUES('"+rollno+"','"+d+"','"+sid+"','"+a+"');");
+				
+				return true;
+		
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 
+	 public int getSectionKey(char sectionID,String courseCode,String session) {
+		int sectionKey = -1;
+		
+		try{  
+
+			Statement stmt=DBAccess.getStatement();
+			ResultSet rs=stmt.executeQuery("select * from CourseSection where SectionID='"+sectionID+"' and courseCode='"+courseCode+"' and Session='"+session+"';");  
+			
+			while(rs.next())  
+				sectionKey = rs.getInt(1);
+			 
+			return sectionKey;
+		}catch(Exception e){ 
+			System.out.println(e);
+			return sectionKey;
+		} 
+	}
+	
+	public boolean addAttendanceDB(String atd , String rollno,int  key, Date d)
+	{
+		try {
+			Statement stmt=DBAccess.getStatement(); 
+			
+					stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)"
+								+ "VALUES('"+rollno+"','"+d+"','"+key+"','"+atd+"');");
+					 
+					DBAccess.getStatement(); 
+					return true;
+			}catch(Exception e){ System.out.println(e);}  
+		return false;
+     }
+	 
+	 public ArrayList<String> returnCourse(String code)
+	 {	
+		ArrayList<String> codes = new ArrayList<String>();
+		 try{  
+			
+			
+			Statement stmt=DBAccess.getStatement(); 
+			ResultSet rs=stmt.executeQuery("select * from CoursePrerequisites where CourseCode='"+code+"';");  
+			
+			while(rs.next())  
+			{
+				codes.add(rs.getString(2));
+			}
+			    return codes;
+		} catch(Exception e){ 
+			System.out.println(e);
+			return codes;
+		} 
+		 
+	 }
+	 
+	
+	
 }
- 

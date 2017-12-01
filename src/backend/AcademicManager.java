@@ -91,8 +91,9 @@ public class AcademicManager extends Staff{
 	   }*/
 	   
 	  return add; 
+	  
    }
-   
+
    //////////////////////////////////////REMOVE SECTION/////////////////////////////////////////////////////////
    protected boolean removeSection(String schoolid, String c_code , char sID)
    {
@@ -104,17 +105,22 @@ public class AcademicManager extends Staff{
 		  secIndex=tempcourse.ifSectionExists(sID); 
 		  if(secIndex==true)
 			  {
-			  
-			  	tempcourse.removeCourseSection(sID);
-			  	Session.getSchl().updateCourseToCourses(index,tempcourse);
-			  	
-			  	//SQL CON/////
-			  	
-			  
-	    	     DAL.removeSection(Session.getSchl(), c_code ,sID,Session.getSem());
-	    	     
-	    	     
+			  //SQL CON/////
+			  if( DAL.removeSection(c_code ,sID,Session.getSem())==true) {   
+				  	tempcourse.removeCourseSection(sID);
+				  	Session.getSchl().updateCourseToCourses(index,tempcourse);
+			    
+			    ArrayList<Student> sectionStudents=Session.getInst().getSchool(schoolid).getStudentFromStudents(sID);;
+                    if(sectionStudents!= null)
+                    {
+					    for(Student s : sectionStudents)
+						{
+					    	removeStudentCourseRegistration(schoolid, s.getRollNo(), c_code,sID);    //Noumans functionality
+						}
+                    }
+
 			  	remove=true;
+   	    	    }
 			  }
 		  else
 		  {

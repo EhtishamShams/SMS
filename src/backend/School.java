@@ -133,6 +133,19 @@ public class School {
 	{
 		 courses.set(i,c);
 	}
+	//////////////////////////////////remove section helper///////////////////////
+	protected ArrayList<Student> getStudentFromStudents(char SectionID)
+	{
+		ArrayList<Student> sectionStudent=new ArrayList<Student>();
+		for(Student s : this.students)
+		{
+			  if(s.ifSectionExists(SectionID)==true)
+			  {
+			    sectionStudent.add(s);
+			  }
+		}
+		return sectionStudent;
+	}
 	
 	protected boolean facultyExists(FacultyMember f)
 	{
