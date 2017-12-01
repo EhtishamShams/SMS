@@ -114,7 +114,7 @@ public class Student extends User{
 		ArrayList<CourseSection> csList = new ArrayList<>();
 		
 		for(CourseSection cs:courses) {
-			if(cs.getSemester().equals(sem))
+			if(cs.getSemester().getSession().equals(sem.getSession()))
 				csList.add(cs);
 		}
 		
@@ -133,12 +133,16 @@ public class Student extends User{
 	}
 	
 	public boolean removeStudentCourseRegistration(CourseSection cs) {
-		if(this.courses.contains(cs)) {
-			this.courses.remove(cs);
-			return true;
+		
+		for(CourseSection sCS : courses) {
+			if(sCS.getCourse().getCourseCode().equals(cs.getCourse().getCourseCode()) &&
+					sCS.getSectionID()==cs.getSectionID() && sCS.getSemester().getSession().equals(cs.getSemester().getSession())) {
+				this.courses.remove(sCS);
+				return true;
+			}
 		}
-		else
-			return false;
+
+		return false;
 	}
 	
 	public void addGradeToTranscript(CourseSection cs, LGrade L) {
@@ -154,4 +158,35 @@ public class Student extends User{
 	public void updateGradeSection(CourseSection oldCs, CourseSection newCs) {
 		this.transcript.updateGradeSection(oldCs, newCs);
 	}
+	
+	public boolean isRegistered(Course c, Semester sem) {
+		
+		for(CourseSection cs : this.checkSemesterRegistrations(sem)) {
+			if(cs.getCourse().getCourseCode().equals(c.getCourseCode()))
+					return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean isPassed(Course c) {
+		if(this.transcript.checkCoursePassed(c))
+			return true;
+		else
+			return false;
+	}
+	
+	public CourseSection getRegisteredCourseSection(Course course, Semester sem) {
+		
+		for(CourseSection cs : courses) {
+			if(cs.getCourse().getCourseCode().equals(course.getCourseCode()) &&
+					cs.getSemester().getSession().equals(sem.getSession())){
+				return cs;
+			}
+		}
+		
+		return null;
+	}
+	
+	
 }

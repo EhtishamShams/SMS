@@ -38,6 +38,43 @@ public class AccountsDepartment extends Department{
         this.fees = fees;
     }
     
+    public Fee getStudentFee(String rollNo, String session) {
+    	for(Fee f: fees) {
+    		if(f.getStudent().getRollNo().equals(rollNo) && f.getSemester().getSession().equals(session))
+    			return f;
+    	}
+    	
+    	return null;
+    }
+    
+    
+    public void addFee(Fee f) {
+    	this.fees.add(f);
+    }
+    
+    public boolean updateFee(Fee fee) {
+    	for(Fee f: fees) {
+    		if(f.getStudent().getRollNo().equals(fee.getStudent().getRollNo()) && 
+    				f.getSemester().getSession().equals(fee.getSemester().getSession())) {
+    			f = fee;
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    public boolean removeFee(Fee fee) {
+    	for(Fee f : fees) {
+    		if(f.getStudent().getRollNo().equals(fee.getStudent().getRollNo()) &&
+    				f.getSemester().getSession().equals(fee.getSemester().getSession())) {
+    			this.fees.remove(f);
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
     
     
 }

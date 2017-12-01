@@ -7,6 +7,7 @@ package backend;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import dal.*;
 
 /**
  *
@@ -36,7 +37,27 @@ public class AcademicManager extends Staff{
     		CourseSection cs = sch.getCourseSection(c, secID,sem);
     		
     		if(cs!=null)
-    			return sch.registerStudentInCourse(std, c, cs, sem);
+    		{
+    			if(sch.registerStudentInCourse(std, c, cs, sem)) {
+    				Fee f = Session.getAccountsDept().getStudentFee(rollNo,sem.getSession());
+    				
+    				if(f==null) {
+    					f = new Fee(0,null,sem.getFeeDueDate(),std,sem);
+    					f.addAmount(sem.getPerCreditHrFee()*c.getCreditHours());
+    					Session.getAccountsDept().addFee(f);
+    					DAL.addFee(f);
+    				}
+    				else {
+    					f.addAmount(sem.getPerCreditHrFee()*c.getCreditHours());
+    					Session.getAccountsDept().updateFee(f);
+    					DAL.updateFee(f);
+    				}
+    				
+    				return true;
+    			}
+    			else
+    				return false;
+    		}
     		else
     			return false;
     	}
@@ -44,7 +65,7 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean updateStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char oldID,char newID) {
+    public boolean updateStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char newID) {
     	School sch = null;
     	
     	for(School s:Session.getInst().getSchools()) {
@@ -58,7 +79,7 @@ public class AcademicManager extends Staff{
     	if(std!=null && c!=null)
     	{
     		Semester sem = Session.getSem();
-    		CourseSection oldCs = sch.getCourseSection(c, oldID,sem);
+    		CourseSection oldCs = std.getRegisteredCourseSection(c, sem);
     		CourseSection newCs = sch.getCourseSection(c, newID,sem);
     		
     		if(oldCs!=null && newCs!=null)
@@ -70,7 +91,7 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean removeStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char secID) {
+    public boolean removeStudentCourseRegistration(String schoolID, String rollNo, String courseCode) {
     	School sch = null;
     	
     	for(School s:Session.getInst().getSchools()) {
@@ -85,10 +106,34 @@ public class AcademicManager extends Staff{
     	if(std!=null && c!=null)
     	{
     		Semester sem = Session.getSem();
-    		CourseSection cs = sch.getCourseSection(c, secID, sem);
+    		
+    		CourseSection cs = std.getRegisteredCourseSection(c, sem);
     		
     		if(cs!=null)
-    			return sch.removeStudentCourseRegistration(std, cs,sem);
+    		{
+    			if(sch.removeStudentCourseRegistration(std, cs,sem)) {
+    				Fee f = Session.getAccountsDept().getStudentFee(rollNo,sem.getSession());
+    				
+    				if(f!=null) {
+						f.deductAmount(sem.getPerCreditHrFee()*c.getCreditHours());
+						
+						if(f.getAmount()==0)
+						{
+							Session.getAccountsDept().removeFee(f);
+							DAL.removeFee(f);
+						}
+						else
+						{
+							Session.getAccountsDept().updateFee(f);
+							DAL.updateFee(f);
+						}
+    				}
+    				
+    				return true;
+    			}
+    			else
+    				return false;
+    		}
     		else
     			return false;
     	}

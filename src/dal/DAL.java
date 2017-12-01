@@ -213,4 +213,53 @@ public class DAL {
 		} 
 	}
 	
+	public static boolean addFee(Fee f) {
+		try {
+			Connection con = DBAccess.getConnection();
+			Statement stmt = DBAccess.getStatement();
+			
+			stmt.executeUpdate("insert into fee (Amount,DatePaid,DueDate,RollNo,Session) values ("+f.getAmount()
+					+",'"+f.getDatePaid()+"','"+f.getDueDate()+"','"+f.getStudent().getRollNo()+"','"+f.getSemester().getSession()+"');");
+			
+			con.commit();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean updateFee(Fee f) {
+		
+		try {
+			Connection con = DBAccess.getConnection();
+			Statement stmt = DBAccess.getStatement();
+			
+			stmt.executeUpdate("update fee set Amount = " +f.getAmount() + " where RollNo = '" + f.getStudent().getRollNo()
+					+ "' and Session = '" + f.getSemester().getSession() + "';");
+			
+			con.commit();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean removeFee(Fee f) {
+		try {
+			Connection con = DBAccess.getConnection();
+			Statement stmt = DBAccess.getStatement();
+			
+			stmt.executeUpdate("delete from fee where RollNo = '" + f.getStudent().getRollNo()
+					+ "' and Session = '" + f.getSemester().getSession() + "';");
+			
+			con.commit();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

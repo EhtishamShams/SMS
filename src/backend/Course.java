@@ -14,6 +14,7 @@ public class Course {
 	private String description;
 	private ArrayList<Course> prerequisites;
 	private ArrayList<CourseSection> sections;
+	private boolean isOffered;
 
     public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {
         this.courseCode = courseCode;
@@ -34,7 +35,9 @@ public class Course {
 		this.sections = sections;
 	}
 
-
+    public boolean getIsOffered() {
+    	return isOffered;
+    }
 
 	public String getCourseCode() {
         return courseCode;
@@ -80,6 +83,10 @@ public class Course {
         this.prerequisites = prerequisites;
     }
     
+    public void setIsOffered(boolean isOffered) {
+    	this.isOffered = isOffered;
+    }
+    
     public boolean updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {
         this.courseName = courseName;
         this.creditHours = creditHours;
@@ -105,7 +112,7 @@ public class Course {
     
     public CourseSection getCourseSection(char secID,Semester sem) {
     	for(CourseSection cs : sections) {
-    		if(cs.getSectionID()==secID && cs.getSemester().equals(sem))
+    		if(cs.getSectionID()==secID && cs.getSemester().getSession().equals(sem.getSession()))
     			return cs;
     	}
     	

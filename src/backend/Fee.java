@@ -56,7 +56,30 @@ public class Fee {
     public boolean setDueDate(Date dueDate) {
         this.dueDate = dueDate;
         return true;
-        
+    }
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public Semester getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semester semester) {
+		this.semester = semester;
+	}
+    
+    public void addAmount(float amount) {
+    	this.amount += amount;
+    }
+    
+    public void deductAmount(float amount) {
+    	this.amount -= amount;
     }
     
     

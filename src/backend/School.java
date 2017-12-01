@@ -161,16 +161,19 @@ public class School {
 			return false;
 	}
 	
-	/*
-	public FacultyMember getFacultyMember(String empID) {
-		for(FacultyMember f : faculty) {
-			if(f.getEmpID().equals(empID))
-				return f;
+	public ArrayList<Course> getOfferedCourses(){
+		ArrayList<Course> offeredCourses = new ArrayList<>();
+		
+		for(Course c : courses) {
+			if(c.getIsOffered())
+				offeredCourses.add(c);
 		}
 		
-		return null;
+		if(offeredCourses.size()==0)
+			return null;
+		else 
+			return offeredCourses;
 	}
-	*/
 
 }
 
