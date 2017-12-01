@@ -3,6 +3,11 @@
  */
 package backend;
 
+import java.util.ArrayList;
+
+import dal.DBAccess;
+import dal.Load;
+
 /**
  * @author Ehtisham
  *
@@ -17,6 +22,18 @@ public class Session {
 	private static HRDepartment hrDept = null;
 	private static Semester sem = null;
 	
+	
+	public static void initialize() {
+		
+		inst = new AcademicInstitution("FAST", "LAHORE", new ArrayList<School>(), new ArrayList<User>(), new ArrayList<Department>(), new ArrayList<Semester>());
+		Load load = new Load();
+		load.loadSemesters();
+		load.loadSchools();
+		load.loadFaculty();
+		load.loadCourses();
+		load.loadStudents();
+		load.loadAttendance();
+	}
 	
 	public static User getUser() {
 		return user;
@@ -81,8 +98,5 @@ public class Session {
 	public static void setSem(Semester sem) {
 		Session.sem = sem;
 	}
-	
-	
-	
 	
 }

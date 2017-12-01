@@ -16,14 +16,16 @@ public class AcademicInstitution {
 	private ArrayList<School> schools;
 	private ArrayList<User> users;
 	private ArrayList<Department> depts;
+	private ArrayList<Semester> semesters;
 	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools,
-			ArrayList<User> users, ArrayList<Department> depts) {
+			ArrayList<User> users, ArrayList<Department> depts, ArrayList<Semester> sems) {
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
 		this.users = users;
 		this.depts = depts;
+		this.semesters = sems;
 	}
 	
 	public ArrayList<School> getSchools(){
@@ -65,6 +67,33 @@ public class AcademicInstitution {
 			if (s.getId().equals(sID))
 				return s;
 		}
+		return null;
+	}
+	
+	//hamza
+	public Semester getSemester(String session) {
+		
+		for(Semester sem:semesters) {
+			if(sem.getSession().equals(session))
+				return sem;
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<Semester> getSemesters(){
+		return semesters;
+	}
+	
+	//hamza
+	public FacultyMember getFacultyMember(String empID) {
+		for(School sch:schools) {
+			for(FacultyMember FM:sch.getFaculty()) {
+				if(FM.getEmpID().equals(empID))
+					return FM;
+			}
+		}
+		
 		return null;
 	}
 }

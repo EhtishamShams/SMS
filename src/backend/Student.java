@@ -148,4 +148,9 @@ public class Student extends User{
 			return 0;
 	}
 
+	public void setTranscript(Transcript transcript2) {
+		
+		this.transcript = transcript2;
+	}
+
 }

@@ -295,7 +295,7 @@ public class DAL {
 			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next()) {
-				fees.add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3), std, new Semester(rs.getString(4))));
+				fees.add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3), std, Session.getInst().getSemester(rs.getString(4))));
 			}	
 			
 			conn.commit();

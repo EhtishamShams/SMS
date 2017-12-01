@@ -30,13 +30,14 @@ public class Course {
     }
     
     public Course(String courseCode, String courseName, int creditHours, String description,
-			ArrayList<Course> prerequisites, ArrayList<CourseSection> sections) {
+			ArrayList<Course> prerequisites, ArrayList<CourseSection> sections, boolean isOffered) {
 		this.courseCode = courseCode;
 		this.courseName = courseName;
 		this.creditHours = creditHours;
 		this.description = description;
 		this.prerequisites = prerequisites;
 		this.sections = sections;
+		this.isOffered = isOffered;
 	}
 
     public boolean getIsOffered() {
@@ -117,6 +118,14 @@ public class Course {
     	return false;
     }
     
-    
+    //hamza
+    public CourseSection getCourseSection(String session, char secID) {
+		for(CourseSection cSec:sections) {
+			if(cSec.getSemester().getSession().equals(session)&& cSec.getSectionID()==secID)
+				return cSec;
+		}
+		
+		return null;
+	}
     
 }

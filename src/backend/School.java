@@ -181,9 +181,9 @@ public class School {
 				facM = fac;
 		}
 		
-		//need to get replacement if the employee is currently teaching a course
-		if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
-			return false;
+		//TODO: need to get replacement if the employee is currently teaching a course
+		//if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
+			//return false;
 		
 		if(!DAL.removeFaculty(empID, repEmpID))
 			return false;
@@ -270,6 +270,18 @@ public class School {
 		students.remove(std);
 		return true;
 	}
+	
+	
+	//hamza
+	public FacultyMember getFacultyMember(String empID) {
+		for(FacultyMember fac:faculty) {
+			if(fac.getEmpID().equals(empID))
+				return fac;
+		}
+		
+		return null;
+	}
+	
 	
 	
 }
