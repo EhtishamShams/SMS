@@ -22,7 +22,7 @@ public class Transcript {
 			passed = false;
 			
 			for(Grade g: grades) {
-				if(c==g.getCourseSection().getCourse() && g.getGrade()!=LGrade.F)
+				if(c==g.getCourseSection().getCourse() && !g.getGrade().equals(LGrade.F))
 				{
 					passed = true;
 				}
@@ -43,7 +43,7 @@ public class Transcript {
 	
 	public boolean updateGradeSection(CourseSection oldCs, CourseSection newCs) {
 		for(Grade g: grades) {
-			if(g.getCourseSection()==oldCs && g.getGrade()==LGrade.I) {
+			if(g.getCourseSection()==oldCs && g.getGrade().equals(LGrade.I)) {
 				g.setCourseSection(newCs);
 				return true;
 			}

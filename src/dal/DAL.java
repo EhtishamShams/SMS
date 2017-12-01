@@ -151,7 +151,7 @@ public class DAL {
 			Statement stmt = DBAccess.getStatement();
 			
 			stmt.executeUpdate("delete from attendance where RollNo ='"+rollNo
-					+"' and sectionKey = "+sectionKey+"';");
+					+"' and SectionKey = "+sectionKey+";");
 			
 			con.commit();
 			  

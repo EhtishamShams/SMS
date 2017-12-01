@@ -39,7 +39,6 @@ public class FacultyMember extends Staff {
 		this.position = position;
 	}
 	
-	
 	public boolean updateDetails(String name, Date DOB, String phoneNo, String email,String CNIC,char gender,
 			String emergencyContact, String address, ArrayList<String> degrees, String position) {
 		this.name = name;
@@ -58,6 +57,8 @@ public class FacultyMember extends Staff {
 		return true;
 	}
 	
+	public Student getStudentAttendance(String rollNo) {
+		return Session.getInst().getStudent(rollNo);
+	}
 
-	
 }

@@ -19,17 +19,24 @@ public class AcademicManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
-    public boolean registerStudentInCourse(School s, String rollNo, String courseCode,char secID, Semester sem) {
+    public boolean registerStudentInCourse(String schoolID, String rollNo, String courseCode,char secID) {
+    	School sch = null;
     	
-    	Student std = s.getStudent(rollNo);
-    	Course c = s.getCourse(courseCode);
+    	for(School s:Session.getInst().getSchools()) {
+			if(s.getId().equals(schoolID))
+				sch = s;
+		}
+    	
+    	Student std = sch.getStudent(rollNo);
+    	Course c = sch.getCourse(courseCode);
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection cs = s.getCourseSection(c, secID,sem);
+    		Semester sem = Session.getSem();
+    		CourseSection cs = sch.getCourseSection(c, secID,sem);
     		
     		if(cs!=null)
-    			return s.registerStudentInCourse(std, c, cs, sem);
+    			return sch.registerStudentInCourse(std, c, cs, sem);
     		else
     			return false;
     	}
@@ -37,18 +44,25 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean updateStudentCourseRegistration(School s, String rollNo, String courseCode,char oldID,char newID,  Semester sem) {
+    public boolean updateStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char oldID,char newID) {
+    	School sch = null;
     	
-    	Student std = s.getStudent(rollNo);
-    	Course c = s.getCourse(courseCode);
+    	for(School s:Session.getInst().getSchools()) {
+			if(s.getId().equals(schoolID))
+				sch = s;
+		}
+    	
+    	Student std = sch.getStudent(rollNo);
+    	Course c = sch.getCourse(courseCode);
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection oldCs = s.getCourseSection(c, oldID,sem);
-    		CourseSection newCs = s.getCourseSection(c, newID,sem);
+    		Semester sem = Session.getSem();
+    		CourseSection oldCs = sch.getCourseSection(c, oldID,sem);
+    		CourseSection newCs = sch.getCourseSection(c, newID,sem);
     		
     		if(oldCs!=null && newCs!=null)
-    			return s.updateStudentCourseRegistration(std, oldCs, newCs,sem);
+    			return sch.updateStudentCourseRegistration(std, oldCs, newCs,sem);
     		else
     			return false;
     	}
@@ -56,21 +70,34 @@ public class AcademicManager extends Staff{
     		return false;
     }
     
-    public boolean removeStudentCourseRegistration(School s, String rollNo, String courseCode,char secID, Semester sem) {
-    	Student std = s.getStudent(rollNo);
-    	Course c = s.getCourse(courseCode);
+    public boolean removeStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char secID) {
+    	School sch = null;
+    	
+    	for(School s:Session.getInst().getSchools()) {
+			if(s.getId().equals(schoolID))
+				sch = s;
+		}
+    	
+    	Student std = sch.getStudent(rollNo);
+    	Course c = sch.getCourse(courseCode);
+    	
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection cs = s.getCourseSection(c, secID, sem);
+    		Semester sem = Session.getSem();
+    		CourseSection cs = sch.getCourseSection(c, secID, sem);
     		
     		if(cs!=null)
-    			return s.removeStudentCourseRegistration(std, cs,sem);
+    			return sch.removeStudentCourseRegistration(std, cs,sem);
     		else
     			return false;
     	}
     	else
     		return false;
+    }
+    
+    public FacultyMember getFacultyMember(String empID) {
+    	return Session.getInst().getFacultyMember(empID);
     }
     
 }

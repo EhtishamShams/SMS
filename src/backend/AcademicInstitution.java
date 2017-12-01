@@ -50,15 +50,8 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
-	public School getStudentSchoolFromRollNo(String rollNo) {
-		for(School sch : schools) {
-			for(Student std : sch.getStudents()) {
-				if(std.getRollNo().equals(rollNo))
-					return sch;
-			}
-		}
-		
-		return null;
+	public ArrayList<School> getSchools(){
+		return schools;
 	}
 	
 	public FacultyMember getFacultyMember(String empID) {
@@ -72,6 +65,13 @@ public class AcademicInstitution {
 		return null;
 	}
 	
+	public Student getStudent(String rollNum) {
+		for (User u : users) {
+			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum)) 
+				return (Student)u;
+		}
+		return null;
+	}
 	
 	
 }
