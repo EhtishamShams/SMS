@@ -3,7 +3,7 @@ package backend;
 import dal.DAL;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class FacultyMember extends Staff {
 
@@ -51,7 +51,7 @@ public class FacultyMember extends Staff {
 		return check;
 	}
 
-	public ArrayList<CourseSection> getCourseSections() {
+	public ArrayList<CourseSection> getCurrentSemesterCourseSections() {
 		ArrayList<CourseSection> sec = new ArrayList<CourseSection>();
 		School sch = Session.getSchl();
 		sec = sch.getCourseSection(this.empID);
@@ -59,29 +59,25 @@ public class FacultyMember extends Staff {
 	}
 
 
-    public boolean addAttendance(CourseSection b, Date d, String CID)
-    {
+	public boolean addAttendance(CourseSection b, String date) {
+		
+		Date d = Date.valueOf(date);
+        String CID = b.getCourse().getCourseCode();
+		int key = DAL.getSectionKey(b.getSectionID(), CID, b.semester.getSession());
+		School sc = Session.getSchl();
 
-    	
-    int key=	DAL.getSectionKey(b.getSectionID(),CID,b.semester.getSession());
-    	School sc= Session.getSchl();
-    	
-    	
-    	for(int i =0; i< sc.getStudents().size();i++)
-    	{
-    		for(int j=0; j<sc.getStudents().get(i).getStudiedCourses().size();j++)
-    		{
-    			
-    			if(sc.getStudents().get(i).getStudiedCourses().get(j).equals(b))
-    			{
-    				Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i),  b);
-    				b.addAtd(a);
-    			DAL.addAttendanceDB(LAttendance.P , sc.getStudents().get(i).getRollNo(), key, d );
-    			}
-    		}
-    		
-    	}
-    	
-    	return true;
-    }
+		for (int i = 0; i < sc.getStudents().size(); i++) {
+			for (int j = 0; j < sc.getStudents().get(i).getStudiedCourses().size(); j++) {
+
+				if (sc.getStudents().get(i).getStudiedCourses().get(j).equals(b)) {
+					Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i), b);
+					b.addAtd(a);
+					DAL.addAttendanceDB(LAttendance.P, sc.getStudents().get(i).getRollNo(), key, d);
+				}
+			}
+
+		}
+
+		return true;
+	}
 }

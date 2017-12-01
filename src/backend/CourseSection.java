@@ -32,7 +32,7 @@ public class CourseSection {
 		this.studentAttendances = studentAttendances;
 	}
 
-	public Course getCouese()
+	public Course getCourse()
 	{
 		return this.course;
 	}
