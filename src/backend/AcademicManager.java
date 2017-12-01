@@ -25,6 +25,7 @@ public class AcademicManager extends Staff{
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
     
+	//hamza
 	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
 		
 		for(Course pCrs:preReqs) {
@@ -49,6 +50,7 @@ public class AcademicManager extends Staff{
 		return s.addCourse(crs);
 	}
 	
+	//hamza
 	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc, ArrayList<Course> preReqs) {
 		
 		for(Course pCrs:preReqs) {
@@ -77,6 +79,7 @@ public class AcademicManager extends Staff{
 		return true;
 	}
     
+	//hamza
 	public boolean removeCourse(String schoolID, String code) {
 		
 		School s = null;
@@ -96,6 +99,7 @@ public class AcademicManager extends Staff{
 		
 	}
     
+	//hamza
 	public boolean removeFaculty(String schoolID, String empID, String repEmpID) {
 		
 		School sch = null;
@@ -115,6 +119,7 @@ public class AcademicManager extends Staff{
 		
 	}
 	
+	//hamza
 	public boolean registerStudent(String schoolID, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
 		
 		School sch = null;
@@ -133,6 +138,7 @@ public class AcademicManager extends Staff{
 		
 	}
 	
+	//hamza
 	public boolean updateStudent(String schoolID, String rollNo, String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
 		
 		School sch = null;
@@ -156,6 +162,7 @@ public class AcademicManager extends Staff{
 		return true;
 	}
 	
+	//hamza
 	public boolean removeStudent(String rollNo, String schoolID) {
 		
 		School sch = null;

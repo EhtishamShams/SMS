@@ -91,6 +91,7 @@ public class Course {
     	this.isOffered = isOffered;
     }
     
+  //hamza
     public void updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {
         
     	this.courseName = courseName;
@@ -99,11 +100,13 @@ public class Course {
         this.prerequisites = prerequisites;
     }
     
+  //hamza
     public boolean addCourseSection(CourseSection section) {
     		this.sections.add(section);
     		return true;
     }
     
+  //hamza
     public boolean ifSectionExists(char secID) {
     	for(CourseSection s: this.sections)
     	{

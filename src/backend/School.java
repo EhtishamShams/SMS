@@ -78,6 +78,7 @@ public class School {
 		this.courses = courses;
 	}
 	
+	//hamza
 	public boolean validateStudent(String CNIC) {
 		
 		for(Student st:students) {
@@ -88,6 +89,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean validateUpdateStudent(String CNIC, Student obj) {
 		
 		for(Student st:students) {
@@ -98,6 +100,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean ifCourseExists(String code) {
 		
 		for(Course c:this.courses) {
@@ -107,6 +110,7 @@ public class School {
 		return false;
 	}
 	
+	//hamza
 	public boolean findFaculty(String empID) {
 		
 		for(FacultyMember FM:faculty) {
@@ -117,6 +121,7 @@ public class School {
 		return false;
 	}
 	
+	//hamza
 	public Student getStudent(String rollNo) {
 		
 		for(Student stu:students) {
@@ -127,6 +132,7 @@ public class School {
 		return null;
 	}
 	
+	//hamza
 	public boolean addCourse(Course c) {
 		
 		//Adding in database
@@ -138,6 +144,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean addStudent(Student std) {
 		
 		if(!DAL.addStudent(std, this))
@@ -147,6 +154,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean removeCourse(Course c) {
 		
 		if(!DAL.removeCourse(c))
@@ -163,6 +171,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean removeFaculty(String empID, String repEmpID) {
 		
 		FacultyMember facM = null;
@@ -231,6 +240,7 @@ public class School {
 		return true;
 	}
 	
+	//hamza
 	public boolean removeStudent(Student std) {
 		
 		if(!DAL.removeStudent(std))

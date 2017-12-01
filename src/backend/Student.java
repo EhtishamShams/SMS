@@ -97,6 +97,7 @@ public class Student extends User{
 		this.creditsAttempted = creditsAttempted;
 	}
 	
+	//hamza
 	public boolean updateDetails(String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
 		
 		
@@ -115,6 +116,7 @@ public class Student extends User{
 		return true;
 	}
 	
+	//hamza
 	public double computeGPA(ArrayList<Grade> grades) {
 		
 		double ret = 0;
@@ -126,14 +128,24 @@ public class Student extends User{
 			ret += g.getGrade().getGpa() * grCreds;
 		}
 		
-		return ret/credits;
+		if(credits!=0)
+			return ret/credits;
+		else
+			return 0;
 	}
 	
-//	public double computeCGPA() {
-//		
-//		for(Grade gr:transcript.getGrades()) {
-//			
-//		}
-//	}
+	//hamza
+	public double computeCGPA() {
+		int credits = 0;
+		double ret = 0;
+		for(Grade gr:transcript.getGrades()) {
+			credits+=gr.getCourseSection().getCourse().getCreditHours();
+			ret+=gr.getCourseSection().getCourse().getCreditHours()*gr.getGrade().getGpa();
+		}
+		if(credits!=0)
+			return ret/credits;
+		else
+			return 0;
+	}
 
 }
