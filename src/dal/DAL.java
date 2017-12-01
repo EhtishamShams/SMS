@@ -145,6 +145,23 @@ public class DAL {
 		} 
 	}
 	
+	public static boolean removeStudentAttendance(String rollNo, int sectionKey) {
+		try {
+			Connection con = DBAccess.getConnection();
+			Statement stmt = DBAccess.getStatement();
+			
+			stmt.executeUpdate("delete from attendance where RollNo ='"+rollNo
+					+"' and sectionKey = "+sectionKey+"';");
+			
+			con.commit();
+			  
+			return true;
+		}catch(Exception e){ 
+			System.out.println(e);
+			return false;
+		} 
+	}
+	
 	public static int getUserIDFacultyMember(String empID) {
 		int userID = -1;
 		try {

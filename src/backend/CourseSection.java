@@ -99,4 +99,13 @@ public class CourseSection {
 		
 		return attendance;
 	}
+	
+	public void removeStudentAttendance(Student student) {
+		for(Attendance attd: studentAttendances) {
+			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
+				studentAttendances.remove(attd);
+			}
+		}
+	}
+	
 }

@@ -134,6 +134,7 @@ public class School {
 			DAL.addStudentCourseRegistration(s.getRollNo(), newSectionKey);
 			s.removeStudentCourseRegistration(oldCs);
 			DAL.removeStudentCourseRegistration(s.getRollNo(), oldSectionKey);
+			oldCs.removeStudentAttendance(s);
 			s.updateGradeSection(oldCs, newCs);
 			DAL.updateGradeSection(LGrade.I.toString(), oldSectionKey, newSectionKey, s.getRollNo(), sem.getSession());
 			
@@ -150,6 +151,8 @@ public class School {
 		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
 			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
 			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
+			cs.removeStudentAttendance(s);
+			DAL.removeStudentAttendance(s.getRollNo(), sectionKey);
 			cs.decrementCurrSeats();
 			DAL.decrementCurrSeats(sectionKey);
 			return true;

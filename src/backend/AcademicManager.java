@@ -62,7 +62,7 @@ public class AcademicManager extends Staff{
     	
     	if(std!=null && c!=null)
     	{
-    		CourseSection cs = s.getCourseSection(c, secID,sem);
+    		CourseSection cs = s.getCourseSection(c, secID, sem);
     		
     		if(cs!=null)
     			return s.removeStudentCourseRegistration(std, cs,sem);
