@@ -293,4 +293,378 @@ String code=""; int secid=0; int check_sem=0;
 		}catch(Exception e){ System.out.println(e);}
 
     }
+    
+    ////////////////////////////MUAZ//////////////////////////////////////////////////
+    public static boolean addAllotmentDB(String oid, String Empid)
+	{
+		try {
+			Statement stmt=DBAccess.getStatement(); 
+			String allotment="";   //just a typo
+			String temp="";
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+Empid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1);  //() <-this cannot be empty 
+			
+			ResultSet rs1=stmt.executeQuery("select* from Allotment where OfficeID='"+oid+"'"); 
+			while(rs.next()) 
+		        temp=rs1.getString(1);  //() <-this cannot be empty 
+			
+			
+			if(allotment=="" && temp=="")
+			{
+				
+					stmt.executeUpdate("INSERT INTO Allotment (OfficeID,EmpID)"
+								+ "VALUES('"+oid+"','"+Empid+"');");
+					 
+					
+					return true;
+
+			} 
+			}catch(Exception e){ System.out.println(e);}  
+		return false;
+     }
+	 
+	
+	public static boolean deleteAllotmentDB(String empid)
+	 {
+		 try {
+			Statement stmt=DBAccess.getStatement();  
+			String allotment="";
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where EmpID='"+empid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1); 
+			if(allotment!="")
+			{
+				stmt.executeUpdate("delete from Allotment where EmpID='"+empid+"'");
+				return true;
+			}
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+	 
+	 }
+	 
+	 public static boolean updateAllotmentDB(String oid, String eid)
+	 {
+		 	try {
+			Statement stmt=DBAccess.getStatement();
+			String allotment="";
+			
+			ResultSet rs=stmt.executeQuery("select* from Allotment where OfficeID='"+oid+"'"); 
+			while(rs.next()) 
+		        allotment=rs.getString(1); 
+			if(allotment=="")
+			{
+				stmt.executeUpdate("UPDATE Allotment SET OfficeID='"+oid+"' where EmpID='"+eid+"'");
+				return true;
+			} 
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 public static boolean addSchoolDB(String sid, String name)
+	 {
+		try {
+			Statement stmt=DBAccess.getStatement(); 
+			String sch="";
+			String temp="";
+			
+			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
+			while(rs.next()) 
+		        sch=rs.getString(1); 
+			
+		    rs=stmt.executeQuery("select* from School where Name='"+name+"'"); 
+			while(rs.next()) 
+		        temp=rs.getString(1); 
+			
+			if(sch=="" && temp=="")
+			{
+				stmt.executeUpdate("INSERT INTO School (SchoolID,Name)"
+								+ "VALUES('"+sid+"','"+name+"');");
+				return true;
+			}
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 
+	 public static boolean updateSchoolDB(String sid, String name)
+	 {
+		try {
+			Statement stmt=DBAccess.getStatement();
+			String sch="";
+		
+			
+			ResultSet rs=stmt.executeQuery("select* from School where SchoolID='"+sid+"'"); 
+			while(rs.next()) 
+		       sch=rs.getString(1); 
+			if(sch!="")
+			{
+				stmt.executeUpdate("UPDATE School SET Name = '"+name+"' WHERE SchoolID='"+sid+"'");
+				 
+				return true;
+			}
+			
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+	 }
+	 public static boolean markAttendanceDB(int sid, String rollno, Date d, LAttendance a)
+	 {
+		try {
+			
+			Statement stmt=DBAccess.getStatement();
+			
+				stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)"
+								+ "VALUES('"+rollno+"','"+d+"','"+sid+"','"+a+"');");
+				
+				return true;
+		
+			}catch(Exception e){ System.out.println(e);}  
+			return false;
+
+	 }
+	 
+	
+	public static boolean addAttendanceDB(LAttendance atd , String rollno,int  key, Date d)
+	{
+		try {
+			Statement stmt=DBAccess.getStatement(); 
+			
+					stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)"
+								+ "VALUES('"+rollno+"','"+d+"','"+key+"','"+atd+"');");
+					 
+					DBAccess.getStatement(); 
+					return true;
+			}catch(Exception e){ System.out.println(e);}  
+		return false;
+     }
+	 
+	 public static ArrayList<String> returnCourse(String code)
+	 {	
+		ArrayList<String> codes = new ArrayList<String>();
+		 try{  
+			
+			
+			Statement stmt=DBAccess.getStatement(); 
+			ResultSet rs=stmt.executeQuery("select * from CoursePrerequisites where CourseCode='"+code+"';");  
+			
+			while(rs.next())  
+			{
+				codes.add(rs.getString(2));
+			}
+			    return codes;
+		} catch(Exception e){ 
+			System.out.println(e);
+			return codes;
+		} 
+		 
+	 }
+	 
+	 
+	 //////////////////////////////NOUMANN////////////////////
+	 public static int getSectionKey(char sectionID,String courseCode,String session) {
+			int sectionKey = -1;
+			
+			try{  
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement(); 
+				 
+				ResultSet rs=stmt.executeQuery("select * from coursesection where SectionID='"+sectionID+"' and courseCode='"+courseCode+"' and Session='"+session+"';");  
+				
+				while(rs.next())  
+					sectionKey = rs.getInt(1);
+				
+				con.commit();
+				
+				return sectionKey;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return sectionKey;
+			} 
+		}
+		
+		public static boolean incrementCurrSeats(int sectionKey) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("Update coursesection Set CurrSeats = CurrSeats+1 Where SectionKey ="+ sectionKey+";");
+				
+				con.commit();
+				  
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean decrementCurrSeats(int sectionKey) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("Update coursesection Set CurrSeats = CurrSeats-1 Where SectionKey ="+ sectionKey+";");
+				
+				con.commit();
+				  
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean addStudentCourseRegistration(String rollNo, int sectionKey) {
+			try {
+				DBAccess.createConnection();
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("insert into studentcoursesection (RollNo,SectionKey) values ('"+rollNo+"',"+sectionKey+");");
+				
+				con.commit();
+				 
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean removeStudentCourseRegistration(String rollNo, int sectionKey) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("delete from studentcoursesection where RollNo='"+rollNo+"' and SectionKey="+sectionKey+";");
+				
+				con.commit();
+				 
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean addGradeToTranscript(String grade,int sectionKey,String rollNo,String session) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("insert into grade (Grade,SectionKey,RollNo,Session) values ('"+grade
+						+"',"+sectionKey+",'"+rollNo+"','"+session+"');");
+				 
+				con.commit();
+				
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean removeGradeFromTranscript(String grade,int sectionKey,String rollNo,String session) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("delete from grade where Grade ='"+grade
+						+"' and sectionKey = "+sectionKey+" and RollNo='"+rollNo+"' and Session='"+session+"';");
+				
+				con.commit();
+				  
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean updateGradeSection(String grade,int oldSectionKey,int newSectionKey,String rollNo,String session) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("update grade set SectionKey ="+newSectionKey
+						+" where Grade = '" + grade+"' and SectionKey = "+oldSectionKey+" and RollNo='"+rollNo+"' and Session='"+session+"';");
+				
+				con.commit();
+				 
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static boolean removeStudentAttendance(String rollNo, int sectionKey) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				stmt.executeUpdate("delete from attendance where RollNo ='"+rollNo
+						+"' and SectionKey = "+sectionKey+";");
+				
+				con.commit();
+				  
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
+		
+		public static int getUserIDFacultyMember(String empID) {
+			int userID = -1;
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				ResultSet rs = stmt.executeQuery("select * from staff where EmpID='"+empID+"';");
+				
+				while(rs.next())  
+					userID = rs.getInt(1);
+				
+				con.commit();
+				
+				return userID;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return userID;
+			} 
+		}
+		
+		public static boolean updateFacultyDetails(String empID,String name, Date DOB, String phoneNo, String email,String CNIC,char gender,
+				String emergencyContact, String address, ArrayList<String> degrees, String position) {
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+				
+				int userID = getUserIDFacultyMember(empID);
+				stmt.executeUpdate("update user set name ='"+name+"',DateOfBirth = '"+DOB
+						+"',PhoneNo='"+phoneNo+"', email='"+email+"',CNIC='"+CNIC+"',Gender='"+gender
+						+"',EmergencyContact='"+emergencyContact+"',Address='"+address+"' where UserID="+userID+";");
+				
+				stmt = DBAccess.getStatement();
+				stmt.executeUpdate("delete from facultymemberdegrees where EmpID='"+empID+"';");
+				
+				for(String d : degrees) {
+					stmt = DBAccess.getStatement();
+					stmt.executeUpdate("insert into facultymemberdegrees values ('"+empID+"','"+d+"');");
+				}
+				
+				stmt = DBAccess.getStatement();
+				stmt.executeUpdate("update facultymember set position='"+position+"' where EmpID='"+empID+"';");
+				
+				con.commit();
+				
+				return true;
+			}catch(Exception e){ 
+				System.out.println(e);
+				return false;
+			} 
+		}
 }

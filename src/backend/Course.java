@@ -106,7 +106,7 @@ public class Course {
     //////////////////////////////////////////////////////////////////////////////////////
     public boolean removeCourseSection(char secID) {
     	for(CourseSection s: this.sections){
-    		if(s.getSectionID()==secID) {
+    		if(s.getSectionID()==secID && s.getSemester().equals(Session.getSem())) {
     			this.sections.remove(s);
     			return true;
     		}
@@ -116,7 +116,7 @@ public class Course {
     
     public boolean updateCourseSection(char secID,FacultyMember f, int max_seats) {
     	for(CourseSection s: this.sections){
-    		if(s.getSectionID()==secID) {
+    		if(s.getSectionID()==secID && s.getSemester().equals(Session.getSem())) {
     			s.setMaxSeats(max_seats);
     			s.setFaculty(f);
     			return true;
@@ -125,6 +125,15 @@ public class Course {
     	return false;
     }
     
-    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////NOUMAN////////////////////////////////////
+    
+    public CourseSection getCourseSection(char secID,Semester sem) {
+    	for(CourseSection cs : sections) {
+    		if(cs.getSectionID()==secID && cs.getSemester().equals(sem))
+    			return cs;
+    	}
+    	
+    	return null;
+    }
  }
     

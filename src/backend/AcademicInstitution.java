@@ -64,7 +64,24 @@ public class AcademicInstitution {
 	}
 
 	
+	///////////////////////////////MUAZ/////////////////////////////////////////
 	
+	 public Staff getStaff(String empID) {    
+			
+	   	 for (User u : users) {
+				if ((u instanceof Staff) && ((Staff) u).getEmpID().equals(empID)) 
+					return (Staff)u;
+			}
+			return null;
+		}
+
+	
+	////////////////////////////NOUMAN////////////////////////
+	 public ArrayList<School> getSchools(){
+			
+			return schools;
+		}
+	 
 	
 }
 

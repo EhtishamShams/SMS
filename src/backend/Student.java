@@ -12,19 +12,21 @@ public class Student extends User{
 	private int creditsEarned;
 	private int creditsAttempted;
 	public ArrayList<CourseSection> courses;
+	private Transcript transcript;
 	
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses,Transcript transcript) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
 		this.fatherName = fatherName;
-		CGPA = cGPA;
+		this.CGPA = cGPA;
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
+		this.transcript = transcript;
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -91,6 +93,23 @@ public class Student extends User{
 	{
 		this.creditsAttempted = creditsAttempted;
 	}
+
+	public ArrayList<CourseSection> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(ArrayList<CourseSection> courses) {
+		this.courses = courses;
+	}
+
+	public Transcript getTranscript() {
+		return transcript;
+	}
+
+	public void setTranscript(Transcript transcript) {
+		this.transcript = transcript;
+	}
+
 	
 	
 	
@@ -109,8 +128,23 @@ public class Student extends User{
 		return false;
 	}
 	
+	///////////////////////NOUMAN//////////////
 	
-	public void viewDetails()
+	public boolean removeStudentCourseRegistration(CourseSection cs) {
+		if(this.courses.contains(cs)) {
+			this.courses.remove(cs);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean removeGradeFromTranscript(CourseSection cs,LGrade L) {
+		Grade g = new Grade(L,cs);
+		return this.transcript.removeGrade(g);
+	}
+	
+	/*public void viewDetails()
 	{
 		super.viewDetails();
 		System.out.println("RollNo : \t" + rollNo);
@@ -122,5 +156,5 @@ public class Student extends User{
 		
 		
     	
-	}
+	}*/
 }

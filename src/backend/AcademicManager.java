@@ -103,7 +103,7 @@ public class AcademicManager extends Staff{
 	   {
 		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
 		  secIndex=tempcourse.ifSectionExists(sID); 
-		  if(secIndex==true)
+		  if(secIndex==true  )
 			  {
 			  //SQL CON/////
 			  if( DAL.removeSection(c_code ,sID,Session.getSem())==true) {   
@@ -180,5 +180,33 @@ public class AcademicManager extends Staff{
 	   
 	  return update; 
    }
-   ////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////NOUMAN/////////////////////////////////////////////
+   public boolean removeStudentCourseRegistration(String schoolID, String rollNo, String courseCode,char secID) {
+   	School sch = null;
+   	
+   	for(School s:Session.getInst().getSchools()) {
+			if(s.getId().equals(schoolID))
+				sch = s;
+		}
+   	
+   	Student std = sch.getStudent(rollNo);
+   	Course c = sch.getCourse(courseCode);
+   	
+   	
+   	if(std!=null && c!=null)
+   	{
+   		Semester sem = Session.getSem();
+   		CourseSection cs = sch.getCourseSection(c, secID, sem);
+   		
+   		if(cs!=null)
+   			return sch.removeStudentCourseRegistration(std, cs,sem);
+   		else
+   			return false;
+   	}
+   	else
+   		return false;
+   }
+
+   
+   
 }

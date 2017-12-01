@@ -76,7 +76,17 @@ public class CourseSection {
 			return false;
 	}
 	
+	public Course getCourse() {
+		return course;
+	}
 	
+	public void removeStudentAttendance(Student student) {
+		for(Attendance attd: studentAttendances) {
+			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
+				studentAttendances.remove(attd);
+			}
+		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////
 	
 	 public void setFaculty(FacultyMember f) {
@@ -86,6 +96,10 @@ public class CourseSection {
 	 public FacultyMember getFaculty() {
 		 return sectionTeacher;
 	 }
+	 public Semester getSemester() {
+			return semester;
+		}
+	 
 	 
 	 /////////////////////////////////////////////////////////////////////////////////////
 }

@@ -10,9 +10,10 @@ public enum LGrade {
 	C_PLUS(2.33,true),
 	C(2.0,true),
 	C_MINUS(1.67,true),
-	D(1.33,true),
-	D_PLUS(1.0,true),
-	F(0.0,false);
+	D(1.00,true),
+	D_PLUS(1.33,true),
+	F(0.0,false),
+	I(0.0,false);
 	
 
 	final private double gpa;
@@ -30,4 +31,5 @@ public enum LGrade {
 	public double getGpa() {
 		return gpa;
 	}
+	
 }

@@ -5,6 +5,8 @@ package backend;
 
 import java.util.ArrayList;
 
+import dal.DAL;
+
 /**
  * @author Ehtisham
  *
@@ -161,5 +163,47 @@ public class School {
 		}
 		 return found;
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////NOUMAN///////////////////////////
+	
+	public Course getCourse(String courseCode) {
+		for(Course c : courses)
+		{
+			if(c.getCourseCode().equals(courseCode))
+				return c;
+		}
+		
+		return null;
+	}
+	
+	public Student getStudent(String rollNo) {
+		for(Student s : students)
+		{
+			if(s.getRollNo().equals(rollNo))
+				return s;
+		}
+		
+		return null;
+	}
+	
+	public CourseSection getCourseSection(Course c, char secID,Semester sem) {
+		return c.getCourseSection(secID,sem);
+	}
+	
+public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Semester sem) {
+		
+		int sectionKey = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
+		
+		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
+			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
+			cs.removeStudentAttendance(s);
+			DAL.removeStudentAttendance(s.getRollNo(), sectionKey);
+			cs.decrementCurrSeats();
+			DAL.decrementCurrSeats(sectionKey);
+			return true;
+		}
+		else
+			return false;
+	}
+	
 }

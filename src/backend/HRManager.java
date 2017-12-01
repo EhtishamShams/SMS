@@ -72,5 +72,64 @@ public class HRManager extends Staff{
     	else 
     		return false;
     }
+    
+    
+    
+    //////////////////////////////////////MUAZ///////////////////////////////////////////////
+    boolean deleteAllotment(String eid) {
+		AcademicInstitution k = Session.getInst();
+		HRDepartment d= Session.getHrDept();
+		Staff s = k.getStaff(eid);
+		if (s != null) {
+			boolean check = false;
+			check=DAL.deleteAllotmentDB(s.empID);
+			if (check) {
+				d.removeAllotment(s);
+			}
+			return check;
+		}
+		return false;
+	}
+
+ // add allotment functionality
+ 	boolean addAllotment(String oid, String eid) {
+ 		AcademicInstitution k = Session.getInst();
+ 		HRDepartment d= Session.getHrDept();
+ 		Staff s = k.getStaff(eid);
+ 		if (s != null) {
+ 		boolean check = false;
+ 		Office a = d.getOffice(oid);
+
+ 		Allotment temp = new Allotment(a, s);
+
+ 		 check=DAL.addAllotmentDB(oid,s.empID);
+ 		if (check) {
+ 			d.addAllotment(temp);
+ 		}
+ 		return check;
+ 		}
+ 		return false;
+ 	}
+
+ 	// update allotment functionality
+
+ 	boolean updateAllotment(String eid, String id) {
+ 		AcademicInstitution k = Session.getInst();
+ 		HRDepartment d= Session.getHrDept();
+ 		Staff s = k.getStaff(eid);
+ 		if (s != null) {
+ 			boolean check = false;
+ 			Office a = d.getOffice(id);
+ 			Allotment temp = d.getAllotment(s);
+ 			 check=DAL.updateAllotmentDB(id, s.empID);
+ 			if (check) {
+ 				d.setAllotedOffice(a, temp);
+ 			}
+ 			return check;
+ 		}
+ 		return false;
+ 	}
+
+
        
 }
