@@ -16,9 +16,7 @@ public class DAL {
 	public static boolean addCourse(Course c, School sch) {
 		// Adding in Database
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 
 			String query = "Insert Into course Values(?,?,?,?,?,?)";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -54,9 +52,7 @@ public class DAL {
 	public static boolean addStudent(Student std, School sch) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Insert into User(Name, DateOfBirth, PhoneNo, CNIC, email, gender, emergencyContact, Address) Values(?,?,?,?,?,?,?,?)";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -103,9 +99,7 @@ public class DAL {
 
 		// Updating course status in database
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 
 			String query = "Update course Set IsOffered=? where CourseCode=?";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -133,9 +127,7 @@ public class DAL {
 		String userID;
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Select UserID From User Where UserID = (Select S.UserID From (Select * From User) As U join Staff S Where U.UserID=S.UserID and S.EmpID=?)";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -179,9 +171,7 @@ public class DAL {
 	public static boolean updateCourseDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites, Course crs) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Update Course Set CourseName=?, CreditHours=?, Description=? Where CourseCode=?";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -220,9 +210,7 @@ public class DAL {
 	public static boolean updateStudentDetails(String name, Date DOB, String phone, String email, String CNIC, char gender, String eCont, String address, String fCNIC, String fName, Student stu) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Update User Set Name=?, DateOfBirth=?, PhoneNo=?, CNIC=?, email=?, gender=?, emergencyContact=?, Address=? Where CNIC=?)";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -261,9 +249,7 @@ public class DAL {
 		String userID;
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Select UserID From User Where UserID = (Select S.UserID From (Select * From User) As U join Student S Where U.UserID=S.UserID and S.RollNo=?)";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -298,9 +284,7 @@ public class DAL {
 		ArrayList<Fee> fees = new ArrayList<Fee>();
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Select * From Fee Where RollNo=?";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -327,9 +311,7 @@ public class DAL {
 		ArrayList<Pay> pays = new ArrayList<Pay>();
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DBAccess.getConnection();
-			conn.setAutoCommit(false);
 			
 			String query = "Select * From pay Where EmpID=?";
 			PreparedStatement pst = conn.prepareStatement(query);
@@ -356,9 +338,9 @@ public class DAL {
 //		ArrayList<Course> courses = new ArrayList<Course>();
 //		
 //		try {
-//			Class.forName("com.mysql.jdbc.Driver");
+//			
 //			Connection conn = DBAccess.getConnection();
-//			conn.setAutoCommit(false);
+//		
 //			
 //			String query = "Select CourseCode From Course Where CourseCode=(Select CourseCode From studentcoursesection join CourseSection where RollNo=?)";
 //			PreparedStatement pst = conn.prepareStatement(query);
