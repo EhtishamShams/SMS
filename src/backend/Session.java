@@ -33,6 +33,12 @@ public class Session {
 		load.loadCourses();
 		load.loadStudents();
 		load.loadAttendance();
+		load.loadAccountsDepartment();
+		load.loadAcademicDepartment();
+		load.loadHRDepartment();
+		load.loadAllotments();
+		load.loadPays();
+		load.loadFees();
 	}
 	
 	public static User getUser() {

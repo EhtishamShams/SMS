@@ -238,5 +238,182 @@ public class Load {
 			System.out.println(e);
 		}
 	}
-
+	
+	public void loadHRDepartment() {
+		
+		Session.setHrDept(new HRDepartment(new ArrayList<Office>(), new ArrayList<Allotment>(), "HR Department", loadHRStaff()));
+		for(Staff st:Session.getHrDept().getStaff()) {
+			Session.getInst().getUsers().add(st);
+		}
+		loadOffices();
+		
+	}
+	
+	public void loadAcademicDepartment() {
+		Session.setAcdDept(new AcademicDepartment(new ArrayList<Timetable>(), "Academic Department", loadAcademicStaff()));
+		
+		for(Staff st:Session.getAcademicDept().getStaff()) {
+			Session.getInst().getUsers().add(st);
+		}
+	}
+	
+	public void loadAllotments() {
+		
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select * From allotment";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				Session.getHrDept().getAllotments().add(new Allotment(Session.getHrDept().getOffice(rs.getString(1)), Session.getInst().getStaff(rs.getString(2))));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+	}
+	
+	private void loadOffices() {
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select * From office";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				Session.getHrDept().getOffices().add(new Office(rs.getString(1)));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+	}
+	
+	public void loadAccountsDepartment() {
+		
+		Session.setAccountsDept(new AccountsDepartment(new ArrayList<Pay>(), new ArrayList<Fee>(), "Accounts Department", loadFinanceStaff()));
+		
+		for(Staff st:Session.getAccountDept().getStaff()) {
+			Session.getInst().getUsers().add(st);
+		}
+	}
+	
+	private ArrayList<Staff> loadFinanceStaff(){
+		
+		ArrayList<Staff> ret = new ArrayList<Staff>();
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='Finance'";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				ret.add(new Staff(rs.getString(1), rs.getString(2),  rs.getDate(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7).charAt(0),
+						rs.getString(8), rs.getString(9), rs.getString(10), rs.getDate(11)));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+		
+		return ret;
+	}
+	
+	private ArrayList<Staff> loadHRStaff(){
+		
+		ArrayList<Staff> ret = new ArrayList<Staff>();
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='HR'";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				ret.add(new Staff(rs.getString(1), rs.getString(2),  rs.getDate(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7).charAt(0),
+						rs.getString(8), rs.getString(9), rs.getString(10), rs.getDate(11)));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+		
+		
+		return ret;
+	}
+	
+	private ArrayList<Staff> loadAcademicStaff(){
+		
+		ArrayList<Staff> ret = new ArrayList<Staff>();
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='Academic'";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				ret.add(new Staff(rs.getString(1), rs.getString(2),  rs.getDate(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7).charAt(0),
+						rs.getString(8), rs.getString(9), rs.getString(10), rs.getDate(11)));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+		
+		return ret;
+	}
+	
+	public void loadPays() {
+	
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select * From pay";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				Session.getAccountDept().getPays().add(new Pay(rs.getDouble(1), rs.getDate(2), Session.getInst().getStaff(rs.getString(3))));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+	}
+	
+	public void loadFees() {
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select * From fee";
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				Session.getAccountDept().getFees().add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3), Session.getInst().getStudent(rs.getString(4)), Session.getInst().getSemester(rs.getString(5))));
+			}
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+		}
+	}
 }

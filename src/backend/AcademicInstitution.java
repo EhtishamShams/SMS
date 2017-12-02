@@ -96,5 +96,33 @@ public class AcademicInstitution {
 		
 		return null;
 	}
+	
+	public Staff getStaff(String empID) {
+		
+		for(School sch:schools) {
+			Staff temp = sch.getFacultyMember(empID);
+			if(temp!=null)
+				return temp;
+		}
+		
+		for(Department dep:depts) {
+			Staff temp = dep.getStaffMember(empID);
+			if(temp!=null)
+				return temp;
+		}
+		
+		return null;
+	}
+
+	public Student getStudent(String rollNo) {
+		
+		for(School sch:schools) {
+			Student temp = sch.getStudent(rollNo);
+			if(temp!=null)
+				return temp;
+		}
+		return null;
+	}
+	
 }
 

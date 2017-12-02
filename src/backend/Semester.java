@@ -12,30 +12,14 @@ import java.sql.Date;
 public class Semester {
 	private String session;
 	private boolean active;
-	double perCreditHourFee;
-	Date dueDate;
-	
-	public Semester(String session, boolean active, double perCreditHourFee, Date dueDate) {
+	private double perCreditHrFee;
+	private Date feeDueDate = null;
+
+	public Semester(String session, boolean active, double perCreditHrFee, Date feeDueDate) {
 		this.session = session;
 		this.active = active;
-		this.perCreditHourFee = perCreditHourFee;
-		this.dueDate = dueDate;
-	}
-
-	public double getPerCreditHourFee() {
-		return perCreditHourFee;
-	}
-
-	public void setPerCreditHourFee(double perCreditHourFee) {
-		this.perCreditHourFee = perCreditHourFee;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
+		this.perCreditHrFee = perCreditHrFee;
+		this.feeDueDate = feeDueDate;
 	}
 
 	public String getSession() {
@@ -45,8 +29,31 @@ public class Semester {
 	public void setSession(String session) {
 		this.session = session;
 	}
-	
+
 	public boolean isActive() {
 		return active;
 	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public double getPerCreditHrFee() {
+		return perCreditHrFee;
+	}
+
+	public void setPerCreditHrFee(double perCreditHrFee) {
+		this.perCreditHrFee = perCreditHrFee;
+	}
+
+	public Date getFeeDueDate() {
+		return feeDueDate;
+	}
+
+	public void setFeeDueDate(Date feeDueDate) {
+		this.feeDueDate = feeDueDate;
+	}
+	
+	
+	
 }

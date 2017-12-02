@@ -38,5 +38,12 @@ public class HRDepartment extends Department{
         this.allotments = allotments;
     }
     
-    
+    public Office getOffice(String officeID) {
+    	for(Office off:offices) {
+    		if(off.getID().equals(officeID))
+    			return off;
+    	}
+    	
+    	return null;
+    }
 }

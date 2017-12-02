@@ -7,6 +7,7 @@ package backend;
 
 import java.util.ArrayList;
 
+
 /**
  *
  * @author hamza
@@ -20,7 +21,7 @@ public class AcademicDepartment extends Department{
         this.timeTables = timeTables;
     }
 
-    public ArrayList<Timetable> getTimeTables() {
+	public ArrayList<Timetable> getTimeTables() {
         return timeTables;
     }
 
