@@ -180,10 +180,6 @@ public class School {
 				facM = fac;
 		}
 
-		// TODO: need to get replacement if the employee is currently teaching a course
-		// if(facM.getCurrentSemesterCourseSections()==null && repEmpID==null)
-		// return false;
-
 		if (!DAL.removeFaculty(empID, repEmpID))
 			return false;
 
