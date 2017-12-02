@@ -193,8 +193,6 @@ public static boolean addAllotmentDB(String oid, String Empid)
 		 
 	 }
 	 
-}
-
 	public boolean addPay(Pay p) {
 		boolean check = true;
 		Statement stmnt = DBAccess.getStatement();
