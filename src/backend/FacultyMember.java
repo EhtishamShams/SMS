@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 public class FacultyMember extends Staff {
-
-	private ArrayList<String> degrees;
+	
+	private ArrayList<String> degrees = null;
 	private String position;
 
 	public FacultyMember(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
@@ -40,7 +40,6 @@ public class FacultyMember extends Staff {
 		School sch= Session.getSchl();
 		Student s = sch.getStudent(rollno);
 		
-	
 		 int key= DAL.getSectionKey(cs.getSectionID(),cs.getCourse().getCourseCode(),sem.getSession());
 		Attendance at = new Attendance(atd, day, s, cs);
 
@@ -57,6 +56,21 @@ public class FacultyMember extends Staff {
 		sec = sch.getCourseSection(this.empID);
 		return sec;
 	}
+
+	public boolean updateGrade(String rollNum, String grade, String courseCode, String secID, String semester) {
+		Student stu = Session.getInst().getStudent(rollNum);
+		Grade g = stu.getCourseGrade(courseCode);
+		LGrade oldVal = g.getGrade();
+		g.setGrade(LGrade.valueOf(grade));
+		boolean check = Session.getDal().updateGrade(g,stu.getRollNo());
+		if (!check)
+			g.setGrade(oldVal);
+		return check;
+		
+		
+	}
+	
+
 
 
 	public boolean addAttendance(CourseSection b, Date d) {

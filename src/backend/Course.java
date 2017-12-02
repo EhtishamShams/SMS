@@ -12,8 +12,8 @@ public class Course {
 	private String courseName;
 	private int creditHours;
 	private String description;
-	private ArrayList<Course> prerequisites;
-	private ArrayList<CourseSection> sections;
+	private ArrayList<Course> prerequisites = null;
+	private ArrayList<CourseSection> sections = null;
 
     public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {
         this.courseCode = courseCode;

@@ -8,10 +8,10 @@ public class CourseSection {
 	private char sectionID;
 	private int maxSeats;
 	private int currSeats;
-	FacultyMember sectionTeacher;
-	Semester semester;
-	Course course;
-	private ArrayList<Attendance> studentAttendances;
+	private FacultyMember sectionTeacher = null;
+	private Semester semester = null;
+	private Course course = null;
+	private ArrayList<Attendance> studentAttendances = null;
 	 
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
 		this.sectionID = sectionID;
@@ -84,6 +84,24 @@ public class CourseSection {
 		else
 			return false;
 	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Semester getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semester semester) {
+		this.semester = semester;
+	}
+	
+	
 	
 	//helper for mark attendance
 	public boolean addAttendance(Attendance a)

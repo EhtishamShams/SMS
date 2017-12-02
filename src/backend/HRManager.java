@@ -79,7 +79,7 @@ public class HRManager extends Staff {
 		HRDepartment a = Session.getHrDept();
 		boolean check = false;
 		AcademicDepartment b = Session.getAcademicDept();
-		AccountsDepartment c = Session.getAccountDept();
+		AccountsDepartment c = Session.getAccountsDept();
 		ArrayList<Staff> abc = null;
 		for (int i = 0; i < a.getStaff().size(); i++) {
 			if (i == 0) {
@@ -158,5 +158,17 @@ public class HRManager extends Staff {
 		else
 			return abc;
 	}
+
+
+    
+    public boolean addOffice(String officeID) {
+    		HRDepartment dept = Session.getHrDept(); 
+    		if (!dept.ifOfficeExists(officeID)) {
+    			Office o = new Office(officeID);
+    			return dept.addOffice(o);
+    		}
+    		return false;
+    }
+    
 
 }

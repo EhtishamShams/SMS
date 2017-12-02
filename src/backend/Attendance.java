@@ -14,18 +14,17 @@ import java.sql.Date;
 public class Attendance{
     LAttendance status;
     Date Day;
-    CourseSection section;
-    Student student;
+    Student student = null;
+
 
     public Attendance()
     {
     	
     }
-    public Attendance(LAttendance atd, Date day2, Student s, CourseSection cs) {
-		// TODO Auto-generated constructor stub
+    public Attendance(LAttendance atd, Date day2, Student s){
+		
     	 this.status = atd;
-         this.Day = day2;
-         this.section = cs;
+         this.Day = day2
          this.student = s;
 	}
 
@@ -46,13 +45,7 @@ public class Attendance{
     public void setDay(Date Day) {
         this.Day = Day;
     }
-    public CourseSection getSection() {
-        return section;
-    }
-
-    public void setSection(CourseSection section) {
-        this.section = section;
-    }
+    
 
     public Student getStudent() {
         return student;

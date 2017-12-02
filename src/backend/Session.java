@@ -3,6 +3,9 @@
  */
 package backend;
 
+
+import dal.DAL;
+
 /**
  * @author Ehtisham
  *
@@ -13,9 +16,10 @@ public class Session {
 	private static AcademicInstitution inst = null;
 	private static School schl = null;
 	private static AcademicDepartment acdDept = null;
-	private static AccountsDepartment accountDept = null;
+	private static AccountsDepartment accountsDept = null;
 	private static HRDepartment hrDept = null;
 	private static Semester sem = null;
+	private static DAL dal = null;
 	
 	
 	public static User getUser() {
@@ -58,13 +62,6 @@ public class Session {
 		Session.acdDept = acdDept;
 	}
 
-	public static AccountsDepartment getAccountDept() {
-		return accountDept;
-	}
-
-	public static void setAccountsDept(AccountsDepartment accountDept) {
-		Session.accountDept = accountDept;
-	}
 
 	public static HRDepartment getHrDept() {
 		return hrDept;
@@ -81,6 +78,23 @@ public class Session {
 	public static void setSem(Semester sem) {
 		Session.sem = sem;
 	}
+
+	public static AccountsDepartment getAccountsDept() {
+		return accountsDept;
+	}
+
+	public static void setAccountsDept(AccountsDepartment accountsDept) {
+		Session.accountsDept = accountsDept;
+	}
+
+	public static DAL getDal() {
+		return dal;
+	}
+
+	public static void setDal(DAL dal) {
+		Session.dal = dal;
+	}
+	
 	
 	
 	
