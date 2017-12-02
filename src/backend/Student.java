@@ -21,7 +21,7 @@ public class Student extends User{
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
 		this.fatherName = fatherName;
-		CGPA = cGPA;
+		this.CGPA = cGPA;
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
@@ -97,4 +97,67 @@ public class Student extends User{
 		return trans.getGrade(courseCode);
 	}
 
+	public ArrayList<CourseSection> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(ArrayList<CourseSection> courses) {
+		this.courses = courses;
+	}
+
+	public Transcript getTranscript() {
+		return trans;
+	}
+
+	public void setTranscript(Transcript transcript) {
+		this.trans = transcript;
+	}
+
+	
+	
+	
+	//////////////////////////REMOVE SECTION HELPER/////////////////////////////////
+	public boolean ifSectionExists(char SectionID)
+	{
+		
+		for(CourseSection cs : this.courses)
+		{
+			  if(cs.getSectionID()==SectionID)
+			  {
+			     return true;
+			  }
+		}
+	
+		return false;
+	}
+	
+	///////////////////////NOUMAN//////////////
+	
+	public boolean removeStudentCourseRegistration(CourseSection cs) {
+		if(this.courses.contains(cs)) {
+			this.courses.remove(cs);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean removeGradeFromTranscript(CourseSection cs,LGrade L) {
+		Grade g = new Grade(L,cs);
+		return this.trans.removeGrade(g);
+	}
+	
+	/*public void viewDetails()
+	{
+		super.viewDetails();
+		System.out.println("RollNo : \t" + rollNo);
+		System.out.println("FatherCNIC : \t" + fatherCNIC);
+		System.out.println("FatherName : \t" + fatherName);
+		System.out.println("CGPA : \t" + CGPA);
+		System.out.println("Credits Earned : \t" + creditsEarned);
+		System.out.println("Credits Attempted : \t" + creditsAttempted);
+		
+		
+    	
+	}*/
 }

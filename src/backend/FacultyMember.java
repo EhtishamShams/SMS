@@ -53,7 +53,7 @@ public class FacultyMember extends Staff {
 	public ArrayList<CourseSection> getCurrentSemesterCourseSections() {
 		ArrayList<CourseSection> sec;
 		School sch = Session.getSchl();
-		sec = sch.getCourseSection(this.empID);
+		sec = sch.getFacultyCourseSections(this.empID);
 		return sec;
 	}
 

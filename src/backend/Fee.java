@@ -18,6 +18,7 @@ public class Fee {
     private Student student = null;
     private Semester semester = null;
 
+
     public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
         this.amount = amount;
         this.datePaid = datePaid;

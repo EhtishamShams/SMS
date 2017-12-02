@@ -12,9 +12,9 @@ import java.sql.Date;
  * @author HumnaGul
  */
 public class Pay {
-    double amount;
-    Date datePaid = null;
-    Staff staffMember = null;
+    private double amount;
+    private Date datePaid = null;
+    private Staff staffMember = null;
 
     public Pay(double amount, Date datePaid, Staff st) {
         this.amount = amount;

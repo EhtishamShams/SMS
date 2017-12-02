@@ -43,6 +43,7 @@ public class AccountsDepartment extends Department{
         this.fees = fees;
     }
     
+
     public boolean checkPay(String empID, Date payDate) {
 		for (Pay p : pays) {
 			if (p.getStaffMember().getEmpID().equals(empID) && p.getDatePaid().equals(payDate))
@@ -89,5 +90,6 @@ public class AccountsDepartment extends Department{
 		else
 			return arr;
 	}
+
     
 }

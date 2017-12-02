@@ -53,6 +53,7 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 	
+
 	public Student getStudent(String rollNum) {
 		for (User u : users) {
 			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum)) 
@@ -160,6 +161,7 @@ public class AcademicInstitution {
 		return null;
 	}
 	
+
 	public School getStudentSchool(String rollNum) {
 		for (School s : schools) {
 			if (s.ifStudentExists(rollNum))
@@ -189,6 +191,5 @@ public class AcademicInstitution {
 			users.add(f);
 		}
 	}
-	
 
 }

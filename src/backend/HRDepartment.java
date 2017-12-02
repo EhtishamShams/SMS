@@ -41,8 +41,10 @@ public class HRDepartment extends Department{
     public void setAllotments(ArrayList<Allotment> allotments) {
         this.allotments = allotments;
     }
+    ///////////////////////////////////////////////////////////////////////////////////
     
-     //Helper function for add allotment 
+
+    //Helper function for add allotment 
     public Office getOffice(String Oid)
     {
     	
@@ -80,6 +82,27 @@ public class HRDepartment extends Department{
     }
     
     
+
+    
+
+
+    public boolean ifOfficeExists(String officeID) {
+    		for (Office o : offices) {
+    			if (o.getID().equals(officeID))
+    				return true;
+    		}
+    		return false;
+    }
+    
+    public boolean addOffice(Office o) {
+    		boolean check = Session.getDal().addOffice(o);
+    		if (check)
+    			offices.add(o);
+    		return check;
+    }
+
+    
+    
   //Helper for remove Allotment  (MUAZ)
     public boolean removeAllotment(Staff s)
     {
@@ -108,23 +131,6 @@ public class HRDepartment extends Department{
     	return false;
     }
 
-
-    public boolean ifOfficeExists(String officeID) {
-    		for (Office o : offices) {
-    			if (o.getID().equals(officeID))
-    				return true;
-    		}
-    		return false;
-    }
-    
-    public boolean addOffice(Office o) {
-    		boolean check = Session.getDal().addOffice(o);
-    		if (check)
-    			offices.add(o);
-    		return check;
-    }
-
-    
 }
 
 

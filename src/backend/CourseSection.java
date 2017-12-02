@@ -82,10 +82,6 @@ public class CourseSection {
 			return false;
 	}
 
-	public Course getCourse() {
-		return course;
-	}
-
 	public void setCourse(Course course) {
 		this.course = course;
 	}
@@ -98,8 +94,29 @@ public class CourseSection {
 		this.semester = semester;
 	}
 	
+	public Course getCourse() {
+		return course;
+	}
 	
+	public void removeStudentAttendance(Student student) {
+		for(Attendance attd: studentAttendances) {
+			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
+				studentAttendances.remove(attd);
+			}
+		}
+	}
+	///////////////////////////////////////////////////////////////////////////////////
 	
+	 public void setFaculty(FacultyMember f) {
+		 sectionTeacher=f;
+	 }
+	 
+	 public FacultyMember getFaculty() {
+		 return sectionTeacher;
+	 }
+	 
+	 
+	 
 	//helper for mark attendance
 	public boolean addAttendance(Attendance a)
 	{

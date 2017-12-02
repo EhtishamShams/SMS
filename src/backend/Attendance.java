@@ -16,19 +16,16 @@ public class Attendance{
     Date Day;
     Student student = null;
 
+    public Attendance(LAttendance status, Date Day, Student student)  {
+        this.status = status;
+        this.Day = Day;      
+        this.student = student;
+    }
 
     public Attendance()
     {
     	
     }
-    public Attendance(LAttendance atd, Date day2, Student s){
-		
-    	 this.status = atd;
-         this.Day = day2;
-         this.student = s;
-	}
-
-
 
 	public LAttendance getStatus() {
         return status;
@@ -45,7 +42,6 @@ public class Attendance{
     public void setDay(Date Day) {
         this.Day = Day;
     }
-    
 
     public Student getStudent() {
         return student;
@@ -54,9 +50,6 @@ public class Attendance{
     public void setStudent(Student student) {
         this.student = student;
     }
-    
-
-    
     
     
 }
