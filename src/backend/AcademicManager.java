@@ -52,19 +52,15 @@ public class AcademicManager extends Staff {
 	}
 
 	// hamza
-	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc,
+	public boolean updateCourse(String code, String name, int creditHours, String desc,
 			ArrayList<String> preReqs) {
-
+		
 		for (String pCrs : preReqs) {
 			if (pCrs.equals(code))
 				preReqs.remove(pCrs);
 		}
 
-		School s = null;
-		for (School sch : Session.getInst().getSchools()) {
-			if (sch.getId().equals(schoolID))
-				s = sch;
-		}
+		School s = Session.getInst().getCourseSchool(code);
 
 		// retrieving course object from school
 		Course crs = s.getCourse(code);
@@ -84,13 +80,9 @@ public class AcademicManager extends Staff {
 	}
 
 	// hamza
-	public boolean removeCourse(String schoolID, String code) {
+	public boolean removeCourse(String code) {
 
-		School s = null;
-		for (School sch : Session.getInst().getSchools()) {
-			if (sch.getId().equals(schoolID))
-				s = sch;
-		}
+		School s = Session.getInst().getCourseSchool(code);
 
 		// retrieving course object from school
 		Course crs = s.getCourse(code);
@@ -104,13 +96,9 @@ public class AcademicManager extends Staff {
 	}
 
 	// hamza
-	public boolean removeFaculty(String schoolID, String empID, String repEmpID) {
+	public boolean removeFaculty(String empID, String repEmpID) {
 
-		School sch = null;
-		for (School s : Session.getInst().getSchools()) {
-			if (s.getId().equals(schoolID))
-				sch = s;
-		}
+		School sch = Session.getInst().getFacultySchool(empID);
 
 		if (!sch.findFaculty(empID))
 			return false;
@@ -144,14 +132,10 @@ public class AcademicManager extends Staff {
 	}
 
 	// hamza
-	public boolean updateStudent(String schoolID, String rollNo, String name, Date DOB, String phone, String email,
+	public boolean updateStudent(String rollNo, String name, Date DOB, String phone, String email,
 			String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
 
-		School sch = null;
-		for (School s : Session.getInst().getSchools()) {
-			if (s.getId().equals(schoolID))
-				sch = s;
-		}
+		School sch = Session.getInst().getStudentSchool(rollNo);
 
 		Student std = sch.getStudent(rollNo);
 
@@ -169,13 +153,10 @@ public class AcademicManager extends Staff {
 	}
 
 	// hamza
-	public boolean removeStudent(String rollNo, String schoolID) {
+	public boolean removeStudent(String rollNo) {
 
-		School sch = null;
-		for (School s : Session.getInst().getSchools()) {
-			if (s.getId().equals(schoolID))
-				sch = s;
-		}
+		School sch = Session.getInst().getStudentSchool(rollNo);
+	
 
 		Student std = sch.getStudent(rollNo);
 
@@ -183,6 +164,18 @@ public class AcademicManager extends Staff {
 			return false;
 
 		return sch.removeStudent(std);
+	}
+	
+	public boolean isTeacherTeachingInCurrSem(String empID) {
+		
+		for(Course crs:Session.getInst().getFacultySchool(empID).getCourses()) {
+			for(CourseSection crsSec:crs.getSections()) {
+				if(crsSec.getTeacher().getEmpID().equals(empID)&& crsSec.getSemester() == Session.getSem())
+					return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

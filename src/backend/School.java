@@ -181,7 +181,7 @@ public class School {
 		}
 
 		// TODO: need to get replacement if the employee is currently teaching a course
-		// if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
+		// if(facM.getCurrentSemesterCourseSections()==null && repEmpID==null)
 		// return false;
 
 		if (!DAL.removeFaculty(empID, repEmpID))
@@ -213,23 +213,22 @@ public class School {
 				faculty.remove(fac);
 		}
 
-		// Replacing current courses
-		if (repEmpID != null) {
+		FacultyMember replacement = null;
 
-			FacultyMember replacement = null;
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID() == repEmpID)
+				replacement = fac;
+		}
 
-			for (FacultyMember fac : faculty) {
-				if (fac.getEmpID() == repEmpID)
-					replacement = fac;
-			}
-
-			for (Course crs : courses) {
-				for (CourseSection crsSec : crs.getSections()) {
-					if (crsSec.getSemester().getSession().equals(Session.getSem().getSession())
-							&& crsSec.getTeacher().getEmpID().equals(empID))
+		for (Course crs : courses) {
+			for (CourseSection crsSec : crs.getSections()) {
+				if (crsSec.getTeacher().getEmpID().equals(empID)) {
+					if(crsSec.getSemester().getSession().equals(Session.getSem().getSession()))
 						crsSec.setTeacher(replacement);
-
+					else
+						crsSec.setTeacher(null);
 				}
+
 			}
 		}
 
@@ -265,6 +264,22 @@ public class School {
 
 		students.remove(std);
 		return true;
+	}
+	
+	public boolean ifStudentExists(String rollNum) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNum))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean ifFacultyExists(String empID) {
+		for (FacultyMember f : faculty) {
+			if (f.getEmpID().equals(empID))
+				return true;
+		}
+		return false;
 	}
 	
 	public ArrayList<Course> getCoursesFromCode(ArrayList<String> code){

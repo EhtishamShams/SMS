@@ -114,7 +114,23 @@ public class AcademicInstitution {
 
 		return null;
 	}
-
+	
+	public School getStudentSchool(String rollNum) {
+		for (School s : schools) {
+			if (s.ifStudentExists(rollNum))
+				return s;
+		}
+		return null;
+	}
+	
+	public School getFacultySchool(String empID) {
+		for (School s : schools) {
+			if (s.ifFacultyExists(empID))
+				return s;
+		}
+		return null;
+	}
+	
 	public Student getStudent(String rollNo) {
 
 		for (School sch : schools) {
@@ -131,6 +147,15 @@ public class AcademicInstitution {
 			return sch.getCourse(code);
 		}
 
+		return null;
+	}
+
+	public School getCourseSchool(String code) {
+		for(School sch:schools) {
+			if(sch.getCourse(code)!=null)
+				return sch;
+		}
+		
 		return null;
 	}
 }
