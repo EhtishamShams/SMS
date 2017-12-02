@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class FacultyMember extends Staff {
 	
-	private ArrayList<String> degrees;
+	private ArrayList<String> degrees = null;
 	private String position;
 	
 	public FacultyMember(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,

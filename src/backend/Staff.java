@@ -11,7 +11,7 @@ import java.util.Date;
 public class Staff extends User{
 
 	protected String empID;
-	protected Date dateHired;
+	protected Date dateHired = null;
 	
 	public Staff(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired) {

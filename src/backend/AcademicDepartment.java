@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class AcademicDepartment extends Department{
 	
-    private ArrayList<Timetable> timeTables;
+    private ArrayList<Timetable> timeTables = null;
 
     public AcademicDepartment(ArrayList<Timetable> timeTables, String name, ArrayList<Staff> staff) {
         super(name, staff);

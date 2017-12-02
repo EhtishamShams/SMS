@@ -13,10 +13,10 @@ import java.util.*;
 public class AcademicInstitution {
 	private String name;
 	private String location;
-	private ArrayList<School> schools;
-	private ArrayList<User> users;
-	private ArrayList<Department> depts;
-	private ArrayList<Timetable> timetables;
+	private ArrayList<School> schools = null;
+	private ArrayList<User> users = null;
+	private ArrayList<Department> depts = null;
+	private ArrayList<Timetable> timetables = null;
 	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools,
 			ArrayList<User> users, ArrayList<Department> depts) {

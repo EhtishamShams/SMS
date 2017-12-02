@@ -13,7 +13,7 @@ public class Semester {
 	private String session;
 	private boolean active;
 	private float perCreditHrFee;
-	private Date feeDueDate;
+	private Date feeDueDate = null;
 
 	public Semester(String session, boolean active, float perCreditHrFee) {
 		super();

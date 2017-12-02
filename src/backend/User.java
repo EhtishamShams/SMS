@@ -19,7 +19,7 @@ public class User {
     
     protected String name;
     protected String password;
-    protected Date DOB;
+    protected Date DOB = null;
     protected String phoneNo;
     protected String email;
     protected String CNIC;

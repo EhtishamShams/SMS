@@ -11,8 +11,8 @@ public class Student extends User{
 	private float CGPA;
 	private int creditsEarned;
 	private int creditsAttempted;
-	private ArrayList<CourseSection> courses;
-	private Transcript trans;
+	private ArrayList<CourseSection> courses = null;
+	private Transcript trans = null;
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,

@@ -13,9 +13,9 @@ public class School {
 	
 	private String id;
 	private String name;
-	private ArrayList<FacultyMember> faculty;
-	private ArrayList<Student> students;
-	private ArrayList<Course> courses;
+	private ArrayList<FacultyMember> faculty = null;
+	private ArrayList<Student> students = null;
+	private ArrayList<Course> courses = null;
 	
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {

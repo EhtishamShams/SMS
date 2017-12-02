@@ -17,8 +17,8 @@ import dal.DBAccess;
  */
 public class HRDepartment extends Department{
     
-    private ArrayList<Office> offices;
-    private ArrayList<Allotment> allotments;
+    private ArrayList<Office> offices = null;
+    private ArrayList<Allotment> allotments = null;
 
     public HRDepartment(ArrayList<Office> offices, ArrayList<Allotment> allotments, String name, ArrayList<Staff> staff) {
         super(name, staff);

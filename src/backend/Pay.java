@@ -13,8 +13,8 @@ import java.sql.Date;
  */
 public class Pay {
     double amount;
-    Date datePaid;
-    Staff staffMember;
+    Date datePaid = null;
+    Staff staffMember = null;
 
     public Pay(double amount, Date datePaid, Staff st) {
         this.amount = amount;

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Department {
     
     protected String name;
-    protected ArrayList<Staff> staff;
+    protected ArrayList<Staff> staff = null;
 
     public String getName() {
         return name;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Transcript {
 	
-	private ArrayList<Grade> grades;
+	private ArrayList<Grade> grades = null;
 
 	public Transcript() {
 		this.grades = new ArrayList<>();

@@ -13,10 +13,10 @@ import java.sql.Date;
  */
 public class Fee {
     private double amount;
-    private Date datePaid;
-    private Date dueDate; 
-    private Student student;
-    private Semester semester;
+    private Date datePaid = null;
+    private Date dueDate = null; 
+    private Student student = null;
+    private Semester semester = null;
 
     public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
         this.amount = amount;
