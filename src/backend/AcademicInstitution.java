@@ -18,12 +18,12 @@ public class AcademicInstitution {
 	private ArrayList<User> users;
 	private ArrayList<Department> depts;
 
-	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users1,
+	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
 			ArrayList<Department> depts) {
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
-		this.users = users1;
+		this.users = users;
 		this.depts = depts;
 	}
 
