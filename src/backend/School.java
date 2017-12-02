@@ -13,9 +13,9 @@ public class School {
 	
 	private String id;
 	private String name;
-	private ArrayList<FacultyMember> faculty;
-	private ArrayList<Student> students;
-	private ArrayList<Course> courses;
+	private ArrayList<FacultyMember> faculty = null;
+	private ArrayList<Student> students = null;
+	private ArrayList<Course> courses = null;
 	
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
@@ -60,6 +60,22 @@ public class School {
 
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
+	}
+	
+	public boolean ifStudentExists(String rollNum) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNum))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean ifFacultyExists(String empID) {
+		for (FacultyMember f : faculty) {
+			if (f.getEmpID().equals(empID))
+				return true;
+		}
+		return false;
 	}
 	
 	

@@ -15,7 +15,7 @@ public class Attendance{
     LAttendance status;
     Date Day;
     //CourseSection section;
-    Student student;
+    Student student = null;
 
     public Attendance(LAttendance status, Date Day, Student student) { //, CourseSection section ) {
         this.status = status;

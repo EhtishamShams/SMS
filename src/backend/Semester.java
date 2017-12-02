@@ -3,7 +3,7 @@
  */
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Ehtisham
@@ -11,11 +11,15 @@ import java.util.Date;
  */
 public class Semester {
 	private String session;
-	private Date year;
-	
-	public Semester(String session, Date year) {
+	private boolean active;
+	private double perCreditHrFee;
+	private Date feeDueDate = null;
+
+	public Semester(String session, boolean active, double perCreditHrFee, Date feeDueDate) {
 		this.session = session;
-		this.year = year;
+		this.active = active;
+		this.perCreditHrFee = perCreditHrFee;
+		this.feeDueDate = feeDueDate;
 	}
 
 	public String getSession() {
@@ -26,12 +30,30 @@ public class Semester {
 		this.session = session;
 	}
 
-	public Date getYear() {
-		return year;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setYear(Date year) {
-		this.year = year;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
+
+	public double getPerCreditHrFee() {
+		return perCreditHrFee;
+	}
+
+	public void setPerCreditHrFee(double perCreditHrFee) {
+		this.perCreditHrFee = perCreditHrFee;
+	}
+
+	public Date getFeeDueDate() {
+		return feeDueDate;
+	}
+
+	public void setFeeDueDate(Date feeDueDate) {
+		this.feeDueDate = feeDueDate;
+	}
+	
+	
 	
 }
