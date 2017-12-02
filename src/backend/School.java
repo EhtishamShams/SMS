@@ -266,6 +266,17 @@ public class School {
 		students.remove(std);
 		return true;
 	}
+	
+	public ArrayList<Course> getCoursesFromCode(ArrayList<String> code){
+		
+		ArrayList<Course> ret = new ArrayList<Course>();
+		
+		for(Course crs:courses) {
+			ret.add(crs);
+		}
+		
+		return ret;
+	}
 
 	// hamza
 	public FacultyMember getFacultyMember(String empID) {

@@ -25,10 +25,10 @@ public class AcademicManager extends Staff {
 
 	// hamza
 	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc,
-			ArrayList<Course> preReqs) {
+			ArrayList<String> preReqs) {
 
-		for (Course pCrs : preReqs) {
-			if (pCrs.getCourseCode().equals(code))
+		for (String pCrs : preReqs) {
+			if (pCrs.equals(code))
 				preReqs.remove(pCrs);
 		}
 
@@ -42,8 +42,10 @@ public class AcademicManager extends Staff {
 		if (s.ifCourseExists(code))
 			return false;
 
+		ArrayList<Course> crsPreReqs = s.getCoursesFromCode(preReqs);
+
 		// Creating new course object
-		Course crs = new Course(code, name, creditHours, desc, preReqs, true);
+		Course crs = new Course(code, name, creditHours, desc, crsPreReqs, true);
 
 		// Adds course in school
 		return s.addCourse(crs);
@@ -51,10 +53,10 @@ public class AcademicManager extends Staff {
 
 	// hamza
 	public boolean updateCourse(String schoolID, String code, String name, int creditHours, String desc,
-			ArrayList<Course> preReqs) {
+			ArrayList<String> preReqs) {
 
-		for (Course pCrs : preReqs) {
-			if (pCrs.getCourseCode().equals(code))
+		for (String pCrs : preReqs) {
+			if (pCrs.equals(code))
 				preReqs.remove(pCrs);
 		}
 
@@ -71,11 +73,13 @@ public class AcademicManager extends Staff {
 		if (crs == null)
 			return false;
 
-		if (!DAL.updateCourseDetails(name, creditHours, desc, preReqs, crs))
+		ArrayList<Course> crsPreReqs = s.getCoursesFromCode(preReqs);
+
+		if (!DAL.updateCourseDetails(name, creditHours, desc, crsPreReqs, crs))
 			return false;
 
 		// Updating in ArrayList
-		crs.updateDetails(name, creditHours, desc, preReqs);
+		crs.updateDetails(name, creditHours, desc, crsPreReqs);
 		return true;
 	}
 
