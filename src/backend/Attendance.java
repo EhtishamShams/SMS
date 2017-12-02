@@ -5,7 +5,7 @@
  */
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -14,17 +14,23 @@ import java.util.Date;
 public class Attendance{
     LAttendance status;
     Date Day;
-    //CourseSection section;
     Student student = null;
 
-    public Attendance(LAttendance status, Date Day, Student student) { //, CourseSection section ) {
-        this.status = status;
-        this.Day = Day;
-        //this.section = section;
-        this.student = student;
-    }
 
-    public LAttendance getStatus() {
+    public Attendance()
+    {
+    	
+    }
+    public Attendance(LAttendance atd, Date day2, Student s){
+		
+    	 this.status = atd;
+         this.Day = day2
+         this.student = s;
+	}
+
+
+
+	public LAttendance getStatus() {
         return status;
     }
 
@@ -39,14 +45,7 @@ public class Attendance{
     public void setDay(Date Day) {
         this.Day = Day;
     }
-
-//    public CourseSection getSection() {
-//        return section;
-//    }
-//
-//    public void setSection(CourseSection section) {
-//        this.section = section;
-//    }
+    
 
     public Student getStudent() {
         return student;
@@ -56,7 +55,7 @@ public class Attendance{
         this.student = student;
     }
     
-    
+
     
     
     

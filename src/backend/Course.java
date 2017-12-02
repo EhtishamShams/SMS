@@ -103,6 +103,18 @@ public class Course {
     	return false;
     }
     
+    public CourseSection getCourseSection(Semester s, char SecId)
+    {
+    	for(int i=0; i<this.sections.size();i++)
+    	{
+    		if( (this.sections.get(i).semester.equals(s))  &&  (this.sections.get(i).getSectionID()==SecId)  )
+    		{
+    			return this.sections.get(i);
+    		}
+    		
+    	}
+    	return null;
+    }
     
     
 }

@@ -1,6 +1,7 @@
 package backend;
-import java.util.*;
 
+import java.util.*;
+import dal.DAL;
 /**
  * 
  */
@@ -13,12 +14,14 @@ import java.util.*;
 public class AcademicInstitution {
 	private String name;
 	private String location;
+
 	private ArrayList<School> schools = null;
 	private ArrayList<User> users = null;
 	private ArrayList<Department> depts = null;
 	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools,
 			ArrayList<User> users, ArrayList<Department> depts) {
+
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
@@ -112,6 +115,50 @@ public class AcademicInstitution {
 	public void setSchools(ArrayList<School> schools) {
 		this.schools = schools;
 	}
+
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+	// helper function to return the school from the id
+
+	public boolean updateSchool(String id, String n) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id)) {
+				schools.get(i).setName(n);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean Validate(String id, String n) {
+		boolean check = true;
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id) || this.schools.get(i).getName().equals(n)) {
+				check = false;
+			}
+		}
+		 check=DAL.updateSchoolDB(id,n);
+		if (check) {
+			School temp = new School(id, n);
+			schools.add(temp);
+
+		}
+		return check;
+	}
+
+	public School getSchoolByName(String name) {
+		for (int i = 0; i < this.schools.size(); i++) {
+			if (schools.get(i).getName().equals(name))
+				return schools.get(i);
+		}
+		return null;
+	}
 	
 	public School getStudentSchool(String rollNum) {
 		for (School s : schools) {
@@ -143,7 +190,5 @@ public class AcademicInstitution {
 		}
 	}
 	
-	
-	
-}
 
+}

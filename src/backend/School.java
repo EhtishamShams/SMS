@@ -25,6 +25,14 @@ public class School {
 		this.students = students;
 		this.courses = courses;
 	}
+	
+	public School(String sid, String n) {
+		this.id = sid;
+		this.name = n;
+		this.faculty = new ArrayList<FacultyMember>();
+		this.students = new ArrayList<Student>();
+		this.courses = new ArrayList<Course>();
+	}
 
 	public String getId() {
 		return id;
@@ -62,6 +70,21 @@ public class School {
 		this.courses = courses;
 	}
 	
+
+	//helper for mark attendance
+	public Student getStudent(String s)
+	{
+		for(int i=0 ; i< this.students.size();i++)
+		{
+			if(this.students.get(i).getRollNo().equals(s))
+			{
+				return this.students.get(i);
+			}
+			
+		}
+		return null;
+	}
+
 	public boolean ifStudentExists(String rollNum) {
 		for (Student s : students) {
 			if (s.getRollNo().equals(rollNum))
@@ -78,6 +101,41 @@ public class School {
 		return false;
 	}
 	
-	
 
+	
+	//helper for mark attendance
+	public Course getCourse(String s)
+	{
+		for(int i=0 ; i< this.courses.size();i++)
+		{
+			if(this.courses.get(i).getCourseCode().equals(s))
+			{
+				return this.courses.get(i);
+			}
+			
+		}
+		return null;
+	}
+	
+	
+   public  ArrayList<CourseSection> getCourseSection(String id)
+   {
+	   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
+	   Semester current=Session.getSem();  
+	    
+	   for(int i=0; i<this.courses.size();i++)   
+	   {
+		   for(int j=0;j<courses.get(i).getSections().size();j++)
+		   {
+			   if(courses.get(i).getSections().get(j).sectionTeacher.empID.equals(id)  &&  courses.get(i).getSections().get(j).semester.getSession().equals(current.getSession()))
+			   {
+				   sec.add(courses.get(i).getSections().get(j));
+			   }
+			   
+		   }
+	   }
+   
+	   return sec;
+	   
+   }
 }

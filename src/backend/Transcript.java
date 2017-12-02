@@ -15,7 +15,6 @@ public class Transcript {
 	}
 	
 	
-
 	public ArrayList<Grade> getGrades() {
 		return grades;
 	}

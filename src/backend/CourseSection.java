@@ -1,5 +1,6 @@
 package backend;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class CourseSection {
@@ -31,6 +32,10 @@ public class CourseSection {
 		this.studentAttendances = studentAttendances;
 	}
 
+	public Course getCourse()
+	{
+		return this.course;
+	}
 	public int getMaxSeats() {
 		return maxSeats;
 	}
@@ -65,6 +70,10 @@ public class CourseSection {
 			return false;
 			
 	}
+    public void addAtd(Attendance a)
+    {
+    	this.studentAttendances.add(a);
+    }
 	
 	public boolean decrementCurrSeats() {
 		if(currSeats!=0)
@@ -94,5 +103,25 @@ public class CourseSection {
 	
 	
 	
+	//helper for mark attendance
+	public boolean addAttendance(Attendance a)
+	{
+		this.studentAttendances.add(a);
+		return true;
+	}
 	 
+	public ArrayList<Attendance>getAttendance(Date day)
+	{
+		ArrayList<Attendance> atd= new ArrayList<Attendance>();
+		
+		for(int i=0;i<this.studentAttendances.size();i++)
+		{
+			if(studentAttendances.get(i).Day.equals(day))
+			{
+				atd.add(studentAttendances.get(i));
+			}
+				
+		}
+		return atd;
+	}
 }

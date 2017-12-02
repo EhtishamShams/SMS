@@ -3,6 +3,7 @@
  */
 package backend;
 
+
 import dal.DAL;
 
 /**
@@ -61,6 +62,7 @@ public class Session {
 		Session.acdDept = acdDept;
 	}
 
+
 	public static HRDepartment getHrDept() {
 		return hrDept;
 	}
@@ -92,7 +94,6 @@ public class Session {
 	public static void setDal(DAL dal) {
 		Session.dal = dal;
 	}
-	
 	
 	
 	

@@ -27,6 +27,8 @@ public class AcademicDepartment extends Department{
     public void setTimeTables(ArrayList<Timetable> timetables) {
         this.timetables = timetables;
     }
+
+
     
     public Timetable getTimetable(String schoolID, String semID) {
 		for (Timetable t : timetables) {
