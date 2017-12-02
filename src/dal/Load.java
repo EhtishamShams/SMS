@@ -122,6 +122,13 @@ public class Load {
 				sch.getStudents().add(std);
 			}
 			
+			//Adding into users array
+			for(School sch:Session.getInst().getSchools()) {
+				for(Student std:sch.getStudents()) {
+					Session.getInst().getUsers().add(std);
+				}
+			}
+			
 		}
 		catch(Exception e) {
 			
