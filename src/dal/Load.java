@@ -352,11 +352,11 @@ public class Load {
 		Session.setAccountsDept(new AccountsDepartment(new ArrayList<Pay>(), new ArrayList<Fee>(),
 				new String(DType.Accounts.toString()), loadFinanceStaff()));
 
-		for (Staff st : Session.getAccountDept().getStaff()) {
+		for (Staff st : Session.getAccountsDept().getStaff()) {
 			Session.getInst().getUsers().add(st);
 		}
 
-		Session.getInst().getDepts().add(Session.getAccountDept());
+		Session.getInst().getDepts().add(Session.getAccountsDept());
 	}
 
 	private ArrayList<Staff> loadFinanceStaff() {
@@ -441,7 +441,7 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAccountDept().getPays()
+				Session.getAccountsDept().getPays()
 						.add(new Pay(rs.getDouble(1), rs.getDate(2), Session.getInst().getStaff(rs.getString(3))));
 			}
 
@@ -460,7 +460,7 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAccountDept().getFees().add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3),
+				Session.getAccountsDept().getFees().add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3),
 						Session.getInst().getStudent(rs.getString(4)), Session.getInst().getSemester(rs.getString(5))));
 			}
 

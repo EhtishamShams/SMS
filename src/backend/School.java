@@ -206,9 +206,9 @@ public class School {
 		}
 		
 		//Removing Pay
-		for(Pay pay:Session.getAccountDept().getPays()) {
+		for(Pay pay:Session.getAccountsDept().getPays()) {
 			if(pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
-				Session.getAccountDept().getPays().remove(pay);
+				Session.getAccountsDept().getPays().remove(pay);
 		}
 		
 		//Removing From School
@@ -262,9 +262,9 @@ public class School {
 		}
 		
 		//Removing Fee
-		for(Fee fee:Session.getAccountDept().getFees()) {
+		for(Fee fee:Session.getAccountsDept().getFees()) {
 			if(fee.getStudent()==std)
-				Session.getAccountDept().getFees().remove(fee);
+				Session.getAccountsDept().getFees().remove(fee);
 		}
 		
 		students.remove(std);

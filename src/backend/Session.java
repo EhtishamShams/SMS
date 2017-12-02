@@ -18,7 +18,7 @@ public class Session {
 	private static AcademicInstitution inst = null;
 	private static School schl = null;
 	private static AcademicDepartment acdDept = null;
-	private static AccountsDepartment accountDept = null;
+	private static AccountsDepartment accountsDept = null;
 	private static HRDepartment hrDept = null;
 	private static Semester sem = null;
 	
@@ -81,12 +81,12 @@ public class Session {
 		Session.acdDept = acdDept;
 	}
 
-	public static AccountsDepartment getAccountDept() {
-		return accountDept;
+	public static AccountsDepartment getAccountsDept() {
+		return accountsDept;
 	}
 
 	public static void setAccountsDept(AccountsDepartment accountDept) {
-		Session.accountDept = accountDept;
+		Session.accountsDept = accountDept;
 	}
 
 	public static HRDepartment getHrDept() {
