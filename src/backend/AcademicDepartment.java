@@ -7,27 +7,25 @@ package backend;
 
 import java.util.ArrayList;
 
-
 /**
  *
  * @author hamza
  */
-public class AcademicDepartment extends Department{
-	
-    private ArrayList<Timetable> timeTables;
+public class AcademicDepartment extends Department {
 
-    public AcademicDepartment(ArrayList<Timetable> timeTables, String name, ArrayList<Staff> staff) {
-        super(name, staff);
-        this.timeTables = timeTables;
-    }
+	private ArrayList<Timetable> timeTables;
+
+	public AcademicDepartment(ArrayList<Timetable> timeTables, String name, ArrayList<Staff> staff) {
+		super(name, staff);
+		this.timeTables = timeTables;
+	}
 
 	public ArrayList<Timetable> getTimeTables() {
-        return timeTables;
-    }
+		return timeTables;
+	}
 
-    public void setTimeTables(ArrayList<Timetable> timeTables) {
-        this.timeTables = timeTables;
-    }
-    
-    
+	public void setTimeTables(ArrayList<Timetable> timeTables) {
+		this.timeTables = timeTables;
+	}
+
 }

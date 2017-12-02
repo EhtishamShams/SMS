@@ -12,56 +12,54 @@ import java.util.Date;
  * @author HumnaGul
  */
 public class Fee {
-    double amount;
-    Date datePaid;
-    Date dueDate; 
-    Student student;
-    Semester semester;
+	double amount;
+	Date datePaid;
+	Date dueDate;
+	Student student;
+	Semester semester;
 
-    public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
-        this.amount = amount;
-        this.datePaid = datePaid;
-        this.dueDate = dueDate;
-        this.student = st;
-        this.semester = sem;
-    }
+	public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
+		this.amount = amount;
+		this.datePaid = datePaid;
+		this.dueDate = dueDate;
+		this.student = st;
+		this.semester = sem;
+	}
 
-    public double getAmount() {
-        return amount;
-    }
+	public double getAmount() {
+		return amount;
+	}
 
-    public boolean setAmount(double amount) {
-        boolean set=false;
-        if(amount>-1)
-        {
-            this.amount = amount;
-            set=true;
-        }
-        return set;
-    }
+	public boolean setAmount(double amount) {
+		boolean set = false;
+		if (amount > -1) {
+			this.amount = amount;
+			set = true;
+		}
+		return set;
+	}
 
-    public Date getDatePaid() {
-        return datePaid;
-    }
+	public Date getDatePaid() {
+		return datePaid;
+	}
 
-    public boolean setDatePaid(Date datePaid) {
-        this.datePaid = datePaid;
-        return true;
-    }
+	public boolean setDatePaid(Date datePaid) {
+		this.datePaid = datePaid;
+		return true;
+	}
 
-    public Date getDueDate() {
-        return dueDate;
-    }
+	public Date getDueDate() {
+		return dueDate;
+	}
 
-    public boolean setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-        return true;
-        
-    }
-    
-    public Student getStudent() {
-    	return student;
-    }
-    
-    
+	public boolean setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+		return true;
+
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
 }

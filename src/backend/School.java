@@ -16,13 +16,13 @@ import java.sql.*;
  *
  */
 public class School {
-	
+
 	private String id;
 	private String name;
 	private ArrayList<FacultyMember> faculty;
 	private ArrayList<Student> students;
 	private ArrayList<Course> courses;
-	
+
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
 		this.id = id;
@@ -39,14 +39,14 @@ public class School {
 	public String getName() {
 		return name;
 	}
-	
+
 	public Course getCourse(String code) {
-		
-		for(Course c:this.courses) {
-			if(c.getCourseCode().equals(code))
+
+		for (Course c : this.courses) {
+			if (c.getCourseCode().equals(code))
 				return c;
 		}
-		
+
 		return null;
 	}
 
@@ -77,211 +77,204 @@ public class School {
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean validateStudent(String CNIC) {
-		
-		for(Student st:students) {
-			if(st.getCNIC().equals(CNIC))
+
+		for (Student st : students) {
+			if (st.getCNIC().equals(CNIC))
 				return false;
 		}
-		
+
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean validateUpdateStudent(String CNIC, Student obj) {
-		
-		for(Student st:students) {
-			if(st.getCNIC().equals(CNIC) && st!=obj)
+
+		for (Student st : students) {
+			if (st.getCNIC().equals(CNIC) && st != obj)
 				return false;
 		}
-		
+
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean ifCourseExists(String code) {
-		
-		for(Course c:this.courses) {
-			if(c.getCourseCode().equals(code))
+
+		for (Course c : this.courses) {
+			if (c.getCourseCode().equals(code))
 				return true;
 		}
 		return false;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean findFaculty(String empID) {
-		
-		for(FacultyMember FM:faculty) {
-			if(FM.getEmpID().equals(empID))
+
+		for (FacultyMember FM : faculty) {
+			if (FM.getEmpID().equals(empID))
 				return true;
 		}
-		
+
 		return false;
 	}
-	
-	//hamza
+
+	// hamza
 	public Student getStudent(String rollNo) {
-		
-		for(Student stu:students) {
-			if(stu.getRollNo().equals(rollNo))
+
+		for (Student stu : students) {
+			if (stu.getRollNo().equals(rollNo))
 				return stu;
 		}
-		
+
 		return null;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean addCourse(Course c) {
-		
-		//Adding in database
-		if(!DAL.addCourse(c, this))
+
+		// Adding in database
+		if (!DAL.addCourse(c, this))
 			return false;
-		
-		//Adding in ArrayList
+
+		// Adding in ArrayList
 		this.courses.add(c);
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean addStudent(Student std) {
-		
-		if(!DAL.addStudent(std, this))
+
+		if (!DAL.addStudent(std, this))
 			return false;
-		
+
 		students.add(std);
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean removeCourse(Course c) {
-		
-		if(!DAL.removeCourse(c))
+
+		if (!DAL.removeCourse(c))
 			return false;
-		
-		for(CourseSection cSec:c.getSections()) {
-			if(cSec.getSemester().getSession().equals(Session.getSem().getSession()))
-				;//TODO: Call Humna's RemoveCourseSection function here on cSec
+
+		for (CourseSection cSec : c.getSections()) {
+			if (cSec.getSemester().getSession().equals(Session.getSem().getSession()))
+				;// TODO: Call Humna's RemoveCourseSection function here on cSec
 		}
-		
-		
+
 		c.setIsOffered(false);
-		
+
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean removeFaculty(String empID, String repEmpID) {
-		
+
 		FacultyMember facM = null;
-		
-		for(FacultyMember fac:faculty) {
-			if(fac.getEmpID()==empID)
+
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID() == empID)
 				facM = fac;
 		}
-		
-		//TODO: need to get replacement if the employee is currently teaching a course
-		//if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
-			//return false;
-		
-		if(!DAL.removeFaculty(empID, repEmpID))
+
+		// TODO: need to get replacement if the employee is currently teaching a course
+		// if(facM.getCurrentSectionCourseSections()==null && repEmpID==null)
+		// return false;
+
+		if (!DAL.removeFaculty(empID, repEmpID))
 			return false;
-		
-		
-		
-		
-		//Removing Staff
-		for(Staff u:Session.getAcademicDept().getStaff()) {
-			if(u.getCNIC().equals(facM.getCNIC())) {
+
+		// Removing Staff
+		for (Staff u : Session.getAcademicDept().getStaff()) {
+			if (u.getCNIC().equals(facM.getCNIC())) {
 				Session.getInst().getUsers().remove(u);
 			}
 		}
-		
-		//Removing User
-		for(User u:Session.getInst().getUsers()) {
-			if(u.getCNIC().equals(facM.getCNIC())) {
+
+		// Removing User
+		for (User u : Session.getInst().getUsers()) {
+			if (u.getCNIC().equals(facM.getCNIC())) {
 				Session.getInst().getUsers().remove(u);
 			}
 		}
-		
-		//Removing Pay
-		for(Pay pay:Session.getAccountsDept().getPays()) {
-			if(pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
+
+		// Removing Pay
+		for (Pay pay : Session.getAccountsDept().getPays()) {
+			if (pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
 				Session.getAccountsDept().getPays().remove(pay);
 		}
-		
-		//Removing From School
-		for(FacultyMember fac:faculty) {
-			if(fac.getEmpID().equals(empID))
+
+		// Removing From School
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID().equals(empID))
 				faculty.remove(fac);
 		}
-		
-		//Replacing current courses
-		if(repEmpID!=null) {
-			
+
+		// Replacing current courses
+		if (repEmpID != null) {
+
 			FacultyMember replacement = null;
-			
-			for(FacultyMember fac:faculty) {
-				if(fac.getEmpID()==repEmpID)
+
+			for (FacultyMember fac : faculty) {
+				if (fac.getEmpID() == repEmpID)
 					replacement = fac;
 			}
-			
-			for(Course crs:courses) {
-				for(CourseSection crsSec:crs.getSections()) {
-					if(crsSec.getSemester().getSession().equals(Session.getSem().getSession()) && crsSec.getTeacher().getEmpID().equals(empID))
+
+			for (Course crs : courses) {
+				for (CourseSection crsSec : crs.getSections()) {
+					if (crsSec.getSemester().getSession().equals(Session.getSem().getSession())
+							&& crsSec.getTeacher().getEmpID().equals(empID))
 						crsSec.setTeacher(replacement);
-						
+
 				}
 			}
 		}
-		
-		
+
 		return true;
 	}
-	
-	//hamza
+
+	// hamza
 	public boolean removeStudent(Student std) {
-		
-		if(!DAL.removeStudent(std))
+
+		if (!DAL.removeStudent(std))
 			return false;
-		
-		//Removing User
-		for(User u:Session.getInst().getUsers()) {
-			if(u.getCNIC().equals(std.getCNIC())) {
+
+		// Removing User
+		for (User u : Session.getInst().getUsers()) {
+			if (u.getCNIC().equals(std.getCNIC())) {
 				Session.getInst().getUsers().remove(u);
 			}
 		}
-		
-		//Removing Attendance
-		for(CourseSection crs:std.getStudiedCourses()) {
-			for(Attendance att:crs.getStudentAttendance()) {
-				if(att.getStudent()==std)
+
+		// Removing Attendance
+		for (CourseSection crs : std.getStudiedCourses()) {
+			for (Attendance att : crs.getStudentAttendance()) {
+				if (att.getStudent() == std)
 					crs.getStudentAttendance().remove(att);
 			}
 		}
-		
-		//Removing Fee
-		for(Fee fee:Session.getAccountsDept().getFees()) {
-			if(fee.getStudent()==std)
+
+		// Removing Fee
+		for (Fee fee : Session.getAccountsDept().getFees()) {
+			if (fee.getStudent() == std)
 				Session.getAccountsDept().getFees().remove(fee);
 		}
-		
+
 		students.remove(std);
 		return true;
 	}
-	
-	
-	//hamza
+
+	// hamza
 	public FacultyMember getFacultyMember(String empID) {
-		for(FacultyMember fac:faculty) {
-			if(fac.getEmpID().equals(empID))
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID().equals(empID))
 				return fac;
 		}
-		
+
 		return null;
 	}
-	
-	
-	
+
 }

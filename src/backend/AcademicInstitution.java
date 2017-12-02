@@ -1,4 +1,5 @@
 package backend;
+
 import java.util.*;
 
 /**
@@ -17,9 +18,9 @@ public class AcademicInstitution {
 	private ArrayList<User> users;
 	private ArrayList<Department> depts;
 	private ArrayList<Semester> semesters;
-	
-	public AcademicInstitution(String name, String location, ArrayList<School> schools,
-			ArrayList<User> users, ArrayList<Department> depts, ArrayList<Semester> sems) {
+
+	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
+			ArrayList<Department> depts, ArrayList<Semester> sems) {
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
@@ -27,9 +28,9 @@ public class AcademicInstitution {
 		this.depts = depts;
 		this.semesters = sems;
 	}
-	
-	public ArrayList<School> getSchools(){
-		
+
+	public ArrayList<School> getSchools() {
+
 		return schools;
 	}
 
@@ -56,12 +57,12 @@ public class AcademicInstitution {
 	public void setDepts(ArrayList<Department> depts) {
 		this.depts = depts;
 	}
-	
-	public ArrayList<User> getUsers(){
-		
+
+	public ArrayList<User> getUsers() {
+
 		return users;
 	}
-	
+
 	public School getSchool(String sID) {
 		for (School s : schools) {
 			if (s.getId().equals(sID))
@@ -69,68 +70,67 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
-	
-	//hamza
+
+	// hamza
 	public Semester getSemester(String session) {
-		
-		for(Semester sem:semesters) {
-			if(sem.getSession().equals(session))
+
+		for (Semester sem : semesters) {
+			if (sem.getSession().equals(session))
 				return sem;
 		}
-		
+
 		return null;
 	}
-	
-	public ArrayList<Semester> getSemesters(){
+
+	public ArrayList<Semester> getSemesters() {
 		return semesters;
 	}
-	
-	//hamza
+
+	// hamza
 	public FacultyMember getFacultyMember(String empID) {
-		for(School sch:schools) {
-			for(FacultyMember FM:sch.getFaculty()) {
-				if(FM.getEmpID().equals(empID))
+		for (School sch : schools) {
+			for (FacultyMember FM : sch.getFaculty()) {
+				if (FM.getEmpID().equals(empID))
 					return FM;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public Staff getStaff(String empID) {
-		
-		for(School sch:schools) {
+
+		for (School sch : schools) {
 			Staff temp = sch.getFacultyMember(empID);
-			if(temp!=null)
+			if (temp != null)
 				return temp;
 		}
-		
-		for(Department dep:depts) {
+
+		for (Department dep : depts) {
 			Staff temp = dep.getStaffMember(empID);
-			if(temp!=null)
+			if (temp != null)
 				return temp;
 		}
-		
+
 		return null;
 	}
 
 	public Student getStudent(String rollNo) {
-		
-		for(School sch:schools) {
+
+		for (School sch : schools) {
 			Student temp = sch.getStudent(rollNo);
-			if(temp!=null)
+			if (temp != null)
 				return temp;
 		}
 		return null;
 	}
-	
+
 	public Course getCourse(String code) {
-		
-		for(School sch:schools) {
+
+		for (School sch : schools) {
 			return sch.getCourse(code);
 		}
-		
+
 		return null;
 	}
 }
-

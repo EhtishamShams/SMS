@@ -53,7 +53,5 @@ public class Semester {
 	public void setFeeDueDate(Date feeDueDate) {
 		this.feeDueDate = feeDueDate;
 	}
-	
-	
-	
+
 }

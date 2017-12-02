@@ -1,6 +1,6 @@
 package backend;
 
-public class Timetable{
+public class Timetable {
 
 	private String fileName;
 	private String filePath;
@@ -13,11 +13,11 @@ public class Timetable{
 		this.school = school;
 		this.semester = semester;
 	}
-	
+
 	public School getSchool() {
 		return school;
 	}
-	
+
 	public void setSchool(School school) {
 		this.school = school;
 	}
@@ -30,23 +30,19 @@ public class Timetable{
 		this.semester = semester;
 	}
 
-	public void setFileName(String fileName)
-	{
+	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
-	public String getFileName()
-	{
+
+	public String getFileName() {
 		return fileName;
 	}
-	
-	public void setFilePath(String filePath)
-	{
+
+	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	
-	public String getFilePath()
-	{
+
+	public String getFilePath() {
 		return filePath;
 	}
 

@@ -289,9 +289,9 @@ public class Load {
 		Session.getInst().getDepts().add(Session.getAcademicDept());
 		loadTimeTable();
 	}
-	
+
 	private void loadTimeTable() {
-		
+
 		try {
 			Connection conn = DBAccess.getConnection();
 
@@ -300,7 +300,8 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAcademicDept().getTimeTables().add(new Timetable(rs.getString(1), rs.getString(2), Session.getInst().getSchool(rs.getString(3)), Session.getInst().getSemester(rs.getString(4))));
+				Session.getAcademicDept().getTimeTables().add(new Timetable(rs.getString(1), rs.getString(2),
+						Session.getInst().getSchool(rs.getString(3)), Session.getInst().getSemester(rs.getString(4))));
 			}
 
 		} catch (Exception e) {
