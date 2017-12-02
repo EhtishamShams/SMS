@@ -41,7 +41,7 @@ public class FacultyMember extends Staff {
 		Student s = sch.getStudent(rollno);
 		
 		 int key= DAL.getSectionKey(cs.getSectionID(),cs.getCourse().getCourseCode(),sem.getSession());
-		Attendance at = new Attendance(atd, day, s, cs);
+		Attendance at = new Attendance(atd, day, s);
 
 		boolean check = cs.addAttendance(at);
 		if (check) {
@@ -77,14 +77,14 @@ public class FacultyMember extends Staff {
 		
 		
         String CID = b.getCourse().getCourseCode();
-		int key = DAL.getSectionKey(b.getSectionID(), CID, b.semester.getSession());
+		int key = DAL.getSectionKey(b.getSectionID(), CID, b.getSemester().getSession());
 		School sc = Session.getSchl();
 
 		for (int i = 0; i < sc.getStudents().size(); i++) {
 			for (int j = 0; j < sc.getStudents().get(i).getStudiedCourses().size(); j++) {
 
 				if (sc.getStudents().get(i).getStudiedCourses().get(j).equals(b)) {
-					Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i), b);
+					Attendance a = new Attendance(LAttendance.P, d, sc.getStudents().get(i));
 					b.addAtd(a);
 					DAL.addAttendanceDB(LAttendance.P, sc.getStudents().get(i).getRollNo(), key, d);
 				}

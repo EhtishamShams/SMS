@@ -127,7 +127,7 @@ public class School {
 	   {
 		   for(int j=0;j<courses.get(i).getSections().size();j++)
 		   {
-			   if(courses.get(i).getSections().get(j).sectionTeacher.empID.equals(id)  &&  courses.get(i).getSections().get(j).semester.getSession().equals(current.getSession()))
+			   if(courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id)  &&  courses.get(i).getSections().get(j).getSemester().getSession().equals(current.getSession()))
 			   {
 				   sec.add(courses.get(i).getSections().get(j));
 			   }

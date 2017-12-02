@@ -24,7 +24,7 @@ public class Attendance{
     public Attendance(LAttendance atd, Date day2, Student s){
 		
     	 this.status = atd;
-         this.Day = day2
+         this.Day = day2;
          this.student = s;
 	}
 

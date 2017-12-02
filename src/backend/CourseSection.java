@@ -26,16 +26,13 @@ public class CourseSection {
 		this.sectionID = sectionID;
 		this.maxSeats = maxSeats;
 		this.currSeats = currSeats;
-		this.sectionTeacher = sectionTeacher;
+		this.setSectionTeacher(sectionTeacher);
 		this.semester = semester;
 		this.course = course;
 		this.studentAttendances = studentAttendances;
 	}
 
-	public Course getCourse()
-	{
-		return this.course;
-	}
+	
 	public int getMaxSeats() {
 		return maxSeats;
 	}
@@ -123,5 +120,13 @@ public class CourseSection {
 				
 		}
 		return atd;
+	}
+
+	public FacultyMember getSectionTeacher() {
+		return sectionTeacher;
+	}
+
+	public void setSectionTeacher(FacultyMember sectionTeacher) {
+		this.sectionTeacher = sectionTeacher;
 	}
 }
