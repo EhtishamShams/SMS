@@ -16,7 +16,6 @@ public class AcademicInstitution {
 	private ArrayList<School> schools = null;
 	private ArrayList<User> users = null;
 	private ArrayList<Department> depts = null;
-	private ArrayList<Timetable> timetables = null;
 	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools,
 			ArrayList<User> users, ArrayList<Department> depts) {
@@ -134,14 +133,6 @@ public class AcademicInstitution {
 		for (School s : schools) {
 			if (s.getId().equals(sID))
 				return s;
-		}
-		return null;
-	}
-	
-	public Timetable getTimetable(String schoolID, String semID) {
-		for (Timetable t : timetables) {
-			if (t.getSchool().getId().equals(schoolID) && t.getSemester().getSession().equals(semID))
-				return t;
 		}
 		return null;
 	}
