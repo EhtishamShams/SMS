@@ -14,13 +14,13 @@ import java.util.Date;
 public class Attendance{
     LAttendance status;
     Date Day;
-    //CourseSection section;
+  
     Student student;
 
-    public Attendance(LAttendance status, Date Day, Student student) { //, CourseSection section ) {
+    public Attendance(LAttendance status, Date Day, Student student)  {
         this.status = status;
         this.Day = Day;
-        //this.section = section;
+        
         this.student = student;
     }
 
@@ -40,13 +40,6 @@ public class Attendance{
         this.Day = Day;
     }
 
-//    public CourseSection getSection() {
-//        return section;
-//    }
-//
-//    public void setSection(CourseSection section) {
-//        this.section = section;
-//    }
 
     public Student getStudent() {
         return student;
