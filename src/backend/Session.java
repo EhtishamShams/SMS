@@ -19,20 +19,19 @@ public class Session {
 	private static HRDepartment hrDept = null;
 	private static Semester sem = null;
 	private static DAL dal = null;
-	
-	
+
 	public static User getUser() {
 		return user;
 	}
-	
+
 	public static void setUser(User user) {
 		Session.user = user;
 	}
-	
+
 	public static UType getType() {
 		return type;
 	}
-	
+
 	public static void setType(UType type) {
 		Session.type = type;
 	}
@@ -92,6 +91,5 @@ public class Session {
 	public static void setDal(DAL dal) {
 		Session.dal = dal;
 	}
-	
-	
+
 }

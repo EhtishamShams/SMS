@@ -12,38 +12,36 @@ import java.sql.Date;
  * @author HumnaGul
  */
 public class Pay {
-    Double amount;
-    Date datePaid;
-    Staff staffMember;
+	Double amount;
+	Date datePaid;
+	Staff staffMember;
 
-    public Pay(Double amount, Date datePaid, Staff st) {
-        this.amount = amount;
-        this.datePaid = datePaid;
-        this.staffMember = st;
-    }
+	public Pay(Double amount, Date datePaid, Staff st) {
+		this.amount = amount;
+		this.datePaid = datePaid;
+		this.staffMember = st;
+	}
 
-    public Double getAmount() {
-        return amount;
-    }
+	public Double getAmount() {
+		return amount;
+	}
 
-    public boolean setAmount(Double amount) {
-        boolean set=false;
-        if(amount>-1)
-        {
-            this.amount = amount;
-            set=true;
-        }
-        return set;
-    }
+	public boolean setAmount(Double amount) {
+		boolean set = false;
+		if (amount > -1) {
+			this.amount = amount;
+			set = true;
+		}
+		return set;
+	}
 
-    public Date getDatePaid() {
-        return datePaid;
-    }
+	public Date getDatePaid() {
+		return datePaid;
+	}
 
-    public boolean setDatePaid(Date datePaid) {
-        this.datePaid = datePaid;
-        return true;
-    }
-    
-    
+	public boolean setDatePaid(Date datePaid) {
+		this.datePaid = datePaid;
+		return true;
+	}
+
 }

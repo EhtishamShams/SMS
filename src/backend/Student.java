@@ -3,7 +3,7 @@ package backend;
 import java.util.ArrayList;
 import java.sql.Date;
 
-public class Student extends User{
+public class Student extends User {
 
 	private String rollNo;
 	private String fatherCNIC;
@@ -13,11 +13,10 @@ public class Student extends User{
 	private int creditsAttempted;
 	public ArrayList<CourseSection> courses;
 	private Transcript transcript;
-	
-	
+
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses,Transcript transcript) {
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses, Transcript transcript) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
@@ -28,69 +27,70 @@ public class Student extends User{
 		this.courses = courses;
 		this.transcript = transcript;
 	}
-	
-	public ArrayList<CourseSection> getStudiedCourses()
-	{
+
+	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
+		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
+		this.rollNo = rollNo;
+		this.fatherCNIC = fatherCNIC;
+		this.fatherName = fatherName;
+		CGPA = cGPA;
+		this.creditsEarned = creditsEarned;
+		this.creditsAttempted = creditsAttempted;
+		this.courses = courses;
+		// this.transcript = new Transcript();
+	}
+
+	public ArrayList<CourseSection> getStudiedCourses() {
 		return courses;
 	}
-	
-	public String getRollNo() 
-	{
+
+	public String getRollNo() {
 		return rollNo;
 	}
 
-	public void setRollNo(String rollNo) 
-	{
+	public void setRollNo(String rollNo) {
 		this.rollNo = rollNo;
 	}
 
-	public String getFatherCNIC() 
-	{
+	public String getFatherCNIC() {
 		return fatherCNIC;
 	}
 
-	public void setFatherCNIC(String fatherCNIC) 
-	{
+	public void setFatherCNIC(String fatherCNIC) {
 		this.fatherCNIC = fatherCNIC;
 	}
 
-	public String getFatherName() 
-	{
+	public String getFatherName() {
 		return fatherName;
 	}
 
-	public void setFatherName(String fatherName) 
-	{
+	public void setFatherName(String fatherName) {
 		this.fatherName = fatherName;
 	}
 
-	public float getCGPA() 
-	{
+	public float getCGPA() {
 		return CGPA;
 	}
 
-	public void setCGPA(float CGPA) 
-	{
+	public void setCGPA(float CGPA) {
 		this.CGPA = CGPA;
 	}
 
-	public int getCreditsEarned() 
-	{
+	public int getCreditsEarned() {
 		return creditsEarned;
 	}
 
-	public void setCreditsEarned(int creditsEarned) 
-	{
+	public void setCreditsEarned(int creditsEarned) {
 		this.creditsEarned = creditsEarned;
 	}
 
-	public int getCreditsAttempted() 
-	{
+	public int getCreditsAttempted() {
 		return creditsAttempted;
 	}
 
-	public void setCreditsAttempted(int creditsAttempted) 
-	{
+	public void setCreditsAttempted(int creditsAttempted) {
 		this.creditsAttempted = creditsAttempted;
 	}
 
@@ -112,31 +112,32 @@ public class Student extends User{
 
 	public ArrayList<CourseSection> checkSemesterRegistrations(Semester sem) {
 		ArrayList<CourseSection> csList = new ArrayList<>();
-		
-		for(CourseSection cs:courses) {
-			if(cs.getSemester().getSession().equals(sem.getSession()))
+
+		for (CourseSection cs : courses) {
+			if (cs.getSemester().getSession().equals(sem.getSession()))
 				csList.add(cs);
 		}
-		
-		if(csList.size()==0)
+
+		if (csList.size() == 0)
 			return null;
-		
+
 		return csList;
 	}
-	
+
 	public boolean checkCoursesPassed(ArrayList<Course> cList) {
 		return transcript.checkCoursesPassed(cList);
 	}
-	
+
 	public void addStudentCourseRegistration(CourseSection cs) {
 		this.courses.add(cs);
 	}
-	
+
 	public boolean removeStudentCourseRegistration(CourseSection cs) {
-		
-		for(CourseSection sCS : courses) {
-			if(sCS.getCourse().getCourseCode().equals(cs.getCourse().getCourseCode()) &&
-					sCS.getSectionID()==cs.getSectionID() && sCS.getSemester().getSession().equals(cs.getSemester().getSession())) {
+
+		for (CourseSection sCS : courses) {
+			if (sCS.getCourse().getCourseCode().equals(cs.getCourse().getCourseCode())
+					&& sCS.getSectionID() == cs.getSectionID()
+					&& sCS.getSemester().getSession().equals(cs.getSemester().getSession())) {
 				this.courses.remove(sCS);
 				return true;
 			}
@@ -144,49 +145,48 @@ public class Student extends User{
 
 		return false;
 	}
-	
+
 	public void addGradeToTranscript(CourseSection cs, LGrade L) {
-		Grade g = new Grade(L,cs);
+		Grade g = new Grade(L, cs);
 		this.transcript.addGrade(g);
 	}
-	
-	public boolean removeGradeFromTranscript(CourseSection cs,LGrade L) {
-		Grade g = new Grade(L,cs);
+
+	public boolean removeGradeFromTranscript(CourseSection cs, LGrade L) {
+		Grade g = new Grade(L, cs);
 		return this.transcript.removeGrade(g);
 	}
-	
+
 	public void updateGradeSection(CourseSection oldCs, CourseSection newCs) {
 		this.transcript.updateGradeSection(oldCs, newCs);
 	}
-	
+
 	public boolean isRegistered(Course c, Semester sem) {
-		
-		for(CourseSection cs : this.checkSemesterRegistrations(sem)) {
-			if(cs.getCourse().getCourseCode().equals(c.getCourseCode()))
-					return true;
+
+		for (CourseSection cs : this.checkSemesterRegistrations(sem)) {
+			if (cs.getCourse().getCourseCode().equals(c.getCourseCode()))
+				return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean isPassed(Course c) {
-		if(this.transcript.checkCoursePassed(c))
+		if (this.transcript.checkCoursePassed(c))
 			return true;
 		else
 			return false;
 	}
-	
+
 	public CourseSection getRegisteredCourseSection(Course course, Semester sem) {
-		
-		for(CourseSection cs : courses) {
-			if(cs.getCourse().getCourseCode().equals(course.getCourseCode()) &&
-					cs.getSemester().getSession().equals(sem.getSession())){
+
+		for (CourseSection cs : courses) {
+			if (cs.getCourse().getCourseCode().equals(course.getCourseCode())
+					&& cs.getSemester().getSession().equals(sem.getSession())) {
 				return cs;
 			}
 		}
-		
+
 		return null;
 	}
-	
-	
+
 }

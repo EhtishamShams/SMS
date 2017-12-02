@@ -12,13 +12,13 @@ import dal.DAL;
  *
  */
 public class School {
-	
+
 	private String id;
 	private String name;
 	private ArrayList<FacultyMember> faculty;
 	private ArrayList<Student> students;
 	private ArrayList<Course> courses;
-	
+
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
 		this.id = id;
@@ -63,73 +63,69 @@ public class School {
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
 	}
-	
+
 	public Student getStudent(String rollNo) {
-		for(Student s : students)
-		{
-			if(s.getRollNo().equals(rollNo))
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNo))
 				return s;
 		}
-		
+
 		return null;
 	}
-	
+
 	public Course getCourse(String courseCode) {
-		for(Course c : courses)
-		{
-			if(c.getCourseCode().equals(courseCode))
+		for (Course c : courses) {
+			if (c.getCourseCode().equals(courseCode))
 				return c;
 		}
-		
+
 		return null;
 	}
-	
-	public CourseSection getCourseSection(Course c, char secID,Semester sem) {
-		return c.getCourseSection(secID,sem);
+
+	public CourseSection getCourseSection(Course c, char secID, Semester sem) {
+		return c.getCourseSection(secID, sem);
 	}
-	
-	public boolean registerStudentInCourse(Student s, Course c, CourseSection cs,Semester sem) {
-		
-		if(s.checkSemesterRegistrations(sem).size()<5)
-		{
+
+	public boolean registerStudentInCourse(Student s, Course c, CourseSection cs, Semester sem) {
+
+		if (s.checkSemesterRegistrations(sem).size() < 5) {
 			ArrayList<Course> prereq = c.getPrerequisites();
-			
+
 			boolean passed = s.checkCoursesPassed(prereq);
 			boolean seatAvailibility = cs.checkSeatAvailibility();
-			
-			if(passed && seatAvailibility) {
+
+			if (passed && seatAvailibility) {
 				int sectionKey = DAL.getSectionKey(cs.getSectionID(), c.getCourseCode(), sem.getSession());
-				
+
 				cs.incrementCurrSeats();
 				DAL.incrementCurrSeats(sectionKey);
-				
+
 				s.addStudentCourseRegistration(cs);
 				DAL.addStudentCourseRegistration(s.getRollNo(), sectionKey);
-				
+
 				s.addGradeToTranscript(cs, LGrade.I);
 				DAL.addGradeToTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
-				
+
 				return true;
-			}
-			else
+			} else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
-	
 
 	public boolean updateStudentCourseRegistration(Student s, CourseSection oldCs, CourseSection newCs, Semester sem) {
-		
-		if(newCs.checkSeatAvailibility()) {
-			int oldSectionKey = DAL.getSectionKey(oldCs.getSectionID(), oldCs.getCourse().getCourseCode(), sem.getSession());
-			int newSectionKey = DAL.getSectionKey(newCs.getSectionID(), newCs.getCourse().getCourseCode(), sem.getSession());
-			
+
+		if (newCs.checkSeatAvailibility()) {
+			int oldSectionKey = DAL.getSectionKey(oldCs.getSectionID(), oldCs.getCourse().getCourseCode(),
+					sem.getSession());
+			int newSectionKey = DAL.getSectionKey(newCs.getSectionID(), newCs.getCourse().getCourseCode(),
+					sem.getSession());
+
 			newCs.incrementCurrSeats();
 			DAL.incrementCurrSeats(newSectionKey);
 			oldCs.decrementCurrSeats();
 			DAL.decrementCurrSeats(oldSectionKey);
-			
+
 			s.addStudentCourseRegistration(newCs);
 			DAL.addStudentCourseRegistration(s.getRollNo(), newSectionKey);
 			s.removeStudentCourseRegistration(oldCs);
@@ -137,18 +133,17 @@ public class School {
 			oldCs.removeStudentAttendance(s);
 			s.updateGradeSection(oldCs, newCs);
 			DAL.updateGradeSection(LGrade.I.toString(), oldSectionKey, newSectionKey, s.getRollNo(), sem.getSession());
-			
+
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Semester sem) {
-		
+
 		int sectionKey = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
-		
-		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+
+		if (s.removeGradeFromTranscript(cs, LGrade.I) && s.removeStudentCourseRegistration(cs)) {
 			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
 			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
 			cs.removeStudentAttendance(s);
@@ -156,25 +151,31 @@ public class School {
 			cs.decrementCurrSeats();
 			DAL.decrementCurrSeats(sectionKey);
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	
-	public ArrayList<Course> getOfferedCourses(){
+
+	public ArrayList<Course> getOfferedCourses() {
 		ArrayList<Course> offeredCourses = new ArrayList<>();
-		
-		for(Course c : courses) {
-			if(c.getIsOffered())
+
+		for (Course c : courses) {
+			if (c.getIsOffered())
 				offeredCourses.add(c);
 		}
-		
-		if(offeredCourses.size()==0)
+
+		if (offeredCourses.size() == 0)
 			return null;
-		else 
+		else
 			return offeredCourses;
 	}
 
+	public FacultyMember getFacultyMember(String empID) {
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID().equals(empID))
+				return fac;
+		}
+
+		return null;
+	}
+
 }
-
-

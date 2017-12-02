@@ -12,14 +12,14 @@ import java.sql.Date;
 public class Semester {
 	private String session;
 	private boolean active;
-	private float perCreditHrFee;
-	private Date feeDueDate;
+	private double perCreditHrFee;
+	private Date feeDueDate = null;
 
-	public Semester(String session, boolean active, float perCreditHrFee) {
-		super();
+	public Semester(String session, boolean active, double perCreditHrFee, Date feeDueDate) {
 		this.session = session;
 		this.active = active;
 		this.perCreditHrFee = perCreditHrFee;
+		this.feeDueDate = feeDueDate;
 	}
 
 	public String getSession() {
@@ -38,11 +38,11 @@ public class Semester {
 		this.active = active;
 	}
 
-	public float getPerCreditHrFee() {
+	public double getPerCreditHrFee() {
 		return perCreditHrFee;
 	}
 
-	public void setPerCreditHrFee(float perCreditHrFee) {
+	public void setPerCreditHrFee(double perCreditHrFee) {
 		this.perCreditHrFee = perCreditHrFee;
 	}
 

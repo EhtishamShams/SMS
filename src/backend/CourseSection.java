@@ -3,7 +3,7 @@ package backend;
 import java.util.ArrayList;
 
 public class CourseSection {
-	
+
 	private char sectionID;
 	private int maxSeats;
 	private int currSeats;
@@ -11,14 +11,14 @@ public class CourseSection {
 	Semester semester;
 	Course course;
 	private ArrayList<Attendance> studentAttendances;
-	 
+
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
 		this.sectionID = sectionID;
 		this.maxSeats = maxSeats;
 		this.currSeats = 0;
 		this.studentAttendances = new ArrayList<Attendance>();
 	}
-	
+
 	public CourseSection(char sectionID, int maxSeats, int currSeats, FacultyMember sectionTeacher, Semester semester,
 			Course course, ArrayList<Attendance> studentAttendances) {
 		super();
@@ -60,55 +60,51 @@ public class CourseSection {
 	}
 
 	public boolean incrementCurrSeats() {
-		if(currSeats!=maxSeats)
-		{
+		if (currSeats != maxSeats) {
 			currSeats++;
 			return true;
-		}
-		else
+		} else
 			return false;
-			
+
 	}
-	
+
 	public boolean decrementCurrSeats() {
-		if(currSeats!=0)
-		{
+		if (currSeats != 0) {
 			currSeats--;
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	public Course getCourse() {
 		return course;
 	}
-	
+
 	public boolean checkSeatAvailibility() {
-		return (this.maxSeats>this.currSeats);
+		return (this.maxSeats > this.currSeats);
 	}
-	
-	public ArrayList<Attendance> getStudentAttendance(String rollNo){
+
+	public ArrayList<Attendance> getStudentAttendance(String rollNo) {
 		ArrayList<Attendance> attendance = new ArrayList<>();
-		
-		for(Attendance attd : studentAttendances) {
-			if(attd.getStudent().getRollNo().equals(rollNo)) {
+
+		for (Attendance attd : studentAttendances) {
+			if (attd.getStudent().getRollNo().equals(rollNo)) {
 				attendance.add(attd);
 			}
 		}
-		
-		if(attendance.size()==0)
+
+		if (attendance.size() == 0)
 			return null;
-		
+
 		return attendance;
 	}
-	
+
 	public void removeStudentAttendance(Student student) {
-		for(Attendance attd: studentAttendances) {
-			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
+		for (Attendance attd : studentAttendances) {
+			if (attd.getStudent().getRollNo().equals(student.getRollNo())) {
 				studentAttendances.remove(attd);
 			}
 		}
 	}
-	
+
 }

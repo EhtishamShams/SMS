@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Nouman
  */
 public class Course {
-    
+
 	private String courseCode;
 	private String courseName;
 	private int creditHours;
@@ -16,110 +16,119 @@ public class Course {
 	private ArrayList<CourseSection> sections;
 	private boolean isOffered;
 
-    public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {
-        this.courseCode = courseCode;
-        this.courseName = courseName;
-        this.creditHours = creditHours;
-        this.description = description;
-        this.prerequisites = prerequisites;
-        this.sections = new ArrayList<>();
-    }
-    
-    public Course(String courseCode, String courseName, int creditHours, String description,
-			ArrayList<Course> prerequisites, ArrayList<CourseSection> sections) {
+	public Course(String courseCode, String courseName, int creditHours, String description,
+			ArrayList<Course> prerequisites, boolean isOffered) {
+		this.courseCode = courseCode;
+		this.courseName = courseName;
+		this.creditHours = creditHours;
+		this.description = description;
+		this.prerequisites = prerequisites;
+		this.sections = new ArrayList<>();
+		this.isOffered = isOffered;
+	}
+
+	public Course(String courseCode, String courseName, int creditHours, String description,
+			ArrayList<Course> prerequisites, ArrayList<CourseSection> sections, boolean isOffered) {
 		this.courseCode = courseCode;
 		this.courseName = courseName;
 		this.creditHours = creditHours;
 		this.description = description;
 		this.prerequisites = prerequisites;
 		this.sections = sections;
+		this.isOffered = isOffered;
 	}
 
-    public boolean getIsOffered() {
-    	return isOffered;
-    }
+	public boolean getIsOffered() {
+		return isOffered;
+	}
 
 	public String getCourseCode() {
-        return courseCode;
-    }
+		return courseCode;
+	}
 
-    public String getCourseName() {
-        return courseName;
-    }
+	public String getCourseName() {
+		return courseName;
+	}
 
-    public int getCreditHours() {
-        return creditHours;
-    }
+	public int getCreditHours() {
+		return creditHours;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public ArrayList<Course> getPrerequisites() {
-        return prerequisites;
-    }
+	public ArrayList<Course> getPrerequisites() {
+		return prerequisites;
+	}
 
-    public ArrayList<CourseSection> getSections() {
-        return sections;
-    }
+	public ArrayList<CourseSection> getSections() {
+		return sections;
+	}
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
-    }
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
+	}
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
 
-    public void setCreditHours(int creditHours) {
-        this.creditHours = creditHours;
-    }
+	public void setCreditHours(int creditHours) {
+		this.creditHours = creditHours;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setPrerequisites(ArrayList<Course> prerequisites) {
-        this.prerequisites = prerequisites;
-    }
-    
-    public void setIsOffered(boolean isOffered) {
-    	this.isOffered = isOffered;
-    }
-    
-    public boolean updateDetails(String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {//, School courseSchool) {
-        this.courseName = courseName;
-        this.creditHours = creditHours;
-        this.description = description;
-        this.prerequisites = prerequisites;
-        return true;
-    }
-    
-    public boolean addCourseSection(CourseSection section) {
-    		this.sections.add(section);
-    		return true;
-    }
-    
-    public boolean ifSectionExists(char secID) {
-    	for(CourseSection s: this.sections)
-    	{
-    		if(s.getSectionID()==secID)
-    			return true;
-    	}
-    	
-    	return false;
-    }
-    
-    public CourseSection getCourseSection(char secID,Semester sem) {
-    	for(CourseSection cs : sections) {
-    		if(cs.getSectionID()==secID && cs.getSemester().getSession().equals(sem.getSession()))
-    			return cs;
-    	}
-    	
-    	return null;
-    }
-    
-    
-    
-    
+	public void setPrerequisites(ArrayList<Course> prerequisites) {
+		this.prerequisites = prerequisites;
+	}
+
+	public void setIsOffered(boolean isOffered) {
+		this.isOffered = isOffered;
+	}
+
+	public boolean updateDetails(String courseName, int creditHours, String description,
+			ArrayList<Course> prerequisites) {// , School courseSchool) {
+		this.courseName = courseName;
+		this.creditHours = creditHours;
+		this.description = description;
+		this.prerequisites = prerequisites;
+		return true;
+	}
+
+	public boolean addCourseSection(CourseSection section) {
+		this.sections.add(section);
+		return true;
+	}
+
+	public boolean ifSectionExists(char secID) {
+		for (CourseSection s : this.sections) {
+			if (s.getSectionID() == secID)
+				return true;
+		}
+
+		return false;
+	}
+
+	public CourseSection getCourseSection(char secID, Semester sem) {
+		for (CourseSection cs : sections) {
+			if (cs.getSectionID() == secID && cs.getSemester().getSession().equals(sem.getSession()))
+				return cs;
+		}
+
+		return null;
+	}
+
+	public CourseSection getCourseSection(String session, char secID) {
+		for (CourseSection cSec : sections) {
+			if (cSec.getSemester().getSession().equals(session) && cSec.getSectionID() == secID)
+				return cSec;
+		}
+
+		return null;
+	}
+
 }

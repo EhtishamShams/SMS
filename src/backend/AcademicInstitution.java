@@ -1,4 +1,5 @@
 package backend;
+
 import java.util.*;
 
 /**
@@ -16,9 +17,10 @@ public class AcademicInstitution {
 	private ArrayList<School> schools;
 	private ArrayList<User> users;
 	private ArrayList<Department> depts;
-	
-	public AcademicInstitution(String name, String location, ArrayList<School> schools,
-			ArrayList<User> users, ArrayList<Department> depts) {
+	private ArrayList<Semester> semesters;
+
+	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
+			ArrayList<Department> depts) {
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
@@ -49,30 +51,55 @@ public class AcademicInstitution {
 	public void setDepts(ArrayList<Department> depts) {
 		this.depts = depts;
 	}
-	
-	public ArrayList<School> getSchools(){
+
+	public ArrayList<School> getSchools() {
 		return schools;
 	}
-	
-	public FacultyMember getFacultyMember(String empID) {
-		for(School sch : schools) {
-			for(FacultyMember f : sch.getFaculty()) {
-				if(f.getEmpID().equals(empID))
-					return f;
-			}
+
+	public ArrayList<User> getUsers() {
+
+		return users;
+	}
+
+	public School getSchool(String sID) {
+		for (School s : schools) {
+			if (s.getId().equals(sID))
+				return s;
 		}
-		
 		return null;
 	}
-	
+
+	public Semester getSemester(String session) {
+
+		for (Semester sem : semesters) {
+			if (sem.getSession().equals(session))
+				return sem;
+		}
+
+		return null;
+	}
+
+	public ArrayList<Semester> getSemesters() {
+		return semesters;
+	}
+
 	public Student getStudent(String rollNum) {
 		for (User u : users) {
-			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum)) 
-				return (Student)u;
+			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum))
+				return (Student) u;
 		}
 		return null;
 	}
-	
-	
-}
 
+	public FacultyMember getFacultyMember(String empID) {
+		for (School sch : schools) {
+			for (FacultyMember FM : sch.getFaculty()) {
+				if (FM.getEmpID().equals(empID))
+					return FM;
+			}
+		}
+
+		return null;
+	}
+
+}

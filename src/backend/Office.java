@@ -10,26 +10,23 @@ package backend;
  * @author HumnaGul
  */
 public class Office {
-    String ID;
+	String ID;
 
-    public Office(String ID) {
-        this.ID = ID;
-    }
+	public Office(String ID) {
+		this.ID = ID;
+	}
 
-    public String getID() {
-        return ID;
-    }
+	public String getID() {
+		return ID;
+	}
 
-    public boolean setID(String ID) { 
-       boolean set=false;
-       if(!ID.isEmpty())
-       {
-           this.ID = ID;
-           set=true;
-       }
-        return set;
-    }
-    
-    
-         
+	public boolean setID(String ID) {
+		boolean set = false;
+		if (!ID.isEmpty()) {
+			this.ID = ID;
+			set = true;
+		}
+		return set;
+	}
+
 }

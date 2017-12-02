@@ -11,10 +11,10 @@ import dal.DAL;
  */
 
 public class FacultyMember extends Staff {
-	
+
 	private ArrayList<String> degrees;
 	private String position;
-	
+
 	public FacultyMember(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired, ArrayList<String> degrees,
 			String position) {
@@ -38,8 +38,8 @@ public class FacultyMember extends Staff {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	
-	public boolean updateDetails(String name, Date DOB, String phoneNo, String email,String CNIC,char gender,
+
+	public boolean updateDetails(String name, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, ArrayList<String> degrees, String position) {
 		this.name = name;
 		this.DOB = DOB;
@@ -51,12 +51,13 @@ public class FacultyMember extends Staff {
 		this.address = address;
 		this.degrees = degrees;
 		this.position = position;
-		
-		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, degrees, position);
-		
+
+		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
+				degrees, position);
+
 		return true;
 	}
-	
+
 	public Student getStudentAttendance(String rollNo) {
 		return Session.getInst().getStudent(rollNo);
 	}
