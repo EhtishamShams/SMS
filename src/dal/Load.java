@@ -14,7 +14,7 @@ public class Load {
 		try {
 			Connection conn = DBAccess.getConnection();
 			
-			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired, fm.Position, fm.SchoolID From User U join Staff S join facultymember fm";
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired, fm.Position, fm.SchoolID From User U join Staff S join facultymember fm on U.userID=S.userID and fm.empID = S.empID ";
 			PreparedStatement pst = conn.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			
@@ -97,11 +97,11 @@ public class Load {
 		try {
 			Connection conn = DBAccess.getConnection();
 			
-			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.rollNo, S.fathername, S.fathercnic, S.cgpa, S.creditsearned, S.creditsattempted, S.schoolID From User U join Student S";
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.rollNo, S.fathername, S.fathercnic, S.cgpa, S.creditsearned, S.creditsattempted, S.schoolID From User U join Student S on U.userID=S.UserID";
 			PreparedStatement pst = conn.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			
-			query = "Select CourseCode, Session, SectionID From CourseSection join studentcoursesection Where rollNo=?";
+			query = "Select CourseCode, Session, SectionID From CourseSection CS join studentcoursesection SCS on CS.sectionKey=SCS.sectionKey Where rollNo=?";
 			pst = conn.prepareStatement(query);
 			
 			while(rs.next()) {
@@ -205,7 +205,7 @@ public class Load {
 	public void loadAttendance() {
 		try {
 			Connection conn = DBAccess.getConnection();
-			String query = "Select A.status,A.rollNo, A.Day From attendance A join CourseSection CS where CS.SectionID=? and CS.Session=? and CS.CourseCode=?";
+			String query = "Select A.status,A.rollNo, A.Day From attendance A join CourseSection CS on A.sectionKey=CS.sectionKey where CS.SectionID=? and CS.Session=? and CS.CourseCode=?";
 			PreparedStatement pst = conn.prepareStatement(query);
 			
 			for(School sch:Session.getInst().getSchools()) {
