@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Department {
     
     protected String name;
-    protected ArrayList<Staff> staff;
+    protected ArrayList<Staff> staff = null;
 
     public String getName() {
         return name;
@@ -37,8 +37,9 @@ public class Department {
         this.staff = staff;
     }
     
+
   ///////////////////////////////////////////////////ADD STAFF HELPER//////////////////////////////////////////////////
-    protected int ifStaffExists(String id)
+    protected int ifStaffExistsByIndex(String id)
     {
     	int found = 0;
 		for(Staff s : this.staff)
@@ -61,17 +62,7 @@ public class Department {
     	return staff.add(f);
     }
     
-    protected Staff getEmp(String id)
-    {
-    	for(int i=0; i< staff.size();i++)
-    	{
-    		if(staff.get(i).getEmpID().equals(id))
-    		{
-    			return  staff.get(i);
-    		}		
-    	}
-    	return null;
-    }
+
     
     //////////////////////////////////////////REMOVE STAFF/////////////////////////////////////////////////////////
     protected boolean removestaff(String empID)
@@ -106,4 +97,16 @@ public class Department {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+
+	public Staff getEmp(String id) {
+		for (int i = 0; i < staff.size(); i++) {
+			if (staff.get(i).getEmpID().equals(id)) {
+				return staff.get(i);
+			}
+		}
+		return null;
+	}
+	
+	
+
 }

@@ -5,7 +5,11 @@
  */
 package backend;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import dal.DBAccess;
 
 /**
  *
@@ -13,8 +17,8 @@ import java.util.ArrayList;
  */
 public class HRDepartment extends Department{
     
-    private ArrayList<Office> offices;
-    private ArrayList<Allotment> allotments;
+    private ArrayList<Office> offices = null;
+    private ArrayList<Allotment> allotments = null;
 
     public HRDepartment(ArrayList<Office> offices, ArrayList<Allotment> allotments, String name, ArrayList<Staff> staff) {
         super(name, staff);
@@ -39,13 +43,14 @@ public class HRDepartment extends Department{
     }
     ///////////////////////////////////////////////////////////////////////////////////
     
+
     //Helper function for add allotment 
     public Office getOffice(String Oid)
     {
     	
     	for(int i=0 ; i<(this.offices.size());i++)
     	{  
-    		if(this.offices.get(i).getID()==Oid)
+    		if(this.offices.get(i).getID().equals(Oid))
     		{
     			return offices.get(i);
     			
@@ -77,6 +82,27 @@ public class HRDepartment extends Department{
     }
     
     
+
+    
+
+
+    public boolean ifOfficeExists(String officeID) {
+    		for (Office o : offices) {
+    			if (o.getID().equals(officeID))
+    				return true;
+    		}
+    		return false;
+    }
+    
+    public boolean addOffice(Office o) {
+    		boolean check = Session.getDal().addOffice(o);
+    		if (check)
+    			offices.add(o);
+    		return check;
+    }
+
+    
+    
   //Helper for remove Allotment  (MUAZ)
     public boolean removeAllotment(Staff s)
     {
@@ -104,4 +130,7 @@ public class HRDepartment extends Department{
     	}
     	return false;
     }
+
 }
+
+

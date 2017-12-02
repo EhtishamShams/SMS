@@ -10,8 +10,10 @@ package backend;
  * @author HumnaGul
  */
 public class Allotment {
-    private Office allotedOffice;
-    private Staff allotedTo;
+
+    private Office allotedOffice = null;
+    private Staff allotedTo = null;
+
 
     public Allotment(Office allotedOffice, Staff allotedTo) {
         this.allotedOffice = allotedOffice;

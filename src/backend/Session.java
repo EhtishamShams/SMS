@@ -93,5 +93,4 @@ public class Session {
 		Session.dal = dal;
 	}
 	
-	
 }

@@ -66,7 +66,7 @@ public class Main {
         ArrayList<FacultyMember>fm = new  ArrayList<FacultyMember>();
         fm.add(f);
         
-        Semester s=new Semester("Fall2017",d);
+        Semester s=new Semester("Fall2017",true, 0, d);
         
         CourseSection cs1= new CourseSection('A',50,50,f,s,c1,sa);
         CourseSection cs2= new CourseSection('B',50,50,f,s,c2,sa);
@@ -77,7 +77,7 @@ public class Main {
        
        
         Student std= new Student("Maheen","72863", d, "02020202021", "jun@hotmail.com", "35202-74547", 'F',
-        		"03884629231","56D2","L154164", "35202-98732-83734", "Khan", 3.76f,56, 34,cs);
+        		"03884629231","56D2","L154164", "35202-98732-83734", "Khan", 3.76f,56, 34,cs, null);
         ArrayList<Student>std1 = new  ArrayList<Student>();
         std1.add(std);
         

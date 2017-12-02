@@ -15,9 +15,9 @@ public class School {
 	
 	private String id;
 	private String name;
-	private ArrayList<FacultyMember> faculty;
-	private ArrayList<Student> students;
-	private ArrayList<Course> courses;
+	private ArrayList<FacultyMember> faculty = null;
+	private ArrayList<Student> students = null;
+	private ArrayList<Course> courses = null;
 	
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
@@ -26,6 +26,14 @@ public class School {
 		this.faculty = faculty;
 		this.students = students;
 		this.courses = courses;
+	}
+	
+	public School(String sid, String n) {
+		this.id = sid;
+		this.name = n;
+		this.faculty = new ArrayList<FacultyMember>();
+		this.students = new ArrayList<Student>();
+		this.courses = new ArrayList<Course>();
 	}
 
 	public String getId() {
@@ -64,10 +72,40 @@ public class School {
 		this.courses = courses;
 	}
 	
+
+	//helper for mark attendance
+//	public Student getStudent(String s)
+//	{
+//		for(int i=0 ; i< this.students.size();i++)
+//		{
+//			if(this.students.get(i).getRollNo().equals(s))
+//			{
+//				return this.students.get(i);
+//			}
+//			
+//		}
+//		return null;
+//	}
+
+	public boolean ifStudentExists(String rollNum) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNum))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean ifFacultyExists(String empID) {
+		for (FacultyMember f : faculty) {
+			if (f.getEmpID().equals(empID))
+				return true;
+		}
+		return false;
+	}
 	
 	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
 	
-	public int ifFacultyExists(String empID)                  //returning index instead of boolean bcoz coz it later is required for update
+	public int ifFacultyExistsByIndex(String empID)                  //returning index instead of boolean bcoz coz it later is required for update
 	{
 		int found = 0;
 		for(FacultyMember fm : this.faculty)
@@ -107,7 +145,7 @@ public class School {
 	
 	
 	////////////////SECTION//////////////////////////////////////////////////////////////////////////
-	public int courseExists(String code)
+	public int courseExistsByIndex(String code)
 	{
 		int found = 0;
 		for(Course c : this.courses)
@@ -206,4 +244,41 @@ public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Seme
 			return false;
 	}
 	
+	
+	//helper for mark attendance
+//	public Course getCourse(String s)
+//	{
+//		for(int i=0 ; i< this.courses.size();i++)
+//		{
+//			if(this.courses.get(i).getCourseCode().equals(s))
+//			{
+//				return this.courses.get(i);
+//			}
+//			
+//		}
+//		return null;
+//	}
+//	
+	
+   public  ArrayList<CourseSection> getFacultyCourseSections(String id)
+   {
+	   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
+	   Semester current=Session.getSem();  
+	    
+	   for(int i=0; i<this.courses.size();i++)   
+	   {
+		   for(int j=0;j<courses.get(i).getSections().size();j++)
+		   {
+			   if(courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id)  &&  courses.get(i).getSections().get(j).getSemester().getSession().equals(current.getSession()))
+			   {
+				   sec.add(courses.get(i).getSections().get(j));
+			   }
+			   
+		   }
+	   }
+   
+	   return sec;
+	   
+   }
+
 }

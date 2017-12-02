@@ -11,13 +11,12 @@ public class Student extends User{
 	private float CGPA;
 	private int creditsEarned;
 	private int creditsAttempted;
-	public ArrayList<CourseSection> courses;
-	private Transcript transcript;
-	
+	private ArrayList<CourseSection> courses = null;
+	private Transcript trans = null;
 	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses,Transcript transcript) {
+			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses, Transcript trans) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
 		this.rollNo = rollNo;
 		this.fatherCNIC = fatherCNIC;
@@ -26,7 +25,7 @@ public class Student extends User{
 		this.creditsEarned = creditsEarned;
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
-		this.transcript = transcript;
+		this.trans = trans;
 	}
 	
 	public ArrayList<CourseSection> getStudiedCourses()
@@ -93,6 +92,10 @@ public class Student extends User{
 	{
 		this.creditsAttempted = creditsAttempted;
 	}
+	
+	public Grade getCourseGrade(String courseCode) {
+		return trans.getGrade(courseCode);
+	}
 
 	public ArrayList<CourseSection> getCourses() {
 		return courses;
@@ -103,11 +106,11 @@ public class Student extends User{
 	}
 
 	public Transcript getTranscript() {
-		return transcript;
+		return trans;
 	}
 
 	public void setTranscript(Transcript transcript) {
-		this.transcript = transcript;
+		this.trans = transcript;
 	}
 
 	
@@ -141,7 +144,7 @@ public class Student extends User{
 	
 	public boolean removeGradeFromTranscript(CourseSection cs,LGrade L) {
 		Grade g = new Grade(L,cs);
-		return this.transcript.removeGrade(g);
+		return this.trans.removeGrade(g);
 	}
 	
 	/*public void viewDetails()

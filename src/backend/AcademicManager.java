@@ -5,10 +5,10 @@
  */
 package backend;
 
-import java.util.ArrayList;
-import java.util.Date;
 
 import dal.DAL;
+import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,17 +20,17 @@ public class AcademicManager extends Staff{
 			char gender, String emergencyContact, String address, String empID, Date dateHired) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
-	
+
 	////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
  boolean RegisterFaculty(String schoolid,String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, Date dateHired, ArrayList<String> degrees,
 			String position,String EmpID)
 	{
 	 	
-	    int index=Session.getHrDept().ifStaffExists(EmpID);
+	    int index=Session.getHrDept().ifStaffExistsByIndex(EmpID);
 	    if(index!=-1) {
 
-					 index=Session.getInst().getSchool(schoolid).ifFacultyExists(EmpID);
+					 index=Session.getInst().getSchool(schoolid).ifFacultyExistsByIndex(EmpID);
 			    	if(index!=-1)
 			    	{
 			    		Staff stf = new Staff(name,password,DOB, phoneNo, email,CNIC, gender, emergencyContact, address,EmpID,dateHired);
@@ -53,7 +53,7 @@ public class AcademicManager extends Staff{
    {
 	   int index=0; boolean secIndex=false; boolean add=false;
 	   ArrayList<Attendance> attendances=new ArrayList<Attendance>();
-	   index=Session.getInst().getSchool(schoolid).courseExists(c_code);
+	   index=Session.getInst().getSchool(schoolid).courseExistsByIndex(c_code);
 	   
 	   FacultyMember f= Session.getSchl().getFacultyfromList(EmpID);
 	   
@@ -98,7 +98,7 @@ public class AcademicManager extends Staff{
    protected boolean removeSection(String schoolid, String c_code , char sID)
    {
 	   int index=0; boolean secIndex=false; boolean remove=false;
-	   index=Session.getInst().getSchool(schoolid).courseExists(c_code);
+	   index=Session.getInst().getSchool(schoolid).courseExistsByIndex(c_code);
 	   if(index !=-1)
 	   {
 		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
@@ -145,7 +145,7 @@ public class AcademicManager extends Staff{
 	   int index=0; boolean secIndex=false; boolean update=false;
 	   
 	   FacultyMember nf=Session.getInst().getSchool(schoolid).getFacultyfromList(EmpID);
-	   index=Session.getSchl().courseExists(c_code);
+	   index=Session.getSchl().courseExistsByIndex(c_code);
 	   if(index !=-1)
 	   {
 		  Course tempcourse=Session.getSchl().getCourseFromCourses(index);
@@ -208,5 +208,26 @@ public class AcademicManager extends Staff{
    }
 
    
-   
+
+    
+    // function for updating school name 
+	boolean updateSchool(String id , String updatedName , AcademicInstitution a)
+	{
+		boolean check= false;
+		check=a.updateSchool(id,updatedName);
+			
+			if(check)
+			{
+				 DAL.updateSchoolDB(id,name);
+				return true;
+			}
+		return check;
+	}
+    //function for adding another school in the institution 
+	
+	boolean addSchool(String id, String name,AcademicInstitution a)
+	{
+		return a.Validate(id, name);
+	}
+	
 }

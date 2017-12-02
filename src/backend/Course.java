@@ -12,8 +12,8 @@ public class Course {
 	private String courseName;
 	private int creditHours;
 	private String description;
-	private ArrayList<Course> prerequisites;
-	private ArrayList<CourseSection> sections;
+	private ArrayList<Course> prerequisites = null;
+	private ArrayList<CourseSection> sections = null;
 
     public Course(String courseCode, String courseName, int creditHours, String description, ArrayList<Course> prerequisites) {
         this.courseCode = courseCode;
@@ -103,6 +103,7 @@ public class Course {
     	return false;
     }
     
+
     //////////////////////////////////////////////////////////////////////////////////////
     public boolean removeCourseSection(char secID) {
     	for(CourseSection s: this.sections){
@@ -123,6 +124,19 @@ public class Course {
     		}
     	}
     	return false;
+    }
+    
+    public CourseSection getCourseSection(Semester s, char SecId)
+    {
+    	for(int i=0; i<this.sections.size();i++)
+    	{
+    		if( (this.sections.get(i).getSemester().equals(s))  &&  (this.sections.get(i).getSectionID()==SecId)  )
+    		{
+    			return this.sections.get(i);
+    		}
+    		
+    	}
+    	return null;
     }
     
     /////////////////////////////////////////NOUMAN////////////////////////////////////
