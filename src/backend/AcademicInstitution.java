@@ -124,5 +124,13 @@ public class AcademicInstitution {
 		return null;
 	}
 	
+	public Course getCourse(String code) {
+		
+		for(School sch:schools) {
+			return sch.getCourse(code);
+		}
+		
+		return null;
+	}
 }
 

@@ -105,15 +105,20 @@ public class Session {
 		Session.sem = sem;
 	}
 	
-	public static void main(String[] args) {
-		DBAccess.createConnection();
-		initialize();
-		
-		for(School sch:Session.getInst().getSchools()) {
-			for(Student std:sch.getStudents()) {
-				System.out.println(std.computeCGPA());
-			}
-		}
-	}
+//	public static void main(String[] args) {
+//		DBAccess.createConnection();
+//		initialize();
+//		
+//		//for(School sch:Session.getInst().getCourse("1")) {
+//			
+//		for(School sch:Session.getInst().getSchools()) {
+//			for(Course crs:sch.getCourses()) {
+//				for(Course pre:crs.getPrerequisites())
+//					System.out.println(pre.getCourseCode());
+//			}
+//				
+//		}
+//		
+//	}
 	
 }

@@ -68,6 +68,31 @@ public class Load {
 			
 			System.out.println(e);
 		}
+		
+		for(School sch:Session.getInst().getSchools()) {
+			for(Course crs:sch.getCourses())
+				setCoursePreReqs(crs);
+		}
+	}
+	
+	private void setCoursePreReqs(Course crs) {
+		
+		try {
+			Connection conn = DBAccess.getConnection();
+			
+			String query = "Select preReqCode From courseprerequisites where CourseCode=?";
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, crs.getCourseCode());
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				crs.getPrerequisites().add(Session.getInst().getCourse(rs.getString(1)));
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
 	}
 	
 	private void loadCourseSection(Course crs, School sch) {
@@ -241,20 +266,23 @@ public class Load {
 	
 	public void loadHRDepartment() {
 		
-		Session.setHrDept(new HRDepartment(new ArrayList<Office>(), new ArrayList<Allotment>(), "HR Department", loadHRStaff()));
+		Session.setHrDept(new HRDepartment(new ArrayList<Office>(), new ArrayList<Allotment>(), new String(DType.HR.toString()), loadHRStaff()));
 		for(Staff st:Session.getHrDept().getStaff()) {
 			Session.getInst().getUsers().add(st);
 		}
 		loadOffices();
 		
+		Session.getInst().getDepts().add(Session.getHrDept());
 	}
 	
 	public void loadAcademicDepartment() {
-		Session.setAcdDept(new AcademicDepartment(new ArrayList<Timetable>(), "Academic Department", loadAcademicStaff()));
+		Session.setAcdDept(new AcademicDepartment(new ArrayList<Timetable>(), new String(DType.Academic.toString()), loadAcademicStaff()));
 		
 		for(Staff st:Session.getAcademicDept().getStaff()) {
 			Session.getInst().getUsers().add(st);
 		}
+		
+		Session.getInst().getDepts().add(Session.getAcademicDept());
 	}
 	
 	public void loadAllotments() {
@@ -298,11 +326,13 @@ public class Load {
 	
 	public void loadAccountsDepartment() {
 		
-		Session.setAccountsDept(new AccountsDepartment(new ArrayList<Pay>(), new ArrayList<Fee>(), "Accounts Department", loadFinanceStaff()));
+		Session.setAccountsDept(new AccountsDepartment(new ArrayList<Pay>(), new ArrayList<Fee>(), new String(DType.Accounts.toString()), loadFinanceStaff()));
 		
 		for(Staff st:Session.getAccountDept().getStaff()) {
 			Session.getInst().getUsers().add(st);
 		}
+		
+		Session.getInst().getDepts().add(Session.getAccountDept());
 	}
 	
 	private ArrayList<Staff> loadFinanceStaff(){
