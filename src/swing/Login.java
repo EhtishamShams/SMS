@@ -74,10 +74,10 @@ public class Login extends JFrame {
 		
 		txtEnterYourId = new JTextField();
 		txtEnterYourId.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		txtEnterYourId.setText("Enter your ID");
+		txtEnterYourId.setText("Enter your ID/Roll Number");
 		txtEnterYourId.setForeground(Color.WHITE);
 		txtEnterYourId.setBackground(new Color(36,47,65));
-		txtEnterYourId.setBounds(79, 149, 116, 22);
+		txtEnterYourId.setBounds(79, 149, 175, 22);
 		txtEnterYourId.setBorder(null);
 		panel_1.add(txtEnterYourId);
 		txtEnterYourId.setColumns(10);
@@ -118,11 +118,18 @@ public class Login extends JFrame {
 		separator_1.setBounds(79, 266, 175, 10);
 		panel_1.add(separator_1);
 		
-		JButton btnNewButton = new JButton("LOGIN");
+		JButton btnNewButton = new JButton("Staff Login");
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.setFont(new Font("Century Gothic", Font.PLAIN, 13));
 		btnNewButton.setBackground(new Color(97, 212, 195));
-		btnNewButton.setBounds(79, 307, 175, 48);
+		btnNewButton.setBounds(170, 307, 116, 48);
 		panel_1.add(btnNewButton);
+		
+		JButton btnStudetLogin = new JButton("Student Login");
+		btnStudetLogin.setForeground(Color.BLACK);
+		btnStudetLogin.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+		btnStudetLogin.setBackground(new Color(97, 212, 195));
+		btnStudetLogin.setBounds(34, 307, 126, 48);
+		panel_1.add(btnStudetLogin);
 	}
 }
