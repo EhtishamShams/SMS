@@ -14,14 +14,13 @@ import dal.DAL;
 public class AcademicInstitution {
 	private String name;
 	private String location;
-
 	private ArrayList<School> schools = null;
 	private ArrayList<User> users = null;
 	private ArrayList<Department> depts = null;
+	private ArrayList<Semester> semesters;
 	
-	public AcademicInstitution(String name, String location, ArrayList<School> schools,
-			ArrayList<User> users, ArrayList<Department> depts) {
-
+	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
+			ArrayList<Department> depts) {
 		this.name = name;
 		this.location = location;
 		this.schools = schools;
@@ -51,15 +50,6 @@ public class AcademicInstitution {
 
 	public void setDepts(ArrayList<Department> depts) {
 		this.depts = depts;
-	}
-	
-
-	public Student getStudent(String rollNum) {
-		for (User u : users) {
-			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum)) 
-				return (Student)u;
-		}
-		return null;
 	}
 	
 	public Staff getStaff(String empID) {
@@ -112,6 +102,8 @@ public class AcademicInstitution {
 	public ArrayList<School> getSchools() {
 		return schools;
 	}
+
+
 
 	public void setSchools(ArrayList<School> schools) {
 		this.schools = schools;
@@ -185,7 +177,42 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
-	
+
+
+	public Semester getSemester(String session) {
+
+		for (Semester sem : semesters) {
+			if (sem.getSession().equals(session))
+				return sem;
+		}
+
+		return null;
+	}
+
+	public ArrayList<Semester> getSemesters() {
+		return semesters;
+	}
+
+	public Student getStudent(String rollNum) {
+		for (User u : users) {
+			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum))
+				return (Student) u;
+		}
+		return null;
+	}
+
+	public FacultyMember getFacultyMember(String empID) {
+		for (School sch : schools) {
+			for (FacultyMember FM : sch.getFaculty()) {
+				if (FM.getEmpID().equals(empID))
+					return FM;
+			}
+		}
+
+		return null;
+	}
+
+
 	public void loadFaculty(ArrayList<FacultyMember> arr) {
 		for (FacultyMember f : arr) {
 			users.add(f);

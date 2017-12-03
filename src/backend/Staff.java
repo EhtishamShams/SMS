@@ -1,14 +1,14 @@
 
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Ehtisham
  *
  */
 
-public class Staff extends User{
+public class Staff extends User {
 
 	protected String empID;
 	protected Date dateHired = null;
@@ -19,7 +19,6 @@ public class Staff extends User{
 		this.empID = empID;
 		this.dateHired = dateHired;
 	}
-
 
 	public String getEmpID() {
 		return empID;
@@ -48,4 +47,3 @@ public class Staff extends User{
 		
 	}
 }
-

@@ -5,10 +5,9 @@
  */
 package backend;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-
 import dal.DBAccess;
 
 /**
@@ -16,98 +15,100 @@ import dal.DBAccess;
  * @author hamza
  */
 public class User {
-    
-    protected String name;
-    protected String password;
+
+
+	protected String name;
+	protected String password;
     protected Date DOB = null;
-    protected String phoneNo;
-    protected String email;
-    protected String CNIC;
-    protected char gender;
-    protected String emergencyContact;
-    protected String address;
+	protected String phoneNo;
+	protected String email;
+	protected String CNIC;
+	protected char gender;
+	protected String emergencyContact;
+	protected String address;
 
-    public User(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender, String emergencyContact, String address) {
-        this.name = name;
-        this.password = password;
-        this.DOB = DOB;
-        this.phoneNo = phoneNo;
-        this.email = email;
-        this.CNIC = CNIC;
-        this.gender = gender;
-        this.emergencyContact = emergencyContact;
-        this.address = address;
-    }
+	public User(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address) {
+		this.name = name;
+		this.password = password;
+		this.DOB = DOB;
+		this.phoneNo = phoneNo;
+		this.email = email;
+		this.CNIC = CNIC;
+		this.gender = gender;
+		this.emergencyContact = emergencyContact;
+		this.address = address;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public boolean matchPassword(String pass){
-        if (pass.equals(password))
-            return true;
-        return false;
-    }
+	public boolean matchPassword(String pass) {
+		if (pass.equals(password))
+			return true;
+		return false;
+	}
 
-    public Date getDOB() {
-        return DOB;
-    }
+	public Date getDOB() {
+		return DOB;
+	}
 
-    public void setDOB(Date DOB) {
-        this.DOB = DOB;
-    }
+	public void setDOB(Date DOB) {
+		this.DOB = DOB;
+	}
 
-    public String getPhoneNo() {
-        return phoneNo;
-    }
+	public String getPhoneNo() {
+		return phoneNo;
+	}
 
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getCNIC() {
-        return CNIC;
-    }
+	public String getCNIC() {
+		return CNIC;
+	}
 
-    public void setCNIC(String CNIC) {
-        this.CNIC = CNIC;
-    }
+	public void setCNIC(String CNIC) {
+		this.CNIC = CNIC;
+	}
 
-    public char getGender() {
-        return gender;
-    }
+	public char getGender() {
+		return gender;
+	}
 
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
 
-    public String getEmergencyContact() {
-        return emergencyContact;
-    }
+	public String getEmergencyContact() {
+		return emergencyContact;
+	}
 
-    public void setEmergencyContact(String emergencyContact) {
-        this.emergencyContact = emergencyContact;
-    }
+	public void setEmergencyContact(String emergencyContact) {
+		this.emergencyContact = emergencyContact;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 
     //////////////////////////////////////USER  UPDATE DETAILS//////////////////////////////////////
@@ -150,5 +151,4 @@ public class User {
 			return false;
 	}
 
-    
 }

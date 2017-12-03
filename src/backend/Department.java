@@ -12,31 +12,31 @@ import java.util.ArrayList;
  * @author hamza
  */
 public class Department {
-    
-    protected String name;
-    protected ArrayList<Staff> staff = null;
 
-    public String getName() {
-        return name;
-    }
+	protected String name;
+	protected ArrayList<Staff> staff = null;
+	
+	public Department(String name, ArrayList<Staff> staff) {
+		this.name = name;
+		this.staff = staff;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public ArrayList<Staff> getStaff() {
-        return staff;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setStaff(ArrayList<Staff> staff) {
-        this.staff = staff;
-    }
-    
-    public Department(String name, ArrayList<Staff> staff){
-        this.name = name;
-        this.staff = staff;
-    }
-    
+	public ArrayList<Staff> getStaff() {
+		return staff;
+	}
+
+	public void setStaff(ArrayList<Staff> staff) {
+		this.staff = staff;
+	}
+
 
   ///////////////////////////////////////////////////ADD STAFF HELPER//////////////////////////////////////////////////
     protected int ifStaffExistsByIndex(String id)
@@ -106,7 +106,4 @@ public class Department {
 		}
 		return null;
 	}
-	
-	
-
 }

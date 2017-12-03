@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.sql.Date;
 import dal.DAL;
 
-import dal.DAL;
-
 /**
  *
  * @author Advisor
@@ -226,6 +224,5 @@ public class HRManager extends Staff {
     		return false;
     }
     
-
 }
 

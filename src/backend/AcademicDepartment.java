@@ -11,6 +11,7 @@ import java.util.ArrayList;
  *
  * @author hamza
  */
+
 public class AcademicDepartment extends Department{
 	
     private ArrayList<Timetable> timetables = null;
@@ -28,7 +29,9 @@ public class AcademicDepartment extends Department{
         this.timetables = timetables;
     }
 
-
+    public void addTimeTable(Timetable tbl) {
+		this.timetables.add(tbl);
+	}
     
     public Timetable getTimetable(String schoolID, String semID) {
 		for (Timetable t : timetables) {

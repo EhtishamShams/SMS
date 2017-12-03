@@ -25,8 +25,5 @@ public class Grade {
 	public void setCourseSection(CourseSection course) {
 		this.course = course;
 	}
-	
-	
-	
 
 }

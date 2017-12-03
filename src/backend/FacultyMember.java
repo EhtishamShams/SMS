@@ -5,6 +5,12 @@ import dal.DAL;
 import java.util.ArrayList;
 import java.sql.Date;
 
+/**
+ * @author Ehtisham
+ *
+ */
+
+
 public class FacultyMember extends Staff {
 	
 	private ArrayList<String> degrees = null;
@@ -32,6 +38,30 @@ public class FacultyMember extends Staff {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+
+	public boolean updateDetails(String name, Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, ArrayList<String> degrees, String position) {
+		this.name = name;
+		this.DOB = DOB;
+		this.phoneNo = phoneNo;
+		this.email = email;
+		this.CNIC = CNIC;
+		this.gender = gender;
+		this.emergencyContact = emergencyContact;
+		this.address = address;
+		this.degrees = degrees;
+		this.position = position;
+
+		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
+				degrees, position);
+
+		return true;
+	}
+
+	public Student getStudentAttendance(String rollNo) {
+		return Session.getInst().getStudent(rollNo);
 	}
 
 	// mark attendance functionality
@@ -69,8 +99,6 @@ public class FacultyMember extends Staff {
 		
 		
 	}
-	
-
 
 
 	public boolean addAttendance(CourseSection b, Date d) {
@@ -101,13 +129,13 @@ public class FacultyMember extends Staff {
 		
 		for(int i =0; i< a.getStudentAttendance().size();i++)
 		{
-			  if(abc.contains(a.getStudentAttendance().get(i).Day))
+			  if(abc.contains(a.getStudentAttendance().get(i).getDay()))
 			  {
 				  
 			  }
 			  else
 			  {
-				  abc.add(a.getStudentAttendance().get(i).Day);
+				  abc.add(a.getStudentAttendance().get(i).getDay());
 			  }
 			
 		}
@@ -127,7 +155,7 @@ public class FacultyMember extends Staff {
 		
 		for(int i =0; i< a.getStudentAttendance().size();i++)
 		{
-			if(a.getStudentAttendance().get(i).Day.equals(d))
+			if(a.getStudentAttendance().get(i).getDay().equals(d))
 			{
 				abc.add(a.getStudentAttendance().get(i));
 			}

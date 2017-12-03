@@ -4,14 +4,11 @@
 package backend;
 
 import java.util.ArrayList;
+
+import dal.*;
+import java.sql.Date;
 import java.util.Calendar;
 
-import dal.DAL;
-
-import java.sql.Date;
-import java.sql.*; 
-
- 
 /**
  * @author Ehtisham
  *
@@ -47,13 +44,13 @@ public class Main {
               
         Course pr=null;
         ArrayList<Course> preq = new  ArrayList<Course>();
-        preq.add(new Course("CS204", "CP", 23, "rkjgiuighught",null));
-        preq.add(new Course("CS205", "CP2", 23, "rkjgiuighught", null));
-        preq.add(new Course("CS206", "CP3", 23, "rkjgiuighught", null));
+        preq.add(new Course("CS204", "CP", 23, "rkjgiuighught",null, false));
+        preq.add(new Course("CS205", "CP2", 23, "rkjgiuighught", null, false));
+        preq.add(new Course("CS206", "CP3", 23, "rkjgiuighught", null, null, false));
         
-        Course c1=new Course("CS201", "ITC", 23, "rkjgiuighught", preq);
-        Course c2=new Course("CS202", "ITC2", 23, "rkjgiuighught", preq);
-        Course c3=new Course("CS203", "ITC3", 23, "rkjgiuighught", preq);
+        Course c1=new Course("CS201", "ITC", 23, "rkjgiuighught", preq, false);
+        Course c2=new Course("CS202", "ITC2", 23, "rkjgiuighught", preq, false);
+        Course c3=new Course("CS203", "ITC3", 23, "rkjgiuighught", preq, null, false);
         ArrayList<Course> lc= new  ArrayList<Course>();
         lc.add(c1);
         lc.add(c2);

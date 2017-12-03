@@ -11,45 +11,44 @@ import java.sql.Date;
  *
  * @author Advisor
  */
-public class Attendance{
-    LAttendance status;
-    Date Day;
-    Student student = null;
 
-    public Attendance(LAttendance status, Date Day, Student student)  {
-        this.status = status;
-        this.Day = Day;      
-        this.student = student;
-    }
+public class Attendance {
+	private LAttendance status;
+	private Date Day;
+	private Student student = null;
 
+	public Attendance(LAttendance status, Date Day, Student student) {
+		this.status = status;
+		this.Day = Day;
+		this.student = student;
+	}
+	
     public Attendance()
     {
     	
     }
-
+    
 	public LAttendance getStatus() {
-        return status;
-    }
+		return status;
+	}
 
-    public void setStatus(LAttendance status) {
-        this.status = status;
-    }
+	public void setStatus(LAttendance status) {
+		this.status = status;
+	}
 
-    public Date getDay() {
-        return Day;
-    }
+	public Date getDay() {
+		return Day;
+	}
 
-    public void setDay(Date Day) {
-        this.Day = Day;
-    }
+	public void setDay(Date Day) {
+		this.Day = Day;
+	}
 
-    public Student getStudent() {
-        return student;
-    }
+	public Student getStudent() {
+		return student;
+	}
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-    
-    
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 }

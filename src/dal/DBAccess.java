@@ -24,7 +24,6 @@ public class DBAccess {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 		if (con == null)
 			return false;
 		else
@@ -34,7 +33,7 @@ public class DBAccess {
 	public static Statement getStatement() {
 		return stmt;
 	}
-	
+
 	public static Connection getConnection() {
 		return con;
 	}

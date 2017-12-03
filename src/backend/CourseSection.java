@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class CourseSection {
-	
+
 	private char sectionID;
 	private int maxSeats;
 	private int currSeats;
@@ -13,13 +13,14 @@ public class CourseSection {
 	private Course course = null;
 	private ArrayList<Attendance> studentAttendances = null;
 	 
+	
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
 		this.sectionID = sectionID;
 		this.maxSeats = maxSeats;
 		this.currSeats = 0;
 		this.studentAttendances = new ArrayList<Attendance>();
 	}
-	
+
 	public CourseSection(char sectionID, int maxSeats, int currSeats, FacultyMember sectionTeacher, Semester semester,
 			Course course, ArrayList<Attendance> studentAttendances) {
 		super();
@@ -57,30 +58,52 @@ public class CourseSection {
 		return studentAttendances;
 	}
 
+
 	public boolean incrementCurrSeats() {
-		if(currSeats!=maxSeats)
-		{
+		if (currSeats != maxSeats) {
 			currSeats++;
 			return true;
-		}
-		else
+		} else
 			return false;
-			
+
 	}
+
     public void addAtd(Attendance a)
     {
     	this.studentAttendances.add(a);
     }
 	
 	public boolean decrementCurrSeats() {
-		if(currSeats!=0)
-		{
+		if (currSeats != 0) {
 			currSeats--;
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public boolean checkSeatAvailibility() {
+		return (this.maxSeats > this.currSeats);
+	}
+
+	public ArrayList<Attendance> getStudentAttendance(String rollNo) {
+		ArrayList<Attendance> attendance = new ArrayList<>();
+
+		for (Attendance attd : studentAttendances) {
+			if (attd.getStudent().getRollNo().equals(rollNo)) {
+				attendance.add(attd);
+			}
+		}
+
+		if (attendance.size() == 0)
+			return null;
+
+		return attendance;
+	}
+
 
 	public void setCourse(Course course) {
 		this.course = course;
@@ -93,11 +116,7 @@ public class CourseSection {
 	public void setSemester(Semester semester) {
 		this.semester = semester;
 	}
-	
-	public Course getCourse() {
-		return course;
-	}
-	
+
 	public void removeStudentAttendance(Student student) {
 		for(Attendance attd: studentAttendances) {
 			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
@@ -105,7 +124,7 @@ public class CourseSection {
 			}
 		}
 	}
-	///////////////////////////////////////////////////////////////////////////////////
+
 	
 	 public void setFaculty(FacultyMember f) {
 		 sectionTeacher=f;
@@ -130,7 +149,7 @@ public class CourseSection {
 		
 		for(int i=0;i<this.studentAttendances.size();i++)
 		{
-			if(studentAttendances.get(i).Day.equals(day))
+			if(studentAttendances.get(i).getDay().equals(day))
 			{
 				atd.add(studentAttendances.get(i));
 			}
@@ -146,4 +165,5 @@ public class CourseSection {
 	public void setSectionTeacher(FacultyMember sectionTeacher) {
 		this.sectionTeacher = sectionTeacher;
 	}
+
 }

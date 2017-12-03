@@ -30,7 +30,6 @@ public class Semester {
 		this.session = session;
 	}
 
-
 	public boolean isActive() {
 		return active;
 	}
@@ -54,7 +53,6 @@ public class Semester {
 	public void setFeeDueDate(Date feeDueDate) {
 		this.feeDueDate = feeDueDate;
 	}
-	
-	
+
 }
 	

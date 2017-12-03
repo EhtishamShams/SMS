@@ -8,7 +8,7 @@ package backend;
  *
  */
 public enum LAttendance {
-	A,
-	P,
-	L 
+	A, 
+	P, 
+	L
 }

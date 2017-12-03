@@ -12,7 +12,7 @@ import java.sql.Date;
  *
  * @author Advisor
  */
-public class FinanceManager extends Staff{
+public class FinanceManager extends Staff {
 
 	public FinanceManager(String name, String password, Date DOB, String phoneNo, String email, String CNIC,
 			char gender, String emergencyContact, String address, String empID, Date dateHired) {
@@ -35,7 +35,7 @@ public class FinanceManager extends Staff{
     		Fee f = Session.getAccountsDept().getFee(rollNum, semester);
     		Date oldDate = f.getDatePaid();
     		f.setDatePaid(Date.valueOf(datePaid));
-    		boolean check = Session.getDal().updateFee(f);
+    		boolean check = Session.getDal().updateFeeDate(f);
     		if (!check)
     			f.setDatePaid(oldDate);
     		return check;
