@@ -12,9 +12,9 @@ public class Course {
 	private String courseName;
 	private int creditHours;
 	private String description;
-	private ArrayList<Course> prerequisites;
-	private ArrayList<CourseSection> sections;
 	private boolean isOffered;
+	private ArrayList<Course> prerequisites = null;
+	private ArrayList<CourseSection> sections = null;
 
 	public Course(String courseCode, String courseName, int creditHours, String description,
 			ArrayList<Course> prerequisites, boolean isOffered) {
@@ -130,5 +130,38 @@ public class Course {
 
 		return null;
 	}
+	
+//	public CourseSection getCourseSection(Semester s, char SecId) {
+//		for (int i = 0; i < this.sections.size(); i++) {
+//			if ((this.sections.get(i).getSemester().equals(s)) && (this.sections.get(i).getSectionID() == SecId)) {
+//				return this.sections.get(i);
+//			}
+//		}
+//		return null;
+//	}
 
-}
+    
+    public boolean removeCourseSection(char secID) {
+    	for(CourseSection s: this.sections){
+    		if(s.getSectionID()==secID && s.getSemester().equals(Session.getSem())) {
+    			this.sections.remove(s);
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public boolean updateCourseSection(char secID,FacultyMember f, int max_seats) {
+    	for(CourseSection s: this.sections){
+    		if(s.getSectionID()==secID && s.getSemester().equals(Session.getSem())) {
+    			s.setMaxSeats(max_seats);
+    			s.setFaculty(f);
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    
+
+ }

@@ -1,7 +1,7 @@
 package backend;
 
 import java.util.*;
-
+import dal.DAL;
 /**
  * 
  */
@@ -14,11 +14,11 @@ import java.util.*;
 public class AcademicInstitution {
 	private String name;
 	private String location;
-	private ArrayList<School> schools;
-	private ArrayList<User> users;
-	private ArrayList<Department> depts;
+	private ArrayList<School> schools = null;
+	private ArrayList<User> users = null;
+	private ArrayList<Department> depts = null;
 	private ArrayList<Semester> semesters;
-
+	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
 			ArrayList<Department> depts) {
 		this.name = name;
@@ -51,16 +51,125 @@ public class AcademicInstitution {
 	public void setDepts(ArrayList<Department> depts) {
 		this.depts = depts;
 	}
+	
+	public Staff getStaff(String empID) {
+		for (User u : users) {
+			if ((u instanceof Staff) && ((Staff) u).getEmpID().equals(empID)) 
+				return (Staff)u;
+		}
+		return null;
+	}
+	
+	public boolean studentLogin(String rollNum, String pass) {
+		User u = getStudent(rollNum);
+		if (u != null && u.matchPassword(pass)) {
+			Session.setUser(u);
+			Session.setType(UType.Student);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean staffLogin(String empID, String pass) {
+		User u = getStaff(empID);
+		if (u != null && u.matchPassword(pass)) {
+			Session.setUser(u);
+			if (u instanceof HRManager)
+				Session.setType(UType.HRManager);
+			else if (u instanceof AcademicManager)
+				Session.setType(UType.AcademicManager);
+			else if (u instanceof FinanceManager)
+				Session.setType(UType.FinanceManager);
+			else if (u instanceof FacultyMember)
+				Session.setType(UType.FacultyMember);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean logout() {
+		if (Session.getUser() != null) {
+			Session.setUser(null);
+			Session.setType(UType.LoggedOut);
+			return true;
+		}
+		else
+			return false;
+	}
 
 	public ArrayList<School> getSchools() {
 		return schools;
 	}
 
-	public ArrayList<User> getUsers() {
 
+
+	public void setSchools(ArrayList<School> schools) {
+		this.schools = schools;
+	}
+
+	public ArrayList<User> getUsers() {
 		return users;
 	}
 
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+	// helper function to return the school from the id
+
+	public boolean updateSchool(String id, String n) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id)) {
+				schools.get(i).setName(n);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean Validate(String id, String n) {
+		boolean check = true;
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id) || this.schools.get(i).getName().equals(n)) {
+				check = false;
+			}
+		}
+		 check=DAL.updateSchoolDB(id,n);
+		if (check) {
+			School temp = new School(id, n);
+			schools.add(temp);
+
+		}
+		return check;
+	}
+
+	public School getSchoolByName(String name) {
+		for (int i = 0; i < this.schools.size(); i++) {
+			if (schools.get(i).getName().equals(name))
+				return schools.get(i);
+		}
+		return null;
+	}
+	
+
+	public School getStudentSchool(String rollNum) {
+		for (School s : schools) {
+			if (s.ifStudentExists(rollNum))
+				return s;
+		}
+		return null;
+	}
+	
+	public School getFacultySchool(String empID) {
+		for (School s : schools) {
+			if (s.ifFacultyExists(empID))
+				return s;
+		}
+		return null;
+	}
+	
 	public School getSchool(String sID) {
 		for (School s : schools) {
 			if (s.getId().equals(sID))
@@ -68,6 +177,7 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
+
 
 	public Semester getSemester(String session) {
 
@@ -100,6 +210,13 @@ public class AcademicInstitution {
 		}
 
 		return null;
+	}
+
+
+	public void loadFaculty(ArrayList<FacultyMember> arr) {
+		for (FacultyMember f : arr) {
+			users.add(f);
+		}
 	}
 
 }

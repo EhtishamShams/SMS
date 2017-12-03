@@ -12,19 +12,18 @@ import java.sql.*;
 public class DBAccess {
 	private static Connection con = null;
 	private static Statement stmt = null;
-
+	
 	public static boolean createConnection() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SMS", "root", "stark");
+			Class.forName("com.mysql.jdbc.Driver"); 
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SMS","root","open1234");
 			con.setAutoCommit(false);
-			stmt = con.createStatement();
+			stmt=con.createStatement();
 		} catch (SQLException e) {
-
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		if (con == null)
 			return false;
 		else

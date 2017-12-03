@@ -11,9 +11,9 @@ public class Student extends User {
 	private float CGPA;
 	private int creditsEarned;
 	private int creditsAttempted;
-	public ArrayList<CourseSection> courses;
-	private Transcript transcript;
-
+	private ArrayList<CourseSection> courses = null;
+	private Transcript transcript = null;
+	
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
 			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses, Transcript transcript) {
@@ -26,20 +26,6 @@ public class Student extends User {
 		this.creditsAttempted = creditsAttempted;
 		this.courses = courses;
 		this.transcript = transcript;
-	}
-
-	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
-			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
-			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses) {
-		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
-		this.rollNo = rollNo;
-		this.fatherCNIC = fatherCNIC;
-		this.fatherName = fatherName;
-		CGPA = cGPA;
-		this.creditsEarned = creditsEarned;
-		this.creditsAttempted = creditsAttempted;
-		this.courses = courses;
-		// this.transcript = new Transcript();
 	}
 
 	public ArrayList<CourseSection> getStudiedCourses() {
@@ -92,6 +78,10 @@ public class Student extends User {
 
 	public void setCreditsAttempted(int creditsAttempted) {
 		this.creditsAttempted = creditsAttempted;
+	}
+	
+	public Grade getCourseGrade(String courseCode) {
+		return transcript.getGrade(courseCode);
 	}
 
 	public ArrayList<CourseSection> getCourses() {
@@ -188,5 +178,48 @@ public class Student extends User {
 
 		return null;
 	}
-
+	
+	
+	
+	//////////////////////////REMOVE SECTION HELPER/////////////////////////////////
+	public boolean ifSectionExists(char SectionID)
+	{
+		
+		for(CourseSection cs : this.courses)
+		{
+			  if(cs.getSectionID()==SectionID)
+			  {
+			     return true;
+			  }
+		}
+	
+		return false;
+	}
+	
+	///////////////////////NOUMAN//////////////
+	
+//	public boolean removeStudentCourseRegistration(CourseSection cs) {
+//		if(this.courses.contains(cs)) {
+//			this.courses.remove(cs);
+//			return true;
+//		}
+//		else
+//			return false;
+//	}
+	
+	
+	/*public void viewDetails()
+	{
+		super.viewDetails();
+		System.out.println("RollNo : \t" + rollNo);
+		System.out.println("FatherCNIC : \t" + fatherCNIC);
+		System.out.println("FatherName : \t" + fatherName);
+		System.out.println("CGPA : \t" + CGPA);
+		System.out.println("Credits Earned : \t" + creditsEarned);
+		System.out.println("Credits Attempted : \t" + creditsAttempted);
+		
+		
+    	
+	}*/
+	
 }

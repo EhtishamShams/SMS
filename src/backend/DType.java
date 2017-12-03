@@ -8,7 +8,7 @@ package backend;
  *
  */
 public enum DType {
-	HR, 
-	Accounts, 
+	HR,
+	Accounts,
 	Academic
 }

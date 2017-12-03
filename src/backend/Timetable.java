@@ -4,8 +4,8 @@ public class Timetable {
 
 	private String fileName;
 	private String filePath;
-	private School school;
-	private Semester semester;
+	private School school = null;
+	private Semester semester = null;
 
 	public Timetable(String fileName, String filePath, School school, Semester semester) {
 		this.fileName = fileName;

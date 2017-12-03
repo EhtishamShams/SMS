@@ -11,8 +11,8 @@ import java.sql.Date;
 public class Staff extends User {
 
 	protected String empID;
-	protected Date dateHired;
-
+	protected Date dateHired = null;
+	
 	public Staff(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
@@ -34,5 +34,16 @@ public class Staff extends User {
 
 	public void setDateHired(Date dateHired) {
 		this.dateHired = dateHired;
+	}
+	
+	
+/////////////////////////////////UPDATE STAFF DETAILS///////////////////////////////////////////////////////
+	protected void updateDetails(String name,/* String password,*/ Date DOB, String phoneNo, String email, String CNIC, char gender,
+			String emergencyContact, String address, String empID, Date dateHired)
+	{
+		super.updateDetails(name,/* password,*/ DOB, phoneNo, email, CNIC, gender, emergencyContact, address);
+		this.empID = empID;
+		this.dateHired = dateHired;
+		
 	}
 }

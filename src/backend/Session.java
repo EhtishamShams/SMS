@@ -31,7 +31,7 @@ public class Session {
 	public static UType getType() {
 		return type;
 	}
-
+	
 	public static void setType(UType type) {
 		Session.type = type;
 	}
@@ -91,5 +91,5 @@ public class Session {
 	public static void setDal(DAL dal) {
 		Session.dal = dal;
 	}
-
+	
 }
