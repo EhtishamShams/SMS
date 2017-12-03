@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.sql.Date;
 
 import javax.swing.UIManager;
 import javax.swing.JSeparator;
@@ -28,6 +31,10 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.time.Month;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import backend.*;
+
 import javax.swing.ScrollPaneConstants;
 import java.awt.Point;
 import javax.swing.JButton;
@@ -35,27 +42,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class FMFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtl;
-	private JTextField txtSpring;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField txtFall;
-	private JTextField textField_4;
-	private JTextField txtNotPaid;
 	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
+	private JScrollPane manageFee;
+	private JScrollPane managePay;
+	private ArrayList<Container> containers;
+	private JPanel home;
+	private JTextField txtEnterDate;
+	private JTextField txtEnterAmount;
+	private JButton btnPay;
 
 	/**
 	 * Launch the application.
@@ -72,6 +74,28 @@ public class FMFrame extends JFrame {
 			}
 		});
 	}
+	
+	public void showPanel(String a)
+	{
+		for (int i = 0; i < containers.size();i++)
+		{
+			containers.get(i).setVisible(false);
+		}
+		
+		if (a.equals("Home"))
+		{
+			containers.get(0).setVisible(true);
+		}
+		if (a.equals("Manage Fees"))
+		{
+			containers.get(1).setVisible(true);
+		}
+		if (a.equals("Manage Pays"))
+		{
+			containers.get(2).setVisible(true);
+		}
+		
+	}
 
 	/**
 	 * Create the frame.
@@ -83,8 +107,10 @@ public class FMFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		containers = new ArrayList<Container>();
 		
-		JScrollPane manageFee = new JScrollPane();
+		
+		manageFee = new JScrollPane();
 		manageFee.setBounds(249, 152, 704, 442);
 		contentPane.add(manageFee);
 		manageFee.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -113,13 +139,13 @@ public class FMFrame extends JFrame {
 		textField.setColumns(10);
 		textField.setBorder(null);
 		textField.setBackground(new Color(36, 47, 65));
-		textField.setBounds(230, 106, 198, 20);
+		textField.setBounds(227, 63, 198, 20);
 		panel.add(textField);
 		
 		JLabel label_15 = new JLabel("Roll Number");
 		label_15.setForeground(Color.WHITE);
 		label_15.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_15.setBounds(133, 102, 87, 27);
+		label_15.setBounds(130, 59, 87, 27);
 		panel.add(label_15);
 		
 		JButton button_1 = new JButton("Upload Photo");
@@ -137,10 +163,63 @@ public class FMFrame extends JFrame {
 		panel.add(button_2);
 		
 		JButton button_3 = new JButton("Search");
+		button_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				//if Student student = Session.academicInstitution.getStudent(textField.getText()) returns not null;
+				
+				String[] columnNames = {"Roll Number",
+		                "Name",
+		                "DOB"};
+				
+				String[] columnNames2 = {"Semester",
+		                "Amount",
+		                "Due Date",
+		                "Date Paid"};
+				
+				JTable table2 = new JTable();
+				DefaultTableModel dtm = new DefaultTableModel(0, 0);
+				dtm.setColumnIdentifiers(columnNames);
+				table2.setModel(dtm);
+
+				JScrollPane scrollPane_3 = new JScrollPane(table2);
+				scrollPane_3.setForeground(Color.WHITE);
+				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_3.setBackground(Color.WHITE);
+				scrollPane_3.setAlignmentX(0.0f);
+				scrollPane_3.setBounds(200, 100, 279, 40);
+				panel.add(scrollPane_3);
+				
+				dtm.addRow(new Object[] { "23","Blah","2017" });
+				
+				//ArrayList<Fee> fees = Session.getUser().getFees(student.getRollNumber());
+				
+				JTable table3 = new JTable();
+				DefaultTableModel dtm2 = new DefaultTableModel(0, 0);
+				dtm2.setColumnIdentifiers(columnNames2);
+				table3.setModel(dtm2);
+
+				JScrollPane scrollPane_4 = new JScrollPane(table3);
+				scrollPane_4.setForeground(Color.WHITE);
+				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_4.setBackground(Color.WHITE);
+				scrollPane_4.setAlignmentX(0.0f);
+				scrollPane_4.setBounds(200, 100, 279, 40);
+				panel.add(scrollPane_4);
+				
+//				for (int i = 0; i < fees.size(); i++)
+//				{
+//					dtm2.addRow(fees.get(i).getSemester.getSession(), fees.get(i).getAmount(), fees.get(i).getDueDate(),fees.get(i).getDatePaid);
+//				}
+				
+				
+			}
+		});
 		button_3.setForeground(Color.BLACK);
 		button_3.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 		button_3.setBackground(SystemColor.menu);
-		button_3.setBounds(438, 104, 130, 23);
+		button_3.setBounds(435, 61, 130, 23);
 		panel.add(button_3);
 		
 		JLabel label_16 = new JLabel("Amount");
@@ -167,263 +246,7 @@ public class FMFrame extends JFrame {
 		label_19.setBounds(87, 194, 68, 27);
 		panel.add(label_19);
 		
-		textField_3 = new JTextField();
-		textField_3.setText("Spring-2017");
-		textField_3.setForeground(Color.WHITE);
-		textField_3.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_3.setColumns(10);
-		textField_3.setBorder(null);
-		textField_3.setBackground(new Color(36, 47, 65));
-		textField_3.setBounds(67, 244, 115, 20);
-		panel.add(textField_3);
-		
-		textField_5 = new JTextField();
-		textField_5.setText("100000");
-		textField_5.setForeground(Color.WHITE);
-		textField_5.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_5.setColumns(10);
-		textField_5.setBorder(null);
-		textField_5.setBackground(new Color(36, 47, 65));
-		textField_5.setBounds(191, 244, 100, 20);
-		panel.add(textField_5);
-		
-		textField_6 = new JTextField();
-		textField_6.setText("25/01/2017");
-		textField_6.setForeground(Color.WHITE);
-		textField_6.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_6.setColumns(10);
-		textField_6.setBorder(null);
-		textField_6.setBackground(new Color(36, 47, 65));
-		textField_6.setBounds(301, 245, 100, 20);
-		panel.add(textField_6);
-		
-		textField_7 = new JTextField();
-		textField_7.setText("30/01/2017");
-		textField_7.setForeground(Color.WHITE);
-		textField_7.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_7.setColumns(10);
-		textField_7.setBorder(null);
-		textField_7.setBackground(new Color(36, 47, 65));
-		textField_7.setBounds(411, 245, 100, 20);
-		panel.add(textField_7);
-		
-		textField_8 = new JTextField();
-		textField_8.setText("Fall-2017");
-		textField_8.setForeground(Color.WHITE);
-		textField_8.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_8.setColumns(10);
-		textField_8.setBorder(null);
-		textField_8.setBackground(new Color(36, 47, 65));
-		textField_8.setBounds(67, 275, 115, 20);
-		panel.add(textField_8);
-		
-		textField_9 = new JTextField();
-		textField_9.setText("110000");
-		textField_9.setForeground(Color.WHITE);
-		textField_9.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_9.setColumns(10);
-		textField_9.setBorder(null);
-		textField_9.setBackground(new Color(36, 47, 65));
-		textField_9.setBounds(191, 275, 100, 20);
-		panel.add(textField_9);
-		
-		textField_10 = new JTextField();
-		textField_10.setText("Not Paid");
-		textField_10.setForeground(Color.WHITE);
-		textField_10.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_10.setColumns(10);
-		textField_10.setBorder(null);
-		textField_10.setBackground(new Color(36, 47, 65));
-		textField_10.setBounds(301, 276, 100, 20);
-		panel.add(textField_10);
-		
-		textField_11 = new JTextField();
-		textField_11.setText("30/07/2017");
-		textField_11.setForeground(Color.WHITE);
-		textField_11.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_11.setColumns(10);
-		textField_11.setBorder(null);
-		textField_11.setBackground(new Color(36, 47, 65));
-		textField_11.setBounds(411, 276, 100, 20);
-		panel.add(textField_11);
-		
-		JButton button_4 = new JButton("Update");
-		button_4.setForeground(Color.BLACK);
-		button_4.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_4.setBackground(SystemColor.menu);
-		button_4.setBounds(521, 244, 130, 20);
-		panel.add(button_4);
-		
-		JButton button_5 = new JButton("Update");
-		button_5.setForeground(Color.BLACK);
-		button_5.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_5.setBackground(SystemColor.menu);
-		button_5.setBounds(521, 275, 130, 20);
-		panel.add(button_5);
-		
-		JPanel home = new JPanel();
-		home.setLayout(null);
-		home.setBackground(Color.BLACK);
-		home.setBounds(249, 152, 704, 442);
-		contentPane.add(home);
-		
-		JLabel label_2 = new JLabel("UserImage");
-		label_2.setIcon(new ImageIcon(FMFrame.class.getResource("/images/user2.png")));
-		label_2.setBounds(54, 71, 99, 152);
-		home.add(label_2);
-		
-		JLabel label_3 = new JLabel("Profile");
-		label_3.setForeground(Color.WHITE);
-		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_3.setBounds(69, 25, 93, 16);
-		home.add(label_3);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(70, 50, 61, 2);
-		home.add(separator_1);
-		
-		JLabel label_4 = new JLabel("Ehtisham-Ul-Haq");
-		label_4.setForeground(Color.WHITE);
-		label_4.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_4.setBounds(54, 254, 175, 27);
-		home.add(label_4);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(55, 285, 61, 2);
-		home.add(separator_2);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(55, 325, 61, 2);
-		home.add(separator_3);
-		
-		JLabel label_7 = new JLabel("0900-78601");
-		label_7.setForeground(Color.WHITE);
-		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_7.setBounds(54, 294, 175, 27);
-		home.add(label_7);
-		
-		JLabel label_8 = new JLabel("princess_sid@gmail.com");
-		label_8.setForeground(Color.WHITE);
-		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_8.setBounds(54, 336, 205, 27);
-		home.add(label_8);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(55, 367, 61, 2);
-		home.add(separator_4);
-		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(55, 407, 61, 2);
-		home.add(separator_5);
-		
-		JLabel label_9 = new JLabel("H#666, Street 1, Road 5, Lahore");
-		label_9.setForeground(Color.WHITE);
-		label_9.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_9.setBounds(54, 376, 239, 27);
-		home.add(label_9);
-		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setBounds(402, 407, 61, 2);
-		home.add(separator_6);
-		
-		JLabel label_10 = new JLabel("Gender: M");
-		label_10.setForeground(Color.WHITE);
-		label_10.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_10.setBounds(401, 376, 175, 27);
-		home.add(label_10);
-		
-		JLabel label_11 = new JLabel("DOB: 15/11/1996");
-		label_11.setForeground(Color.WHITE);
-		label_11.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_11.setBounds(401, 336, 175, 27);
-		home.add(label_11);
-		
-		JSeparator separator_7 = new JSeparator();
-		separator_7.setBounds(402, 367, 61, 2);
-		home.add(separator_7);
-		
-		JSeparator separator_8 = new JSeparator();
-		separator_8.setBounds(402, 325, 61, 2);
-		home.add(separator_8);
-		
-		JLabel label_12 = new JLabel("CNIC: 35201-8327761-9");
-		label_12.setForeground(Color.WHITE);
-		label_12.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_12.setBounds(401, 294, 175, 27);
-		home.add(label_12);
-		
-		JSeparator separator_9 = new JSeparator();
-		separator_9.setBounds(402, 285, 61, 2);
-		home.add(separator_9);
-		
-		JLabel label_13 = new JLabel("Emergency: 03224077810");
-		label_13.setForeground(Color.WHITE);
-		label_13.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_13.setBounds(401, 254, 192, 27);
-		home.add(label_13);
-		
-		JPanel topPanel = new JPanel();
-		topPanel.setBounds(0, 0, 953, 152);
-		topPanel.setBackground(new Color(30, 144, 255));
-		contentPane.add(topPanel);
-		topPanel.setLayout(null);
-		
-		JLabel lblHome = new JLabel("");
-		lblHome.setIcon(new ImageIcon(FMFrame.class.getResource("/images/home.png")));
-		lblHome.setBounds(12, 15, 56, 57);
-		topPanel.add(lblHome);
-		
-		JLabel label_5 = new JLabel("");
-		label_5.setIcon(new ImageIcon(FMFrame.class.getResource("/images/settings2.png")));
-		label_5.setBounds(12, 85, 56, 59);
-		topPanel.add(label_5);
-		
-		JLabel label_6 = new JLabel("");
-		label_6.setIcon(new ImageIcon(FMFrame.class.getResource("/images/school.png")));
-		label_6.setBounds(362, 0, 258, 152);
-		topPanel.add(label_6);
-		
-		JPanel sidePanel = new JPanel();
-		sidePanel.setBounds(0, 152, 250, 442);
-		sidePanel.setBackground(new Color(36,47,65));
-		contentPane.add(sidePanel);
-		sidePanel.setLayout(null);
-		
-		JLabel lblManageFaculty = new JLabel("Manage Pays");
-		lblManageFaculty.setForeground(Color.WHITE);
-		lblManageFaculty.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblManageFaculty.setBounds(57, 103, 182, 27);
-		
-		sidePanel.add(lblManageFaculty);
-		
-		JLabel lblManageStudents = new JLabel("Manage Fees");
-		lblManageStudents.setForeground(Color.WHITE);
-		lblManageStudents.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblManageStudents.setBounds(57, 158, 182, 27);
-		sidePanel.add(lblManageStudents);
-		
-		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(FMFrame.class.getResource("/images/student.png")));
-		label_1.setBounds(12, 153, 33, 32);
-		sidePanel.add(label_1);
-		
-		JLabel label = new JLabel("");
-		label.setBounds(12, 103, 33, 32);
-		sidePanel.add(label);
-		label.setIcon(new ImageIcon(FMFrame.class.getResource("/images/faculty.png")));
-		
-		JLabel lblLogout = new JLabel("");
-		lblLogout.setBounds(93, 363, 56, 54);
-		sidePanel.add(lblLogout);
-		lblLogout.setIcon(new ImageIcon(FMFrame.class.getResource("/images/logout.png")));
-		
-		JLabel lblAcademicManager = new JLabel("Finance Manager");
-		lblAcademicManager.setForeground(Color.WHITE);
-		lblAcademicManager.setFont(new Font("Century Gothic", Font.BOLD, 20));
-		lblAcademicManager.setBounds(27, 26, 211, 32);
-		sidePanel.add(lblAcademicManager);
-		
-		JScrollPane managePay = new JScrollPane();
+		managePay = new JScrollPane();
 		managePay.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		contentPane.add(managePay);
 		managePay.setBackground(Color.BLACK);
@@ -453,13 +276,13 @@ public class FMFrame extends JFrame {
 		txtl.setColumns(10);
 		txtl.setBorder(null);
 		txtl.setBackground(new Color(36, 47, 65));
-		txtl.setBounds(230, 106, 198, 20);
+		txtl.setBounds(238, 73, 198, 20);
 		panel_2.add(txtl);
 		
 		JLabel lblSchool = new JLabel("Employee ID");
 		lblSchool.setForeground(Color.WHITE);
 		lblSchool.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblSchool.setBounds(125, 102, 95, 27);
+		lblSchool.setBounds(133, 69, 95, 27);
 		panel_2.add(lblSchool);
 		
 		JButton btnUploadPhoto = new JButton("Upload Photo");
@@ -477,6 +300,100 @@ public class FMFrame extends JFrame {
 		panel_2.add(btnRegister);
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				//if Staff staff = Session.academicInstitution.getStaff(txtl.getText()) returns not null;
+				
+				txtEnterDate = new JTextField();
+				txtEnterDate.setText("Enter Date");
+				txtEnterDate.setForeground(Color.WHITE);
+				txtEnterDate.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+				txtEnterDate.setBounds(179, 143, 116, 22);
+				txtEnterDate.setBackground(new Color(36, 47, 65));
+				txtEnterDate.setBorder(null);
+				panel_2.add(txtEnterDate);
+				txtEnterDate.setColumns(10);
+				
+				txtEnterAmount = new JTextField();
+				txtEnterAmount.setText("Enter Amount");
+				txtEnterAmount.setBounds(338, 143, 116, 22);
+				txtEnterAmount.setForeground(Color.WHITE);
+				txtEnterAmount.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+				txtEnterAmount.setBackground(new Color(36, 47, 65));
+				txtEnterAmount.setBorder(null);
+				panel_2.add(txtEnterAmount);
+				txtEnterAmount.setColumns(10);
+				
+				btnPay = new JButton("Pay");
+				
+				btnPay.setBounds(479, 142, 97, 25);
+				panel_2.add(btnPay);
+				
+				String[] columnNames = {"Emp ID",
+		                "Name",
+		                "DOB"};
+				
+				String[] columnNames2 = {"Name",
+		                "Amount",
+		                "Date Paid"};
+				
+				JTable table2 = new JTable();
+				DefaultTableModel dtm = new DefaultTableModel(0, 0);
+				dtm.setColumnIdentifiers(columnNames);
+				table2.setModel(dtm);
+
+				JScrollPane scrollPane_3 = new JScrollPane(table2);
+				scrollPane_3.setForeground(Color.WHITE);
+				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_3.setBackground(Color.WHITE);
+				scrollPane_3.setAlignmentX(0.0f);
+				scrollPane_3.setBounds(200, 200, 279, 40);
+				panel_2.add(scrollPane_3);
+				
+				//dtm.addRow(new Object[] { staff.getEmpID(),staff.getName(),staff.getDOB() });
+			    dtm.addRow(new Object[] { "23","Blah","2017" });
+			    
+			   // ArrayList<Pay> pays = Session.getUser().getPays();
+			    
+			    JTable table3 = new JTable();
+				DefaultTableModel dtm2 = new DefaultTableModel(0, 0);
+				dtm2.setColumnIdentifiers(columnNames2);
+				table3.setModel(dtm2);
+
+				JScrollPane scrollPane_4 = new JScrollPane(table3);
+				scrollPane_4.setForeground(Color.WHITE);
+				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_4.setBackground(Color.WHITE);
+				scrollPane_4.setAlignmentX(0.0f);
+				scrollPane_4.setBounds(200, 300, 279, 40);
+				panel_2.add(scrollPane_4);
+				
+				
+//				for (int i = 0; i < pays.size(); i++)
+//				{
+//					dtm2.addRow(pays.get(i).getStaffMember().getName(), pays.get(i).getDatePaid(), pays.get(i).getAmount());
+//				}
+				
+				btnPay.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							double amount = Double.parseDouble(txtEnterAmount.getText());
+							String datePaid = txtEnterDate.getText();
+							System.out.println("HAHAAH");
+							//Session.user.payStaff(staff.getEmpID(), datePaid, amount)
+							//dtm2.addRow(staff.getName(), datePaid, amount);
+							
+						}
+					});
+							
+						
+				panel_2.repaint();
+			    
+			}
+		});
+				
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -484,107 +401,216 @@ public class FMFrame extends JFrame {
 		btnSearch.setForeground(UIManager.getColor("Button.foreground"));
 		btnSearch.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 		btnSearch.setBackground(UIManager.getColor("Button.background"));
-		btnSearch.setBounds(438, 104, 130, 23);
+		btnSearch.setBounds(446, 71, 130, 23);
 		panel_2.add(btnSearch);
 		
-		JLabel lblAmount = new JLabel("Amount");
-		lblAmount.setForeground(Color.WHITE);
-		lblAmount.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblAmount.setBounds(252, 206, 57, 27);
-		panel_2.add(lblAmount);
 		
-		JLabel lblDatepaid = new JLabel("DatePaid");
-		lblDatepaid.setForeground(Color.WHITE);
-		lblDatepaid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblDatepaid.setBounds(360, 206, 68, 27);
-		panel_2.add(lblDatepaid);
+		home = new JPanel();
+		home.setLayout(null);
+		home.setBackground(Color.BLACK);
+		home.setBounds(249, 152, 704, 442);
+		contentPane.add(home);
 		
-		JLabel lblSemester = new JLabel("Month");
-		lblSemester.setForeground(Color.WHITE);
-		lblSemester.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblSemester.setBounds(133, 206, 68, 27);
-		panel_2.add(lblSemester);
+		JLabel label_2 = new JLabel("UserImage");
+		label_2.setIcon(new ImageIcon(FMFrame.class.getResource("/images/user2.png")));
+		label_2.setBounds(54, 71, 99, 152);
+		home.add(label_2);
 		
-		txtSpring = new JTextField();
-		txtSpring.setText("August");
-		txtSpring.setForeground(Color.WHITE);
-		txtSpring.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		txtSpring.setColumns(10);
-		txtSpring.setBorder(null);
-		txtSpring.setBackground(new Color(36, 47, 65));
-		txtSpring.setBounds(109, 244, 115, 20);
-		panel_2.add(txtSpring);
+		JLabel label_3 = new JLabel("Profile");
+		label_3.setForeground(Color.WHITE);
+		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_3.setBounds(69, 25, 93, 16);
+		home.add(label_3);
 		
-		textField_1 = new JTextField();
-		textField_1.setText("500000");
-		textField_1.setForeground(Color.WHITE);
-		textField_1.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_1.setColumns(10);
-		textField_1.setBorder(null);
-		textField_1.setBackground(new Color(36, 47, 65));
-		textField_1.setBounds(234, 244, 100, 20);
-		panel_2.add(textField_1);
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(70, 50, 61, 2);
+		home.add(separator_1);
 		
-		textField_2 = new JTextField();
-		textField_2.setText("25/01/2017");
-		textField_2.setForeground(Color.WHITE);
-		textField_2.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_2.setColumns(10);
-		textField_2.setBorder(null);
-		textField_2.setBackground(new Color(36, 47, 65));
-		textField_2.setBounds(344, 244, 100, 20);
-		panel_2.add(textField_2);
+		viewDetails(new User("A", "B", new Date(1,2,3), "C", "D", "E", 'M', "F", "G"));
 		
-		txtFall = new JTextField();
-		txtFall.setText("September");
-		txtFall.setForeground(Color.WHITE);
-		txtFall.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		txtFall.setColumns(10);
-		txtFall.setBorder(null);
-		txtFall.setBackground(new Color(36, 47, 65));
-		txtFall.setBounds(109, 275, 115, 20);
-		panel_2.add(txtFall);
+		JPanel topPanel = new JPanel();
+		topPanel.setBounds(0, 0, 953, 152);
+		topPanel.setBackground(new Color(30, 144, 255));
+		contentPane.add(topPanel);
+		topPanel.setLayout(null);
 		
-		textField_4 = new JTextField();
-		textField_4.setText("50000");
-		textField_4.setForeground(Color.WHITE);
-		textField_4.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_4.setColumns(10);
-		textField_4.setBorder(null);
-		textField_4.setBackground(new Color(36, 47, 65));
-		textField_4.setBounds(234, 275, 100, 20);
-		panel_2.add(textField_4);
+		JLabel lblHome = new JLabel("Home");
+		lblHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblHome.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabel evlbl = (JLabel) e.getComponent();
+				showPanel(evlbl.getText());
+			}
+		});
+		lblHome.setIcon(new ImageIcon(FMFrame.class.getResource("/images/home.png")));
+		lblHome.setBounds(12, 15, 56, 57);
+		topPanel.add(lblHome);
 		
-		txtNotPaid = new JTextField();
-		txtNotPaid.setText("Not Paid");
-		txtNotPaid.setForeground(Color.WHITE);
-		txtNotPaid.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		txtNotPaid.setColumns(10);
-		txtNotPaid.setBorder(null);
-		txtNotPaid.setBackground(new Color(36, 47, 65));
-		txtNotPaid.setBounds(344, 275, 100, 20);
-		panel_2.add(txtNotPaid);
+		JLabel label_5 = new JLabel("");
+		label_5.setIcon(new ImageIcon(FMFrame.class.getResource("/images/settings2.png")));
+		label_5.setBounds(12, 85, 56, 59);
+		topPanel.add(label_5);
 		
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setForeground(Color.BLACK);
-		btnUpdate.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		btnUpdate.setBackground(SystemColor.menu);
-		btnUpdate.setBounds(454, 243, 130, 20);
-		panel_2.add(btnUpdate);
+		JLabel label_6 = new JLabel("");
+		label_6.setIcon(new ImageIcon(FMFrame.class.getResource("/images/school.png")));
+		label_6.setBounds(362, 0, 258, 152);
+		topPanel.add(label_6);
 		
-		JButton button = new JButton("Update");
-		button.setForeground(Color.BLACK);
-		button.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button.setBackground(SystemColor.menu);
-		button.setBounds(454, 274, 130, 20);
-		panel_2.add(button);
+		JPanel sidePanel = new JPanel();
+		sidePanel.setBounds(0, 152, 250, 442);
+		sidePanel.setBackground(new Color(36,47,65));
+		contentPane.add(sidePanel);
+		sidePanel.setLayout(null);
 		
+		JLabel lblManageFaculty = new JLabel("Manage Pays");
+		lblManageFaculty.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblManageFaculty.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabel evlbl = (JLabel) e.getComponent();
+				showPanel(evlbl.getText());
+			}
+		});
+		lblManageFaculty.setForeground(Color.WHITE);
+		lblManageFaculty.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblManageFaculty.setBounds(57, 103, 182, 27);
 		
+		sidePanel.add(lblManageFaculty);
 		
+		JLabel lblManageStudents = new JLabel("Manage Fees");
+		lblManageStudents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblManageStudents.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabel evlbl = (JLabel) e.getComponent();
+				showPanel(evlbl.getText());
+			}
+		});
+		lblManageStudents.setForeground(Color.WHITE);
+		lblManageStudents.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblManageStudents.setBounds(57, 158, 182, 27);
+		sidePanel.add(lblManageStudents);
 		
+		JLabel label_1 = new JLabel("");
+		label_1.setIcon(new ImageIcon(FMFrame.class.getResource("/images/student.png")));
+		label_1.setBounds(12, 153, 33, 32);
+		sidePanel.add(label_1);
 		
+		JLabel label = new JLabel("");
+		label.setBounds(12, 103, 33, 32);
+		sidePanel.add(label);
+		label.setIcon(new ImageIcon(FMFrame.class.getResource("/images/faculty.png")));
 		
+		JLabel lblLogout = new JLabel("");
+		lblLogout.setBounds(93, 363, 56, 54);
+		sidePanel.add(lblLogout);
+		lblLogout.setIcon(new ImageIcon(FMFrame.class.getResource("/images/logout.png")));
 		
+		JLabel lblAcademicManager = new JLabel("Finance Manager");
+		lblAcademicManager.setForeground(Color.WHITE);
+		lblAcademicManager.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		lblAcademicManager.setBounds(27, 26, 211, 32);
+		sidePanel.add(lblAcademicManager);
 		
+		addContainers();
+		
+		for (int i = 1; i < containers.size();i++)
+		{
+			containers.get(i).setVisible(false);
+		}
+		
+	}
+	
+	public void addContainers()
+	{
+		containers.add(home);
+		containers.add(manageFee);
+		containers.add(managePay);
+	}
+	
+	public void viewDetails(User user)
+	{
+		JLabel lblEhtishamulhaq = new JLabel(user.getName());
+		lblEhtishamulhaq.setForeground(Color.WHITE);
+		lblEhtishamulhaq.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEhtishamulhaq.setBounds(70, 252, 175, 27);
+		home.add(lblEhtishamulhaq);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(71, 283, 61, 2);
+		home.add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(71, 323, 61, 2);
+		home.add(separator_2);
+		
+		JLabel label_7 = new JLabel(user.getPhoneNo());
+		label_7.setForeground(Color.WHITE);
+		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_7.setBounds(70, 292, 175, 27);
+		home.add(label_7);
+		
+		JLabel lblPrincessshamsgmailcom = new JLabel(user.getEmail());
+		lblPrincessshamsgmailcom.setForeground(Color.WHITE);
+		lblPrincessshamsgmailcom.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblPrincessshamsgmailcom.setBounds(70, 334, 205, 27);
+		home.add(lblPrincessshamsgmailcom);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(71, 365, 61, 2);
+		home.add(separator_3);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setBounds(71, 405, 61, 2);
+		home.add(separator_4);
+		
+		JLabel lblHStreet = new JLabel(user.getAddress());
+		lblHStreet.setForeground(Color.WHITE);
+		lblHStreet.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblHStreet.setBounds(70, 374, 239, 27);
+		home.add(lblHStreet);
+		
+		JSeparator separator_5 = new JSeparator();
+		separator_5.setBounds(418, 405, 61, 2);
+		home.add(separator_5);
+		
+		JLabel lblGenderM = new JLabel("Gender: "+ user.getGender());
+		lblGenderM.setForeground(Color.WHITE);
+		lblGenderM.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblGenderM.setBounds(417, 374, 175, 27);
+		home.add(lblGenderM);
+		
+		JLabel lblDob = new JLabel("DOB: " + user.getDOB());
+		lblDob.setForeground(Color.WHITE);
+		lblDob.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblDob.setBounds(417, 334, 250, 27);
+		home.add(lblDob);
+		
+		JSeparator separator_6 = new JSeparator();
+		separator_6.setBounds(418, 365, 61, 2);
+		home.add(separator_6);
+		
+		JSeparator separator_7 = new JSeparator();
+		separator_7.setBounds(418, 323, 61, 2);
+		home.add(separator_7);
+		
+		JLabel lblCnic = new JLabel("CNIC: " + user.getCNIC());
+		lblCnic.setForeground(Color.WHITE);
+		lblCnic.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblCnic.setBounds(417, 292, 175, 27);
+		home.add(lblCnic);
+		
+		JSeparator separator_8 = new JSeparator();
+		separator_8.setBounds(418, 283, 61, 2);
+		home.add(separator_8);
+		
+		JLabel lblEmergency = new JLabel("Emergency: " + user.getEmergencyContact());
+		lblEmergency.setForeground(Color.WHITE);
+		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEmergency.setBounds(417, 252, 192, 27);
+		home.add(lblEmergency);
+		//home.setVisible(false);
+		home.setVisible(true);
 	}
 }
