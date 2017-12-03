@@ -6,8 +6,7 @@ package backend;
 import java.util.ArrayList;
 import java.sql.Date;
 
-import dal.DAL;
-import dal.DBAccess;
+import dal.*;
 
 import java.sql.*;
 
@@ -19,9 +18,9 @@ public class School {
 
 	private String id;
 	private String name;
-	private ArrayList<FacultyMember> faculty;
-	private ArrayList<Student> students;
-	private ArrayList<Course> courses;
+	private ArrayList<FacultyMember> faculty = null;
+	private ArrayList<Student> students = null;
+	private ArrayList<Course> courses = null;
 
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
@@ -31,6 +30,14 @@ public class School {
 		this.students = students;
 		this.courses = courses;
 	}
+	
+	public School(String sid, String n) {
+		this.id = sid;
+		this.name = n;
+		this.faculty = new ArrayList<FacultyMember>();
+		this.students = new ArrayList<Student>();
+		this.courses = new ArrayList<Course>();
+	}
 
 	public String getId() {
 		return id;
@@ -38,16 +45,6 @@ public class School {
 
 	public String getName() {
 		return name;
-	}
-
-	public Course getCourse(String code) {
-
-		for (Course c : this.courses) {
-			if (c.getCourseCode().equals(code))
-				return c;
-		}
-
-		return null;
 	}
 
 	public void setName(String name) {
@@ -122,17 +119,6 @@ public class School {
 	}
 
 	// hamza
-	public Student getStudent(String rollNo) {
-
-		for (Student stu : students) {
-			if (stu.getRollNo().equals(rollNo))
-				return stu;
-		}
-
-		return null;
-	}
-
-	// hamza
 	public boolean addCourse(Course c) {
 
 		// Adding in database
@@ -198,9 +184,9 @@ public class School {
 		}
 
 		// Removing Pay
-		for (Pay pay : Session.getAccountsDept().getPays()) {
+		for (Pay pay : Session.getAccountsDept().getAllPays()) {
 			if (pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
-				Session.getAccountsDept().getPays().remove(pay);
+				Session.getAccountsDept().getAllPays().remove(pay);
 		}
 
 		// Removing From School
@@ -253,9 +239,9 @@ public class School {
 		}
 
 		// Removing Fee
-		for (Fee fee : Session.getAccountsDept().getFees()) {
+		for (Fee fee : Session.getAccountsDept().getAllFees()) {
 			if (fee.getStudent() == std)
-				Session.getAccountsDept().getFees().remove(fee);
+				Session.getAccountsDept().getAllFees().remove(fee);
 		}
 
 		students.remove(std);
@@ -289,7 +275,230 @@ public class School {
 		return ret;
 	}
 
-	// hamza
+
+	public Student getStudent(String rollNo) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNo))
+				return s;
+		}
+
+		return null;
+	}
+
+	public Course getCourse(String courseCode) {
+		for (Course c : courses) {
+			if (c.getCourseCode().equals(courseCode))
+				return c;
+		}
+
+		return null;
+	}
+
+	public CourseSection getCourseSection(Course c, char secID, Semester sem) {
+		return c.getCourseSection(secID, sem);
+	}
+
+	public boolean registerStudentInCourse(Student s, Course c, CourseSection cs, Semester sem) {
+
+		if (s.checkSemesterRegistrations(sem).size() < 5) {
+			ArrayList<Course> prereq = c.getPrerequisites();
+
+			boolean passed = s.checkCoursesPassed(prereq);
+			boolean seatAvailibility = cs.checkSeatAvailibility();
+
+			if (passed && seatAvailibility) {
+				int sectionKey = DAL.getSectionKey(cs.getSectionID(), c.getCourseCode(), sem.getSession());
+
+				cs.incrementCurrSeats();
+				DAL.incrementCurrSeats(sectionKey);
+
+				s.addStudentCourseRegistration(cs);
+				DAL.addStudentCourseRegistration(s.getRollNo(), sectionKey);
+
+				s.addGradeToTranscript(cs, LGrade.I);
+				DAL.addGradeToTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
+
+				return true;
+			} else
+				return false;
+		} else
+			return false;
+	}
+
+	public boolean updateStudentCourseRegistration(Student s, CourseSection oldCs, CourseSection newCs, Semester sem) {
+
+		if (newCs.checkSeatAvailibility()) {
+			int oldSectionKey = DAL.getSectionKey(oldCs.getSectionID(), oldCs.getCourse().getCourseCode(),
+					sem.getSession());
+			int newSectionKey = DAL.getSectionKey(newCs.getSectionID(), newCs.getCourse().getCourseCode(),
+					sem.getSession());
+
+			newCs.incrementCurrSeats();
+			DAL.incrementCurrSeats(newSectionKey);
+			oldCs.decrementCurrSeats();
+			DAL.decrementCurrSeats(oldSectionKey);
+
+			s.addStudentCourseRegistration(newCs);
+			DAL.addStudentCourseRegistration(s.getRollNo(), newSectionKey);
+			s.removeStudentCourseRegistration(oldCs);
+			DAL.removeStudentCourseRegistration(s.getRollNo(), oldSectionKey);
+			oldCs.removeStudentAttendance(s);
+			s.updateGradeSection(oldCs, newCs);
+			DAL.updateGradeSection(LGrade.I.toString(), oldSectionKey, newSectionKey, s.getRollNo(), sem.getSession());
+
+			return true;
+		} else
+			return false;
+	}
+	
+	
+
+	//helper for mark attendance
+//	public Student getStudent(String s)
+//	{
+//		for(int i=0 ; i< this.students.size();i++)
+//		{
+//			if(this.students.get(i).getRollNo().equals(s))
+//			{
+//				return this.students.get(i);
+//			}
+//			
+//		}
+//		return null;
+//	}
+	
+	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
+	
+	public int ifFacultyExistsByIndex(String empID)                  //returning index instead of boolean bcoz coz it later is required for update
+	{
+		int found = 0;
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(empID.equals(fm.getEmpID()))
+			  {
+			      found=faculty.indexOf(fm);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
+	
+		return found;
+		
+	}
+	
+	public FacultyMember getFacultyfromList(String empID)
+	{
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(empID.equals(fm.getEmpID()))
+			  {
+			      return fm;
+			  }
+		}
+		return null;
+	}
+
+	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
+	
+	protected boolean addFacultyMember(FacultyMember fm)
+    {
+    	return faculty.add(fm);
+    }
+	
+	
+	////////////////SECTION//////////////////////////////////////////////////////////////////////////
+	public int courseExistsByIndex(String code)
+	{
+		int found = 0;
+		for(Course c : this.courses)
+		{
+			  if(code.equals(c.getCourseCode()))
+			  {
+			      found=courses.indexOf(c);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
+	
+		return found;
+	}
+	
+	
+	protected Course getCourseFromCourses(int i)
+	{
+		return courses.get(i);
+	}
+	
+	protected void updateCourseToCourses(int i,Course c)
+	{
+		 courses.set(i,c);
+	}
+	//////////////////////////////////remove section helper///////////////////////
+	protected ArrayList<Student> getStudentFromStudents(char SectionID)
+	{
+		ArrayList<Student> sectionStudent=new ArrayList<Student>();
+		for(Student s : this.students)
+		{
+			  if(s.ifSectionExists(SectionID)==true)
+			  {
+			    sectionStudent.add(s);
+			  }
+		}
+		return sectionStudent;
+	}
+	
+	protected boolean facultyExists(FacultyMember f)
+	{
+		boolean found=false;
+		for(FacultyMember fm : this.faculty)
+		{
+			  if(f.getEmpID().equals(fm.getEmpID()))
+			  {
+			      found=true;
+				  break;
+			  }
+		 
+		}
+		 return found;
+	}
+
+	
+	
+	public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Semester sem) {
+		
+		int sectionKey = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
+		
+		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
+			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
+			cs.removeStudentAttendance(s);
+			DAL.removeStudentAttendance(s.getRollNo(), sectionKey);
+			cs.decrementCurrSeats();
+			DAL.decrementCurrSeats(sectionKey);
+			return true;
+		} 
+		else
+			return false;
+	}
+
+	public ArrayList<Course> getOfferedCourses() {
+		ArrayList<Course> offeredCourses = new ArrayList<>();
+
+		for (Course c : courses) {
+			if (c.getIsOffered())
+				offeredCourses.add(c);
+		}
+
+		if (offeredCourses.size() == 0)
+			return null;
+		else
+			return offeredCourses;
+	}
+
 	public FacultyMember getFacultyMember(String empID) {
 		for (FacultyMember fac : faculty) {
 			if (fac.getEmpID().equals(empID))
@@ -298,5 +507,42 @@ public class School {
 
 		return null;
 	}
+	
+	
+	//helper for mark attendance
+//	public Course getCourse(String s)
+//	{
+//		for(int i=0 ; i< this.courses.size();i++)
+//		{
+//			if(this.courses.get(i).getCourseCode().equals(s))
+//			{
+//				return this.courses.get(i);
+//			}
+//			
+//		}
+//		return null;
+//	}
+//	
+	
+   public  ArrayList<CourseSection> getFacultyCourseSections(String id)
+   {
+	   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
+	   Semester current=Session.getSem();  
+	    
+	   for(int i=0; i<this.courses.size();i++)   
+	   {
+		   for(int j=0;j<courses.get(i).getSections().size();j++)
+		   {
+			   if(courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id)  &&  courses.get(i).getSections().get(j).getSemester().getSession().equals(current.getSession()))
+			   {
+				   sec.add(courses.get(i).getSections().get(j));
+			   }
+			   
+		   }
+	   }
+   
+	   return sec;
+	   
+   }
 
 }

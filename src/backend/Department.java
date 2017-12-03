@@ -14,7 +14,12 @@ import java.util.ArrayList;
 public class Department {
 
 	protected String name;
-	protected ArrayList<Staff> staff;
+	protected ArrayList<Staff> staff = null;
+	
+	public Department(String name, ArrayList<Staff> staff) {
+		this.name = name;
+		this.staff = staff;
+	}
 
 	public String getName() {
 		return name;
@@ -32,10 +37,7 @@ public class Department {
 		this.staff = staff;
 	}
 
-	public Department(String name, ArrayList<Staff> staff) {
-		this.name = name;
-		this.staff = staff;
-	}
+	
 
 	// hamza
 	public Staff getStaffMember(String empID) {
@@ -43,7 +45,75 @@ public class Department {
 			if (st.getEmpID().equals(empID))
 				return st;
 		}
+		return null;
+	}
+	
+  ///////////////////////////////////////////////////ADD STAFF HELPER//////////////////////////////////////////////////
+    protected int ifStaffExistsByIndex(String id)
+    {
+    	int found = 0;
+		for(Staff s : this.staff)
+		{
+			  if(id.equals(s.getEmpID()))
+			  {
+			      found=staff.indexOf(s);
+				  break;
+			  }
+			  
+			  else
+			  found=-1;
+		}
+	
+		return found;
+    }
+    
+    protected boolean addStaff(Staff f)
+    {
+    	return staff.add(f);
+    }
+    
 
+    
+    //////////////////////////////////////////REMOVE STAFF/////////////////////////////////////////////////////////
+    protected boolean removestaff(String empID)
+    {
+    	for(Staff s : staff)
+		{
+			if(empID.equals(s.getEmpID()))
+			{
+				this.staff.remove(s);
+			    return true;
+			}
+			    
+			else 
+				break;
+		}
+    	
+    	return false;
+    }
+    
+   /////////////////////////////////////////////UPDATE STAFF ///////////////////////////////////////////////////////////////
+    
+    protected Staff getStaffMember(int i)
+    {
+    	return this.staff.get(i);
+    }
+    
+    protected void updateStaffMemberToStaff(int i,Staff s)
+	{
+	     staff.set(i,s);
+	}
+   
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+
+	public Staff getEmp(String id) {
+		for (int i = 0; i < staff.size(); i++) {
+			if (staff.get(i).getEmpID().equals(id)) {
+				return staff.get(i);
+			}
+		}
 		return null;
 	}
 }

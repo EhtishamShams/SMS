@@ -10,5 +10,5 @@ package backend;
 public enum LAttendance {
 	A,
 	P,
-	L 
+	L
 }

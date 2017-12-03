@@ -2,9 +2,9 @@ package backend;
 
 public class Grade {
 
-	private LGrade grade;
-	private CourseSection course;
-
+	private LGrade grade = null;
+	private CourseSection course = null;
+	
 	public Grade(LGrade grade, CourseSection course) {
 		this.grade = grade;
 		this.course = course;
@@ -20,6 +20,10 @@ public class Grade {
 
 	public CourseSection getCourseSection() {
 		return course;
+	}
+
+	public void setCourseSection(CourseSection course) {
+		this.course = course;
 	}
 
 }

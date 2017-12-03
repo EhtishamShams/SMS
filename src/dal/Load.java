@@ -143,10 +143,15 @@ public class Load {
 							stdCourses.getString(3).charAt(0)));
 				}
 
+//				Student std = new Student(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
+//						rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8), rs.getString(9),
+//						rs.getString(10), rs.getString(12), rs.getString(11), (float) rs.getDouble(13), rs.getInt(14),
+//						rs.getInt(15), courses);
+				
 				Student std = new Student(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8), rs.getString(9),
 						rs.getString(10), rs.getString(12), rs.getString(11), (float) rs.getDouble(13), rs.getInt(14),
-						rs.getInt(15), courses);
+						rs.getInt(15), courses, new Transcript());
 
 				loadTranscript(std);
 				sch.getStudents().add(std);
@@ -300,7 +305,7 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAcademicDept().getTimeTables().add(new Timetable(rs.getString(1), rs.getString(2),
+				Session.getAcademicDept().getTimetables().add(new Timetable(rs.getString(1), rs.getString(2),
 						Session.getInst().getSchool(rs.getString(3)), Session.getInst().getSemester(rs.getString(4))));
 			}
 
@@ -442,7 +447,7 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAccountsDept().getPays()
+				Session.getAccountsDept().getAllPays()
 						.add(new Pay(rs.getDouble(1), rs.getDate(2), Session.getInst().getStaff(rs.getString(3))));
 			}
 
@@ -461,7 +466,7 @@ public class Load {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Session.getAccountsDept().getFees().add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3),
+				Session.getAccountsDept().getAllFees().add(new Fee(rs.getDouble(1), rs.getDate(2), rs.getDate(3),
 						Session.getInst().getStudent(rs.getString(4)), Session.getInst().getSemester(rs.getString(5))));
 			}
 

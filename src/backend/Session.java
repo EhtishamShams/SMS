@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import dal.DBAccess;
 import dal.Load;
+import dal.DAL;
 
 /**
  * @author Ehtisham
@@ -21,6 +22,7 @@ public class Session {
 	private static AccountsDepartment accountsDept = null;
 	private static HRDepartment hrDept = null;
 	private static Semester sem = null;
+	private static DAL dal = null;
 
 	public static void initialize() {
 
@@ -88,7 +90,6 @@ public class Session {
 	public static void setAccountsDept(AccountsDepartment accountDept) {
 		Session.accountsDept = accountDept;
 	}
-
 	public static HRDepartment getHrDept() {
 		return hrDept;
 	}
@@ -121,4 +122,13 @@ public class Session {
 //	
 //	 }
 
+
+	public static DAL getDal() {
+		return dal;
+	}
+
+	public static void setDal(DAL dal) {
+		Session.dal = dal;
+	}
+	
 }

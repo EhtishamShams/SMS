@@ -1,10 +1,7 @@
 package backend;
 
 import java.util.*;
-
-/**
- * 
- */
+import dal.DAL;
 
 /**
  * @author Ehtisham
@@ -14,11 +11,11 @@ import java.util.*;
 public class AcademicInstitution {
 	private String name;
 	private String location;
-	private ArrayList<School> schools;
-	private ArrayList<User> users;
-	private ArrayList<Department> depts;
+	private ArrayList<School> schools = null;
+	private ArrayList<User> users = null;
+	private ArrayList<Department> depts = null;
 	private ArrayList<Semester> semesters;
-
+	
 	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
 			ArrayList<Department> depts, ArrayList<Semester> sems) {
 		this.name = name;
@@ -30,7 +27,6 @@ public class AcademicInstitution {
 	}
 
 	public ArrayList<School> getSchools() {
-
 		return schools;
 	}
 
@@ -58,9 +54,51 @@ public class AcademicInstitution {
 		this.depts = depts;
 	}
 
-	public ArrayList<User> getUsers() {
-
-		return users;
+	public Staff getStaff(String empID) {
+		for (User u : users) {
+			if ((u instanceof Staff) && ((Staff) u).getEmpID().equals(empID)) 
+				return (Staff)u;
+		}
+		return null;
+	}
+	
+	public boolean studentLogin(String rollNum, String pass) {
+		User u = getStudent(rollNum);
+		if (u != null && u.matchPassword(pass)) {
+			Session.setUser(u);
+			Session.setType(UType.Student);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean staffLogin(String empID, String pass) {
+		User u = getStaff(empID);
+		if (u != null && u.matchPassword(pass)) {
+			Session.setUser(u);
+			if (u instanceof HRManager)
+				Session.setType(UType.HRManager);
+			else if (u instanceof AcademicManager)
+				Session.setType(UType.AcademicManager);
+			else if (u instanceof FinanceManager)
+				Session.setType(UType.FinanceManager);
+			else if (u instanceof FacultyMember)
+				Session.setType(UType.FacultyMember);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean logout() {
+		if (Session.getUser() != null) {
+			Session.setUser(null);
+			Session.setType(UType.LoggedOut);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	public School getSchool(String sID) {
@@ -94,24 +132,71 @@ public class AcademicInstitution {
 					return FM;
 			}
 		}
-
 		return null;
 	}
 
-	public Staff getStaff(String empID) {
+//	public Staff getStaff(String empID) {
+//
+//		for (School sch : schools) {
+//			Staff temp = sch.getFacultyMember(empID);
+//			if (temp != null)
+//				return temp;
+//		}
+//
+//		for (Department dep : depts) {
+//			Staff temp = dep.getStaffMember(empID);
+//			if (temp != null)
+//				return temp;
+//		}
+//
+//		return null;
+//	}
+	
+	public void setSchools(ArrayList<School> schools) {
+		this.schools = schools;
+	}
 
-		for (School sch : schools) {
-			Staff temp = sch.getFacultyMember(empID);
-			if (temp != null)
-				return temp;
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+	// helper function to return the school from the id
+
+	public boolean updateSchool(String id, String n) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id)) {
+				schools.get(i).setName(n);
+				return true;
+			}
 		}
+		return false;
+	}
 
-		for (Department dep : depts) {
-			Staff temp = dep.getStaffMember(empID);
-			if (temp != null)
-				return temp;
+	public boolean Validate(String id, String n) {
+		boolean check = true;
+		for (int i = 0; i < (this.schools.size()); i++) {
+			if (this.schools.get(i).getId().equals(id) || this.schools.get(i).getName().equals(n)) {
+				check = false;
+			}
 		}
+		 check=DAL.updateSchoolDB(id,n);
+		if (check) {
+			School temp = new School(id, n);
+			schools.add(temp);
 
+		}
+		return check;
+	}
+
+	public School getSchoolByName(String name) {
+		for (int i = 0; i < this.schools.size(); i++) {
+			if (schools.get(i).getName().equals(name))
+				return schools.get(i);
+		}
 		return null;
 	}
 	
@@ -131,24 +216,35 @@ public class AcademicInstitution {
 		return null;
 	}
 	
-	public Student getStudent(String rollNo) {
 
-		for (School sch : schools) {
-			Student temp = sch.getStudent(rollNo);
-			if (temp != null)
-				return temp;
+//	public Student getStudent(String rollNo) {
+//
+//		for (School sch : schools) {
+//			Student temp = sch.getStudent(rollNo);
+//			if (temp != null)
+//				return temp;
+//		}
+//		return null;
+//	}
+
+
+	public Student getStudent(String rollNum) {
+		for (User u : users) {
+			if ((u instanceof Student) && ((Student) u).getRollNo().equals(rollNum))
+				return (Student) u;
 		}
 		return null;
 	}
+
 
 	public Course getCourse(String code) {
 
 		for (School sch : schools) {
 			return sch.getCourse(code);
 		}
-
 		return null;
 	}
+
 
 	public School getCourseSchool(String code) {
 		for(School sch:schools) {
@@ -158,4 +254,12 @@ public class AcademicInstitution {
 		
 		return null;
 	}
+
+
+	public void loadFaculty(ArrayList<FacultyMember> arr) {
+		for (FacultyMember f : arr) {
+			users.add(f);
+		}
+	}
+
 }

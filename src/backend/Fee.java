@@ -5,18 +5,19 @@
  */
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
  * @author HumnaGul
  */
 public class Fee {
-	double amount;
-	Date datePaid;
-	Date dueDate;
-	Student student;
-	Semester semester;
+	
+	private double amount;
+    private Date datePaid = null;
+    private Date dueDate = null; 
+    private Student student = null;
+    private Semester semester = null;
 
 	public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
 		this.amount = amount;
@@ -25,7 +26,7 @@ public class Fee {
 		this.student = st;
 		this.semester = sem;
 	}
-
+	
 	public double getAmount() {
 		return amount;
 	}
@@ -55,11 +56,30 @@ public class Fee {
 	public boolean setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 		return true;
-
 	}
 
 	public Student getStudent() {
 		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public Semester getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semester semester) {
+		this.semester = semester;
+	}
+
+	public void addAmount(double amount) {
+		this.amount += amount;
+	}
+
+	public void deductAmount(double amount) {
+		this.amount -= amount;
 	}
 
 }

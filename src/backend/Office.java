@@ -10,7 +10,8 @@ package backend;
  * @author HumnaGul
  */
 public class Office {
-	String ID;
+
+    private String ID;
 
 	public Office(String ID) {
 		this.ID = ID;

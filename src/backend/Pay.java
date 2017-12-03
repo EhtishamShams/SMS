@@ -5,28 +5,30 @@
  */
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
  * @author HumnaGul
  */
 public class Pay {
-	Double amount;
-	Date datePaid;
-	Staff staffMember;
 
-	public Pay(Double amount, Date datePaid, Staff st) {
-		this.amount = amount;
-		this.datePaid = datePaid;
-		this.staffMember = st;
-	}
+	private double amount;
+    private Date datePaid = null;
+    private Staff staffMember = null;
+	
+	public Pay(double amount, Date datePaid, Staff st) {
+        this.amount = amount;
+        this.datePaid = datePaid;
+        this.staffMember = st;
+    }
 
 	public Double getAmount() {
 		return amount;
 	}
 
-	public boolean setAmount(Double amount) {
+
+	public boolean setAmount(double amount) {
 		boolean set = false;
 		if (amount > -1) {
 			this.amount = amount;
@@ -51,5 +53,5 @@ public class Pay {
 	public void setStaffMember(Staff staffMember) {
 		this.staffMember = staffMember;
 	}
-
+	
 }

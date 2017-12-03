@@ -5,25 +5,30 @@
  */
 package backend;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
  * @author Advisor
  */
-public class Attendance {
-	LAttendance status;
-	Date Day;
-	// CourseSection section;
-	Student student;
 
-	public Attendance(LAttendance status, Date Day, Student student) { // , CourseSection section ) {
+public class Attendance {
+
+	private LAttendance status;
+	private Date Day;
+	private Student student = null;
+	
+	public Attendance(LAttendance status, Date Day, Student student) { 
 		this.status = status;
 		this.Day = Day;
-		// this.section = section;
 		this.student = student;
 	}
-
+	
+    public Attendance()
+    {
+    	
+    }
+    
 	public LAttendance getStatus() {
 		return status;
 	}
@@ -48,6 +53,7 @@ public class Attendance {
 	// this.section = section;
 	// }
 
+
 	public Student getStudent() {
 		return student;
 	}
@@ -55,5 +61,5 @@ public class Attendance {
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-
+	
 }
