@@ -69,10 +69,13 @@ public class HRFrame extends JFrame {
 	private JTextField textField_21;
 	private JButton button_10;
 	private JButton button_11;
+	private JButton btnRemove_1;
 	private JList list;
 	private JList list_2;
 	private JList list_3;
-
+	private JTable table2;
+	
+	private DefaultTableModel dtm;
 	private JScrollPane registerStaff;
 	private JScrollPane removeStaff;
 	private JScrollPane updateStaff;
@@ -90,10 +93,10 @@ public class HRFrame extends JFrame {
 	private DefaultListModel listModel4;
 	private JList list4;
 	private DefaultListModel listModel5;
-	private JComboBox comboBox_9;
 	private JPanel panel_3;
 	private ArrayList<Container> containers;
 	private JTextField textField;
+	private JTextField textField_3;
 
 	/**
 	 * Launch the application.
@@ -408,6 +411,89 @@ public class HRFrame extends JFrame {
 				//Show if exists or not
 			}
 		});
+		removeAllotment = new JPanel();
+		removeAllotment.setLayout(null);
+		removeAllotment.setOpaque(true);
+		removeAllotment.setBackground(Color.BLACK);
+		removeAllotment.setBounds(249, 152, 704, 442);
+		contentPane.add(removeAllotment);
+		
+		JLabel lblRemoveAllotments = new JLabel("Remove Allotments");
+		lblRemoveAllotments.setForeground(Color.WHITE);
+		lblRemoveAllotments.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+		lblRemoveAllotments.setBounds(41, 23, 246, 27);
+		removeAllotment.add(lblRemoveAllotments);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setBounds(41, 55, 225, 5);
+		removeAllotment.add(separator_4);
+		
+		JLabel lblEmployeeId = new JLabel("Employee ID");
+		lblEmployeeId.setForeground(Color.WHITE);
+		lblEmployeeId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEmployeeId.setBounds(121, 87, 104, 27);
+		removeAllotment.add(lblEmployeeId);
+		
+		textField_3 = new JTextField();
+		textField_3.setText("15L-1234");
+		textField_3.setForeground(Color.WHITE);
+		textField_3.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField_3.setColumns(10);
+		textField_3.setBorder(null);
+		textField_3.setBackground(new Color(36, 47, 65));
+		textField_3.setBounds(252, 91, 198, 20);
+		removeAllotment.add(textField_3);
+		
+		JButton button = new JButton("Search");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Staff staffMember = Session.getInst().getStaff(textField_3.getText()); 
+				if (staffMember != null)
+				{
+					ArrayList<Staff> staff = ((HRManager) Session.getUser()).getAllotedStaff();
+					if (staff.contains(staffMember) == true)
+					{
+						String[] columnNames = {"Emp ID",
+				                "Name",
+				                "DOB"};
+						
+						table2 = new JTable();
+						dtm = new DefaultTableModel(0, 0);
+						dtm.setColumnIdentifiers(columnNames);
+						table2.setModel(dtm);
+						
+						JScrollPane scrollPane_5 = new JScrollPane(table2);
+						scrollPane_5.setForeground(Color.WHITE);
+						scrollPane_5.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+						scrollPane_5.setBackground(Color.WHITE);
+						scrollPane_5.setAlignmentX(0.0f);
+						scrollPane_5.setBounds(197, 135, 279, 40);
+						removeAllotment.add(scrollPane_5);
+						
+						//dtm.addRow(new Object[] {.....}
+						dtm.addRow(new Object[] { "LOL", "LOL", "LOL"});
+						
+						btnRemove_1 = new JButton("Remove");
+						btnRemove_1.setBounds(270, 215, 97, 25);
+						btnRemove_1.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								//Session.getUser().removeAllotment((String) dtm.getValueAt(0, 0));
+			
+							}
+						});
+						removeAllotment.add(btnRemove_1);
+						removeAllotment.repaint();
+					}
+				}
+			}
+		});
+		button.setForeground(Color.BLACK);
+		button.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		button.setBackground(SystemColor.menu);
+		button.setBounds(476, 89, 130, 23);
+		removeAllotment.add(button);
 		
 		
 		updateAllotment = new JPanel();
@@ -712,62 +798,6 @@ public class HRFrame extends JFrame {
 				button_9.setBackground(new Color(36, 47, 65));
 				button_9.setBounds(539, 59, 130, 23);
 				panel_1.add(button_9);
-		removeAllotment = new JPanel();
-		removeAllotment.setLayout(null);
-		removeAllotment.setOpaque(true);
-		removeAllotment.setBackground(Color.BLACK);
-		removeAllotment.setBounds(249, 152, 704, 442);
-		contentPane.add(removeAllotment);
-		
-		JLabel lblRemoveAllotments = new JLabel("Remove Allotments");
-		lblRemoveAllotments.setForeground(Color.WHITE);
-		lblRemoveAllotments.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		lblRemoveAllotments.setBounds(41, 23, 246, 27);
-		removeAllotment.add(lblRemoveAllotments);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(41, 55, 225, 5);
-		removeAllotment.add(separator_4);
-		
-		JButton button_17 = new JButton("Remove");
-		button_17.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String type = (String) comboBox_9.getSelectedItem();
-		  		int index = list2.getSelectedIndex();
-				//ArrayList<Staff> staff = ai.getAllotedStaff(type);
-		  		//Session.hr.removeAllotment(staff.get(index));
-			}
-		});
-		button_17.setFont(new Font("Century Gothic", Font.BOLD, 11));
-		button_17.setBounds(197, 406, 89, 23);
-		removeAllotment.add(button_17);
-		
-		JLabel label_37 = new JLabel("Staff Type:");
-		label_37.setForeground(Color.WHITE);
-		label_37.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_37.setBounds(63, 103, 105, 27);
-		removeAllotment.add(label_37);
-		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setBounds(63, 125, 78, 5);
-		removeAllotment.add(separator_6);
-		
-		comboBox_9 = new JComboBox();
-		comboBox_9.setBounds(197, 106, 105, 22);
-		removeAllotment.add(comboBox_9);
-		
-		JButton button_12 = new JButton("Show");
-		button_12.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String type = (String) comboBox_9.getSelectedItem();
-				//fillAllotedStaffMembers(type, Session.ai, removeAllotment);
-				
-			}
-		});
-		button_12.setBounds(337, 105, 97, 25);
-		removeAllotment.add(button_12);
 		
 		manageAllotments = new JPanel();
 		manageAllotments.setLayout(null);

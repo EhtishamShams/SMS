@@ -280,6 +280,94 @@ public class AMFrame extends JFrame {
 		contentPane.setLayout(null);
 		containers = new ArrayList<Container>();
 		
+		removeStudent = new JPanel();
+		removeStudent.setBounds(249, 152, 704, 442);
+		contentPane.add(removeStudent);
+		removeStudent.setLayout(null);
+		removeStudent.setPreferredSize(new Dimension(704, 550));
+		removeStudent.setBackground(Color.BLACK);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Student student = Session.getInst().getStudent();
+				//if (student != null)
+				
+				String[] columnNames = {"Roll Number",
+		                "Name",
+		                "DOB"};
+				
+				table2 = new JTable();
+				dtm = new DefaultTableModel(0, 0);
+				dtm.setColumnIdentifiers(columnNames);
+				table2.setModel(dtm);
+				
+				
+				
+				scrollPane_3 = new JScrollPane(table2);
+				scrollPane_3.setForeground(Color.WHITE);
+				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_3.setBackground(Color.WHITE);
+				scrollPane_3.setAlignmentX(0.0f);
+				scrollPane_3.setBounds(197, 135, 279, 40);
+				removeStudent.add(scrollPane_3);
+				
+				dtm.addRow(new Object[] { "LOL", "LOL", "LOL"});
+				
+				btnRemove_1 = new JButton("Remove");
+				btnRemove_1.setBounds(270, 215, 97, 25);
+				btnRemove_1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						//Session.getUser().removeStudent((String) dtm.getValueAt(0, 0) , (String) dtm2.getValueAt(0, 0));
+	
+					}
+				});
+				removeStudent.add(btnRemove_1);
+				removeStudent.repaint();
+				
+				//else remove btnRemove_1
+
+				
+				
+				
+				
+				
+			}
+		});
+		btnSearch.setForeground(Color.BLACK);
+		btnSearch.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		btnSearch.setBackground(SystemColor.menu);
+		btnSearch.setBounds(442, 98, 130, 23);
+		removeStudent.add(btnSearch);
+		
+		JLabel label_53 = new JLabel("Remove Student");
+		label_53.setForeground(Color.WHITE);
+		label_53.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_53.setBounds(33, 11, 170, 35);
+		removeStudent.add(label_53);
+		
+		JSeparator separator_15 = new JSeparator();
+		separator_15.setBounds(33, 48, 170, 2);
+		removeStudent.add(separator_15);
+		
+		JLabel label_54 = new JLabel("Roll Number");
+		label_54.setForeground(Color.WHITE);
+		label_54.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_54.setBounds(104, 96, 87, 27);
+		removeStudent.add(label_54);
+		
+		textField_25 = new JTextField();
+		textField_25.setText("15L-1234");
+		textField_25.setForeground(Color.WHITE);
+		textField_25.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField_25.setColumns(10);
+		textField_25.setBorder(null);
+		textField_25.setBackground(new Color(36, 47, 65));
+		textField_25.setBounds(218, 100, 198, 20);
+		removeStudent.add(textField_25);
+		
 		
 		
 		updateCourse = new JPanel();
@@ -1930,94 +2018,6 @@ public class AMFrame extends JFrame {
 								lblUpdateSection.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 								lblUpdateSection.setBounds(133, 266, 172, 35);
 								manageSections.add(lblUpdateSection);
-		
-		removeStudent = new JPanel();
-		removeStudent.setBounds(249, 152, 704, 442);
-		contentPane.add(removeStudent);
-		removeStudent.setLayout(null);
-		removeStudent.setPreferredSize(new Dimension(704, 550));
-		removeStudent.setBackground(Color.BLACK);
-		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//Student student = Session.getInst().getStudent();
-				//if (student != null)
-				
-				String[] columnNames = {"Roll Number",
-		                "Name",
-		                "DOB"};
-				
-				table2 = new JTable();
-				dtm = new DefaultTableModel(0, 0);
-				dtm.setColumnIdentifiers(columnNames);
-				table2.setModel(dtm);
-				
-				
-				
-				scrollPane_3 = new JScrollPane(table2);
-				scrollPane_3.setForeground(Color.WHITE);
-				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-				scrollPane_3.setBackground(Color.WHITE);
-				scrollPane_3.setAlignmentX(0.0f);
-				scrollPane_3.setBounds(197, 135, 279, 40);
-				removeStudent.add(scrollPane_3);
-				
-				dtm.addRow(new Object[] { "LOL", "LOL", "LOL"});
-				
-				btnRemove_1 = new JButton("Remove");
-				btnRemove_1.setBounds(270, 215, 97, 25);
-				btnRemove_1.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						//Session.getUser().removeStudent((String) dtm.getValueAt(0, 0) , (String) dtm2.getValueAt(0, 0));
-	
-					}
-				});
-				removeStudent.add(btnRemove_1);
-				removeStudent.repaint();
-				
-				//else remove btnRemove_1
-
-				
-				
-				
-				
-				
-			}
-		});
-		btnSearch.setForeground(Color.BLACK);
-		btnSearch.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		btnSearch.setBackground(SystemColor.menu);
-		btnSearch.setBounds(442, 98, 130, 23);
-		removeStudent.add(btnSearch);
-		
-		JLabel label_53 = new JLabel("Remove Student");
-		label_53.setForeground(Color.WHITE);
-		label_53.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_53.setBounds(33, 11, 170, 35);
-		removeStudent.add(label_53);
-		
-		JSeparator separator_15 = new JSeparator();
-		separator_15.setBounds(33, 48, 170, 2);
-		removeStudent.add(separator_15);
-		
-		JLabel label_54 = new JLabel("Roll Number");
-		label_54.setForeground(Color.WHITE);
-		label_54.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_54.setBounds(104, 96, 87, 27);
-		removeStudent.add(label_54);
-		
-		textField_25 = new JTextField();
-		textField_25.setText("15L-1234");
-		textField_25.setForeground(Color.WHITE);
-		textField_25.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_25.setColumns(10);
-		textField_25.setBorder(null);
-		textField_25.setBackground(new Color(36, 47, 65));
-		textField_25.setBounds(218, 100, 198, 20);
-		removeStudent.add(textField_25);
 		
 		
 		
