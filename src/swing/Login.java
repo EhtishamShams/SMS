@@ -24,12 +24,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEnterYourId;
-	private JTextField txtEnterYourPassword;
+	private JPasswordField txtEnterYourPassword;
 	private Login frame;
 	
 	/**
@@ -87,6 +89,12 @@ public class Login extends JFrame {
 		panel_1.setLayout(null);
 		
 		txtEnterYourId = new JTextField();
+		txtEnterYourId.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtEnterYourId.setText("");
+			}
+		});
 		txtEnterYourId.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 		txtEnterYourId.setText("Enter your ID/Roll Number");
 		txtEnterYourId.setForeground(Color.WHITE);
@@ -108,7 +116,13 @@ public class Login extends JFrame {
 		lblPassword.setBounds(79, 209, 175, 22);
 		panel_1.add(lblPassword);
 		
-		txtEnterYourPassword = new JTextField();
+		txtEnterYourPassword = new JPasswordField();
+		txtEnterYourPassword.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtEnterYourPassword.setText("");
+			}
+		});
 		txtEnterYourPassword.setText("Enter your password");
 		txtEnterYourPassword.setForeground(Color.WHITE);
 		txtEnterYourPassword.setFont(new Font("Century Gothic", Font.ITALIC, 13));

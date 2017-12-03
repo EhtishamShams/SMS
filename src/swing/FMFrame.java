@@ -20,6 +20,8 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.UIManager;
 import javax.swing.JSeparator;
@@ -47,7 +49,7 @@ import java.awt.event.MouseEvent;
 
 
 public class FMFrame extends JFrame {
-	
+
 	private FMFrame frame;
 	private JPanel contentPane;
 	private JTextField txtl;
@@ -59,10 +61,13 @@ public class FMFrame extends JFrame {
 	private JTextField txtEnterDate;
 	private JTextField txtEnterAmount;
 	private JButton btnPay;
+	private JButton button_4;
 	private JTable table2 ;
 	private DefaultTableModel dtm;
 	private JTable table3;
 	private DefaultTableModel dtm2;
+	private ArrayList<JTextField> datesPaid;
+	int feeY = 214;
 	
 
 	/**
@@ -203,17 +208,6 @@ public class FMFrame extends JFrame {
 				txtEnterDate.setVisible(true);
 				
 				btnPay = new JButton("Pay");
-				btnPay.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-							double amount = Double.parseDouble(txtEnterAmount.getText());
-							String datePaid = txtEnterDate.getText();
-							System.out.println("HAHAAH");
-							//Session.user.payStaff(staff.getEmpID(), datePaid, amount)
-							//dtm2.addRow(staff.getName(), datePaid, amount);
-							
-						}
-					});
 				btnPay.setBounds(479, 142, 97, 25);
 				panel_2.add(btnPay);
 				
@@ -253,14 +247,26 @@ public class FMFrame extends JFrame {
 				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
 				scrollPane_4.setBackground(Color.WHITE);
 				scrollPane_4.setAlignmentX(0.0f);
-				scrollPane_4.setBounds(200, 300, 279, 40);
+				scrollPane_4.setBounds(200, 300, 279, 100);
 				panel_2.add(scrollPane_4);
-				
 				
 //				for (int i = 0; i < pays.size(); i++)
 //				{
 //					dtm2.addRow(pays.get(i).getStaffMember().getName(), pays.get(i).getDatePaid(), pays.get(i).getAmount());
 //				}
+				
+				btnPay.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							//double amount = Double.parseDouble(txtEnterAmount.getText());
+							String datePaid = txtEnterDate.getText();
+							System.out.println("HAHAAH");
+							//Session.user.payStaff(staff.getEmpID(), datePaid, amount)
+							dtm2.addRow(new Object[] {"HA", "HA", "AA"});
+							
+						}
+					});
+
 								
 							
 						
@@ -318,35 +324,48 @@ public class FMFrame extends JFrame {
 		label_15.setBounds(130, 59, 87, 27);
 		panel.add(label_15);
 		
-		JButton button_1 = new JButton("Upload Photo");
-		button_1.setForeground(Color.WHITE);
-		button_1.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_1.setBackground(new Color(36, 47, 65));
-		button_1.setBounds(191, 447, 130, 23);
-		panel.add(button_1);
+		JLabel label_16 = new JLabel("Amount");
+		label_16.setForeground(Color.WHITE);
+		label_16.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_16.setBounds(207, 194, 57, 27);
+		panel.add(label_16);
+		label_16.setVisible(false);
+
 		
-		JButton button_2 = new JButton("Register");
-		button_2.setForeground(Color.WHITE);
-		button_2.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_2.setBackground(new Color(36, 47, 65));
-		button_2.setBounds(191, 485, 130, 23);
-		panel.add(button_2);
+		JLabel label_17 = new JLabel("DatePaid");
+		label_17.setForeground(Color.WHITE);
+		label_17.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_17.setBounds(316, 194, 68, 27);
+		panel.add(label_17);
+		label_17.setVisible(false);
+
+		
+		JLabel label_18 = new JLabel("DueDate");
+		label_18.setForeground(Color.WHITE);
+		label_18.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_18.setBounds(427, 194, 68, 27);
+		panel.add(label_18);
+		label_18.setVisible(false);
+
+		
+		JLabel label_19 = new JLabel("Semester");
+		label_19.setForeground(Color.WHITE);
+		label_19.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_19.setBounds(87, 194, 68, 27);
+		panel.add(label_19);
+		label_19.setVisible(false);
 		
 		JButton button_3 = new JButton("Search");
 		button_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				//if Student student = Session.academicInstitution.getStudent(textField.getText()) returns not null;
-				
+				//Student student = Session.academicInstitution.getStudent(textField.getText());
+				//if (student != null)
 				String[] columnNames = {"Roll Number",
 		                "Name",
 		                "DOB"};
 				
-				String[] columnNames2 = {"Semester",
-		                "Amount",
-		                "Due Date",
-		                "Date Paid"};
 				
 				table2 = new JTable();
 				dtm = new DefaultTableModel(0, 0);
@@ -362,27 +381,83 @@ public class FMFrame extends JFrame {
 				panel.add(scrollPane_3);
 				
 				dtm.addRow(new Object[] { "23","Blah","2017" });
-				
-				//ArrayList<Fee> fees = Session.getUser().getFees(student.getRollNumber());
-				
-				table3 = new JTable();
-				dtm2 = new DefaultTableModel(0, 0);
-				dtm2.setColumnIdentifiers(columnNames2);
-				table3.setModel(dtm2);
+				//dtm.addRow(new Object[] { student.getShit()});
+				label_16.setVisible(true);
+				label_17.setVisible(true);
+				label_18.setVisible(true);
+				label_19.setVisible(true);
 
-				JScrollPane scrollPane_4 = new JScrollPane(table3);
-				scrollPane_4.setForeground(Color.WHITE);
-				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-				scrollPane_4.setBackground(Color.WHITE);
-				scrollPane_4.setAlignmentX(0.0f);
-				scrollPane_4.setBounds(200, 100, 279, 40);
-				panel.add(scrollPane_4);
+				String rollNum = (String) dtm.getValueAt(0, 0);
+				//ArrayList<Fee> fees = ((FinanceManager)Session.getUser()).getFees(rollNum);
+				datesPaid = new ArrayList<JTextField>();
 				
-//				for (int i = 0; i < fees.size(); i++)
-//				{
-//					dtm2.addRow(fees.get(i).getSemester.getSession(), fees.get(i).getAmount(), fees.get(i).getDueDate(),fees.get(i).getDatePaid);
-//				}
+				for(int i = 0; i < 5; i++)
+				{
+					feeY+=30;
+					JLabel label = new JLabel("Fall 2017");
+					label.setBounds(87, feeY, 68, 27);
+					//fees.get(i).getAmount();
+					
+					JLabel label2 = new JLabel("HAHAHA");
+					label2.setBounds(207, feeY, 68, 27);
+
+					DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+					String date = df.format(new Date(1,2,3));
+					JTextField textField = new JTextField(date);
+					textField.setBounds(316, feeY, 68, 27);
+
+					datesPaid.add(textField);
+					
+					
+					DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
+					String date2 = df.format(new Date(1,2,3));
+					JLabel label3 = new JLabel(date2);
+					label3.setBounds(427, feeY, 68, 27);
+					
+					panel.add(label);
+					panel.add(label2);
+					panel.add(textField);
+					panel.add(label3);
+					
+//					JLabel label = new JLabel(fees.get(i).getSemester().getSession());
+//					feeY+=20;
+//					label.setBounds(87, feeY, 68, 27);
+//					fees.get(i).getAmount();
+//					
+//					
+//					JLabel label2 = new JLabel(fees.get(i).getSemester().getSession());
+//					label.setBounds(207, feeY, 68, 27);
+//					
+//					panel.add(label);
+//					panel.add(label2);
+//					
+//					DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+//					String date = df.format(fees.get(i).getDatePaid());
+//					JTextField textField = new JTextField(date);
+//					textField.setBounds(316, feeY, 68, 27);
+//					
+//					DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
+//					String date2 = df.format(fees.get(i).getDatePaid());
+//					JTextField textField2 = new JTextField(date2);
+//					textField2.setBounds(427, feeY, 68, 27);
+				}
 				
+				button_4 = new JButton("Update");
+				button_4.setBounds(528, feeY, 88, 27 );
+				button_4.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							String datePaid = datesPaid.get(datesPaid.size()-1).getText();
+							//Semester semester = fees.get(datesPaid.size()-1).getSemester();
+							//Session.getUser().updateFee(rollNum, datePaid, semester)
+							//dtm2.addRow(staff.getName(), datePaid, amount);
+							
+						}
+					});
+				
+				panel.add(button_4);
+				panel.repaint();
+				panel.revalidate();
 				
 			}
 		});
@@ -391,30 +466,6 @@ public class FMFrame extends JFrame {
 		button_3.setBackground(SystemColor.menu);
 		button_3.setBounds(435, 61, 130, 23);
 		panel.add(button_3);
-		
-		JLabel label_16 = new JLabel("Amount");
-		label_16.setForeground(Color.WHITE);
-		label_16.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_16.setBounds(207, 194, 57, 27);
-		panel.add(label_16);
-		
-		JLabel label_17 = new JLabel("DatePaid");
-		label_17.setForeground(Color.WHITE);
-		label_17.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_17.setBounds(316, 194, 68, 27);
-		panel.add(label_17);
-		
-		JLabel label_18 = new JLabel("DueDate");
-		label_18.setForeground(Color.WHITE);
-		label_18.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_18.setBounds(427, 194, 68, 27);
-		panel.add(label_18);
-		
-		JLabel label_19 = new JLabel("Semester");
-		label_19.setForeground(Color.WHITE);
-		label_19.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_19.setBounds(87, 194, 68, 27);
-		panel.add(label_19);
 		
 		
 		home = new JPanel();

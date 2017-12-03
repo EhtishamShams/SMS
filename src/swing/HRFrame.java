@@ -46,7 +46,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class HRFrame extends JFrame {
-	
+
 	private HRFrame frame;
 	private JPanel contentPane;
 	private JTextField textField_1;
