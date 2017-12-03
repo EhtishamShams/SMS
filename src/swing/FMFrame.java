@@ -58,6 +58,11 @@ public class FMFrame extends JFrame {
 	private JTextField txtEnterDate;
 	private JTextField txtEnterAmount;
 	private JButton btnPay;
+	private JTable table2 ;
+	private DefaultTableModel dtm;
+	private JTable table3;
+	private DefaultTableModel dtm2;
+	
 
 	/**
 	 * Launch the application.
@@ -108,6 +113,169 @@ public class FMFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		containers = new ArrayList<Container>();
+		
+		managePay = new JScrollPane();
+		managePay.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentPane.add(managePay);
+		managePay.setBackground(Color.BLACK);
+		managePay.setBounds(249, 152, 704, 442);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.BLACK);
+		panel_2.setBounds(249, 152, 704, 442);
+		managePay.setViewportView(panel_2);
+		panel_2.setPreferredSize(new Dimension(704, 550));
+		panel_2.setLayout(null);
+		
+		JLabel lblProfile = new JLabel("Pay Management");
+		lblProfile.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblProfile.setForeground(Color.WHITE);
+		lblProfile.setBounds(33, 11, 212, 35);
+		panel_2.add(lblProfile);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(23, 44, 197, 2);
+		panel_2.add(separator);
+		
+		txtl = new JTextField();
+		txtl.setText("1234");
+		txtl.setForeground(Color.WHITE);
+		txtl.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		txtl.setColumns(10);
+		txtl.setBorder(null);
+		txtl.setBackground(new Color(36, 47, 65));
+		txtl.setBounds(238, 73, 198, 20);
+		panel_2.add(txtl);
+		
+		JLabel lblSchool = new JLabel("Employee ID");
+		lblSchool.setForeground(Color.WHITE);
+		lblSchool.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblSchool.setBounds(133, 69, 95, 27);
+		panel_2.add(lblSchool);
+		
+		JButton btnUploadPhoto = new JButton("Upload Photo");
+		btnUploadPhoto.setForeground(Color.WHITE);
+		btnUploadPhoto.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		btnUploadPhoto.setBackground(new Color(36, 47, 65));
+		btnUploadPhoto.setBounds(191, 447, 130, 23);
+		panel_2.add(btnUploadPhoto);
+		
+		JButton btnRegister = new JButton("Register");
+		btnRegister.setForeground(Color.WHITE);
+		btnRegister.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		btnRegister.setBackground(new Color(36, 47, 65));
+		btnRegister.setBounds(191, 485, 130, 23);
+		panel_2.add(btnRegister);
+		
+		txtEnterDate = new JTextField();
+		txtEnterDate.setText("Enter Date");
+		txtEnterDate.setForeground(Color.WHITE);
+		txtEnterDate.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		txtEnterDate.setBounds(179, 143, 116, 22);
+		txtEnterDate.setBackground(new Color(36, 47, 65));
+		txtEnterDate.setBorder(null);
+		panel_2.add(txtEnterDate);
+		txtEnterDate.setColumns(10);
+		
+		txtEnterAmount = new JTextField();
+		txtEnterAmount.setText("Enter Amount");
+		txtEnterAmount.setBounds(338, 143, 116, 22);
+		txtEnterAmount.setForeground(Color.WHITE);
+		txtEnterAmount.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		txtEnterAmount.setBackground(new Color(36, 47, 65));
+		txtEnterAmount.setBorder(null);
+		panel_2.add(txtEnterAmount);
+		txtEnterAmount.setColumns(10);
+		txtEnterAmount.setVisible(false);
+		txtEnterDate.setVisible(false);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				//if Staff staff = Session.academicInstitution.getStaff(txtl.getText()) returns not null;
+				
+				
+				txtEnterAmount.setVisible(true);
+				txtEnterDate.setVisible(true);
+				
+				btnPay = new JButton("Pay");
+				btnPay.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							double amount = Double.parseDouble(txtEnterAmount.getText());
+							String datePaid = txtEnterDate.getText();
+							System.out.println("HAHAAH");
+							//Session.user.payStaff(staff.getEmpID(), datePaid, amount)
+							//dtm2.addRow(staff.getName(), datePaid, amount);
+							
+						}
+					});
+				btnPay.setBounds(479, 142, 97, 25);
+				panel_2.add(btnPay);
+				
+				String[] columnNames = {"Emp ID",
+		                "Name",
+		                "DOB"};
+				
+				String[] columnNames2 = {"Name",
+		                "Amount",
+		                "Date Paid"};
+				
+				JTable table2 = new JTable();
+				DefaultTableModel dtm = new DefaultTableModel(0, 0);
+				dtm.setColumnIdentifiers(columnNames);
+				table2.setModel(dtm);
+
+				JScrollPane scrollPane_3 = new JScrollPane(table2);
+				scrollPane_3.setForeground(Color.WHITE);
+				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_3.setBackground(Color.WHITE);
+				scrollPane_3.setAlignmentX(0.0f);
+				scrollPane_3.setBounds(200, 200, 279, 40);
+				panel_2.add(scrollPane_3);
+				
+				//dtm.addRow(new Object[] { staff.getEmpID(),staff.getName(),staff.getDOB() });
+			    dtm.addRow(new Object[] { "23","Blah","2017" });
+			    
+			   // ArrayList<Pay> pays = Session.getUser().getPays();
+			    
+			    JTable table3 = new JTable();
+				DefaultTableModel dtm2 = new DefaultTableModel(0, 0);
+				dtm2.setColumnIdentifiers(columnNames2);
+				table3.setModel(dtm2);
+
+				JScrollPane scrollPane_4 = new JScrollPane(table3);
+				scrollPane_4.setForeground(Color.WHITE);
+				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+				scrollPane_4.setBackground(Color.WHITE);
+				scrollPane_4.setAlignmentX(0.0f);
+				scrollPane_4.setBounds(200, 300, 279, 40);
+				panel_2.add(scrollPane_4);
+				
+				
+//				for (int i = 0; i < pays.size(); i++)
+//				{
+//					dtm2.addRow(pays.get(i).getStaffMember().getName(), pays.get(i).getDatePaid(), pays.get(i).getAmount());
+//				}
+								
+							
+						
+				panel_2.repaint();
+			    
+			}
+		});
+		
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnSearch.setForeground(UIManager.getColor("Button.foreground"));
+		btnSearch.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		btnSearch.setBackground(UIManager.getColor("Button.background"));
+		btnSearch.setBounds(446, 71, 130, 23);
+		panel_2.add(btnSearch);
 		
 		
 		manageFee = new JScrollPane();
@@ -178,8 +346,8 @@ public class FMFrame extends JFrame {
 		                "Due Date",
 		                "Date Paid"};
 				
-				JTable table2 = new JTable();
-				DefaultTableModel dtm = new DefaultTableModel(0, 0);
+				table2 = new JTable();
+				dtm = new DefaultTableModel(0, 0);
 				dtm.setColumnIdentifiers(columnNames);
 				table2.setModel(dtm);
 
@@ -195,8 +363,8 @@ public class FMFrame extends JFrame {
 				
 				//ArrayList<Fee> fees = Session.getUser().getFees(student.getRollNumber());
 				
-				JTable table3 = new JTable();
-				DefaultTableModel dtm2 = new DefaultTableModel(0, 0);
+				table3 = new JTable();
+				dtm2 = new DefaultTableModel(0, 0);
 				dtm2.setColumnIdentifiers(columnNames2);
 				table3.setModel(dtm2);
 
@@ -245,164 +413,6 @@ public class FMFrame extends JFrame {
 		label_19.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		label_19.setBounds(87, 194, 68, 27);
 		panel.add(label_19);
-		
-		managePay = new JScrollPane();
-		managePay.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		contentPane.add(managePay);
-		managePay.setBackground(Color.BLACK);
-		managePay.setBounds(249, 152, 704, 442);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.BLACK);
-		panel_2.setBounds(249, 152, 704, 442);
-		managePay.setViewportView(panel_2);
-		panel_2.setPreferredSize(new Dimension(704, 550));
-		panel_2.setLayout(null);
-		
-		JLabel lblProfile = new JLabel("Pay Management");
-		lblProfile.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblProfile.setForeground(Color.WHITE);
-		lblProfile.setBounds(33, 11, 212, 35);
-		panel_2.add(lblProfile);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(23, 44, 197, 2);
-		panel_2.add(separator);
-		
-		txtl = new JTextField();
-		txtl.setText("1234");
-		txtl.setForeground(Color.WHITE);
-		txtl.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		txtl.setColumns(10);
-		txtl.setBorder(null);
-		txtl.setBackground(new Color(36, 47, 65));
-		txtl.setBounds(238, 73, 198, 20);
-		panel_2.add(txtl);
-		
-		JLabel lblSchool = new JLabel("Employee ID");
-		lblSchool.setForeground(Color.WHITE);
-		lblSchool.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblSchool.setBounds(133, 69, 95, 27);
-		panel_2.add(lblSchool);
-		
-		JButton btnUploadPhoto = new JButton("Upload Photo");
-		btnUploadPhoto.setForeground(Color.WHITE);
-		btnUploadPhoto.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		btnUploadPhoto.setBackground(new Color(36, 47, 65));
-		btnUploadPhoto.setBounds(191, 447, 130, 23);
-		panel_2.add(btnUploadPhoto);
-		
-		JButton btnRegister = new JButton("Register");
-		btnRegister.setForeground(Color.WHITE);
-		btnRegister.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		btnRegister.setBackground(new Color(36, 47, 65));
-		btnRegister.setBounds(191, 485, 130, 23);
-		panel_2.add(btnRegister);
-		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				//if Staff staff = Session.academicInstitution.getStaff(txtl.getText()) returns not null;
-				
-				txtEnterDate = new JTextField();
-				txtEnterDate.setText("Enter Date");
-				txtEnterDate.setForeground(Color.WHITE);
-				txtEnterDate.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-				txtEnterDate.setBounds(179, 143, 116, 22);
-				txtEnterDate.setBackground(new Color(36, 47, 65));
-				txtEnterDate.setBorder(null);
-				panel_2.add(txtEnterDate);
-				txtEnterDate.setColumns(10);
-				
-				txtEnterAmount = new JTextField();
-				txtEnterAmount.setText("Enter Amount");
-				txtEnterAmount.setBounds(338, 143, 116, 22);
-				txtEnterAmount.setForeground(Color.WHITE);
-				txtEnterAmount.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-				txtEnterAmount.setBackground(new Color(36, 47, 65));
-				txtEnterAmount.setBorder(null);
-				panel_2.add(txtEnterAmount);
-				txtEnterAmount.setColumns(10);
-				
-				btnPay = new JButton("Pay");
-				
-				btnPay.setBounds(479, 142, 97, 25);
-				panel_2.add(btnPay);
-				
-				String[] columnNames = {"Emp ID",
-		                "Name",
-		                "DOB"};
-				
-				String[] columnNames2 = {"Name",
-		                "Amount",
-		                "Date Paid"};
-				
-				JTable table2 = new JTable();
-				DefaultTableModel dtm = new DefaultTableModel(0, 0);
-				dtm.setColumnIdentifiers(columnNames);
-				table2.setModel(dtm);
-
-				JScrollPane scrollPane_3 = new JScrollPane(table2);
-				scrollPane_3.setForeground(Color.WHITE);
-				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-				scrollPane_3.setBackground(Color.WHITE);
-				scrollPane_3.setAlignmentX(0.0f);
-				scrollPane_3.setBounds(200, 200, 279, 40);
-				panel_2.add(scrollPane_3);
-				
-				//dtm.addRow(new Object[] { staff.getEmpID(),staff.getName(),staff.getDOB() });
-			    dtm.addRow(new Object[] { "23","Blah","2017" });
-			    
-			   // ArrayList<Pay> pays = Session.getUser().getPays();
-			    
-			    JTable table3 = new JTable();
-				DefaultTableModel dtm2 = new DefaultTableModel(0, 0);
-				dtm2.setColumnIdentifiers(columnNames2);
-				table3.setModel(dtm2);
-
-				JScrollPane scrollPane_4 = new JScrollPane(table3);
-				scrollPane_4.setForeground(Color.WHITE);
-				scrollPane_4.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-				scrollPane_4.setBackground(Color.WHITE);
-				scrollPane_4.setAlignmentX(0.0f);
-				scrollPane_4.setBounds(200, 300, 279, 40);
-				panel_2.add(scrollPane_4);
-				
-				
-//				for (int i = 0; i < pays.size(); i++)
-//				{
-//					dtm2.addRow(pays.get(i).getStaffMember().getName(), pays.get(i).getDatePaid(), pays.get(i).getAmount());
-//				}
-				
-				btnPay.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-							double amount = Double.parseDouble(txtEnterAmount.getText());
-							String datePaid = txtEnterDate.getText();
-							System.out.println("HAHAAH");
-							//Session.user.payStaff(staff.getEmpID(), datePaid, amount)
-							//dtm2.addRow(staff.getName(), datePaid, amount);
-							
-						}
-					});
-							
-						
-				panel_2.repaint();
-			    
-			}
-		});
-				
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnSearch.setForeground(UIManager.getColor("Button.foreground"));
-		btnSearch.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		btnSearch.setBackground(UIManager.getColor("Button.background"));
-		btnSearch.setBounds(446, 71, 130, 23);
-		panel_2.add(btnSearch);
 		
 		
 		home = new JPanel();
