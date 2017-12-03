@@ -11,7 +11,7 @@ package backend;
  */
 public class Allotment {
 	
-    private Office allotedOffice = null;
+	private Office allotedOffice = null;
     private Staff allotedTo = null;
 
 	public Allotment(Office allotedOffice, Staff allotedTo) {

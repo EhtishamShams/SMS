@@ -4,8 +4,11 @@
 package backend;
 
 import java.util.ArrayList;
+import java.sql.Date;
 
-import dal.DAL;
+import dal.*;
+
+import java.sql.*;
 
 /**
  * @author Ehtisham
@@ -18,7 +21,7 @@ public class School {
 	private ArrayList<FacultyMember> faculty = null;
 	private ArrayList<Student> students = null;
 	private ArrayList<Course> courses = null;
-	
+
 	public School(String id, String name, ArrayList<FacultyMember> faculty, ArrayList<Student> students,
 			ArrayList<Course> courses) {
 		this.id = id;
@@ -71,6 +74,207 @@ public class School {
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
 	}
+
+	// hamza
+	public boolean validateStudent(String CNIC) {
+
+		for (Student st : students) {
+			if (st.getCNIC().equals(CNIC))
+				return false;
+		}
+
+		return true;
+	}
+
+	// hamza
+	public boolean validateUpdateStudent(String CNIC, Student obj) {
+
+		for (Student st : students) {
+			if (st.getCNIC().equals(CNIC) && st != obj)
+				return false;
+		}
+
+		return true;
+	}
+
+	// hamza
+	public boolean ifCourseExists(String code) {
+
+		for (Course c : this.courses) {
+			if (c.getCourseCode().equals(code))
+				return true;
+		}
+		return false;
+	}
+
+	// hamza
+	public boolean findFaculty(String empID) {
+
+		for (FacultyMember FM : faculty) {
+			if (FM.getEmpID().equals(empID))
+				return true;
+		}
+
+		return false;
+	}
+
+	// hamza
+	public boolean addCourse(Course c) {
+
+		// Adding in database
+		if (!DAL.addCourse(c, this))
+			return false;
+
+		// Adding in ArrayList
+		this.courses.add(c);
+		return true;
+	}
+
+	// hamza
+	public boolean addStudent(Student std) {
+
+		if (!DAL.addStudent(std, this))
+			return false;
+
+		students.add(std);
+		return true;
+	}
+
+	// hamza
+	public boolean removeCourse(Course c) {
+
+		if (!DAL.removeCourse(c))
+			return false;
+
+		for (CourseSection cSec : c.getSections()) {
+			if (cSec.getSemester().getSession().equals(Session.getSem().getSession()))
+				;// TODO: Call Humna's RemoveCourseSection function here on cSec
+		}
+
+		c.setIsOffered(false);
+
+		return true;
+	}
+
+	// hamza
+	public boolean removeFaculty(String empID, String repEmpID) {
+
+		FacultyMember facM = null;
+
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID() == empID)
+				facM = fac;
+		}
+
+		if (!DAL.removeFaculty(empID, repEmpID))
+			return false;
+
+		// Removing Staff
+		for (Staff u : Session.getAcademicDept().getStaff()) {
+			if (u.getCNIC().equals(facM.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+
+		// Removing User
+		for (User u : Session.getInst().getUsers()) {
+			if (u.getCNIC().equals(facM.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+
+		// Removing Pay
+		for (Pay pay : Session.getAccountsDept().getAllPays()) {
+			if (pay.getStaffMember().getCNIC().equals(facM.getCNIC()))
+				Session.getAccountsDept().getAllPays().remove(pay);
+		}
+
+		// Removing From School
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID().equals(empID))
+				faculty.remove(fac);
+		}
+
+		FacultyMember replacement = null;
+
+		for (FacultyMember fac : faculty) {
+			if (fac.getEmpID() == repEmpID)
+				replacement = fac;
+		}
+
+		for (Course crs : courses) {
+			for (CourseSection crsSec : crs.getSections()) {
+				if (crsSec.getTeacher().getEmpID().equals(empID)) {
+					if(crsSec.getSemester().getSession().equals(Session.getSem().getSession()))
+						crsSec.setTeacher(replacement);
+					else
+						crsSec.setTeacher(null);
+				}
+
+			}
+		}
+
+		return true;
+	}
+
+	// hamza
+	public boolean removeStudent(Student std) {
+
+		if (!DAL.removeStudent(std))
+			return false;
+
+		// Removing User
+		for (User u : Session.getInst().getUsers()) {
+			if (u.getCNIC().equals(std.getCNIC())) {
+				Session.getInst().getUsers().remove(u);
+			}
+		}
+
+		// Removing Attendance
+		for (CourseSection crs : std.getStudiedCourses()) {
+			for (Attendance att : crs.getStudentAttendance()) {
+				if (att.getStudent() == std)
+					crs.getStudentAttendance().remove(att);
+			}
+		}
+
+		// Removing Fee
+		for (Fee fee : Session.getAccountsDept().getAllFees()) {
+			if (fee.getStudent() == std)
+				Session.getAccountsDept().getAllFees().remove(fee);
+		}
+
+		students.remove(std);
+		return true;
+	}
+	
+	public boolean ifStudentExists(String rollNum) {
+		for (Student s : students) {
+			if (s.getRollNo().equals(rollNum))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean ifFacultyExists(String empID) {
+		for (FacultyMember f : faculty) {
+			if (f.getEmpID().equals(empID))
+				return true;
+		}
+		return false;
+	}
+	
+	public ArrayList<Course> getCoursesFromCode(ArrayList<String> code){
+		
+		ArrayList<Course> ret = new ArrayList<Course>();
+		
+		for(Course crs:courses) {
+			ret.add(crs);
+		}
+		
+		return ret;
+	}
+
 
 	public Student getStudent(String rollNo) {
 		for (Student s : students) {
@@ -162,22 +366,6 @@ public class School {
 //		}
 //		return null;
 //	}
-
-	public boolean ifStudentExists(String rollNum) {
-		for (Student s : students) {
-			if (s.getRollNo().equals(rollNum))
-				return true;
-		}
-		return false;
-	}
-
-	public boolean ifFacultyExists(String empID) {
-		for (FacultyMember f : faculty) {
-			if (f.getEmpID().equals(empID))
-				return true;
-		}
-		return false;
-	}
 	
 	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
 	

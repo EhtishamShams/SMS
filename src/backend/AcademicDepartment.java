@@ -12,9 +12,10 @@ import java.util.ArrayList;
  * @author hamza
  */
 
-public class AcademicDepartment extends Department{
-	
-    private ArrayList<Timetable> timetables = null;
+public class AcademicDepartment extends Department {
+
+	private ArrayList<Timetable> timetables = null;
+
 
     public AcademicDepartment(ArrayList<Timetable> timetables, String name, ArrayList<Staff> staff) {
         super(name, staff);

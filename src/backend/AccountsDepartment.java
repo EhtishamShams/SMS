@@ -22,6 +22,7 @@ public class AccountsDepartment extends Department {
 	private ArrayList<Pay> pays = null;
     private ArrayList<Fee> fees = null;
 
+
 	public AccountsDepartment(ArrayList<Pay> pays, ArrayList<Fee> fees, String name, ArrayList<Staff> staff) {
 		super(name, staff);
 		this.pays = pays;
@@ -131,4 +132,5 @@ public class AccountsDepartment extends Department {
 		else
 			return arr;
 	}
+
 }

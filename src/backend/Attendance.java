@@ -13,11 +13,12 @@ import java.sql.Date;
  */
 
 public class Attendance {
+
 	private LAttendance status;
 	private Date Day;
 	private Student student = null;
-
-	public Attendance(LAttendance status, Date Day, Student student) {
+	
+	public Attendance(LAttendance status, Date Day, Student student) { 
 		this.status = status;
 		this.Day = Day;
 		this.student = student;
@@ -44,6 +45,15 @@ public class Attendance {
 		this.Day = Day;
 	}
 
+	// public CourseSection getSection() {
+	// return section;
+	// }
+	//
+	// public void setSection(CourseSection section) {
+	// this.section = section;
+	// }
+
+
 	public Student getStudent() {
 		return student;
 	}
@@ -51,4 +61,5 @@ public class Attendance {
 	public void setStudent(Student student) {
 		this.student = student;
 	}
+	
 }

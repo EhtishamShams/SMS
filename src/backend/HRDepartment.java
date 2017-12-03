@@ -43,15 +43,23 @@ public class HRDepartment extends Department {
 		this.allotments = allotments;
 	}
 
-	// Helper function for add allotment
-	public Office getOffice(String Oid) {
-		for (int i = 0; i < (this.offices.size()); i++) {
-			if (this.offices.get(i).getID().equals(Oid)) {
-				return offices.get(i);
-			}
+	public Office getOffice(String officeID) {
+		for (Office off : offices) {
+			if (off.getID().equals(officeID))
+				return off;
 		}
 		return null;
 	}
+
+	// Helper function for add allotment
+//	public Office getOffice(String Oid) {
+//		for (int i = 0; i < (this.offices.size()); i++) {
+//			if (this.offices.get(i).getID().equals(Oid)) {
+//				return offices.get(i);
+//			}
+//		}
+//		return null;
+//	}
 
 	// Helper function to for Add Allotment
 	public boolean addAllotment(Allotment a) {

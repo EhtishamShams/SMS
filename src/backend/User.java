@@ -16,7 +16,6 @@ import dal.DBAccess;
  */
 public class User {
 
-
 	protected String name;
 	protected String password;
     protected Date DOB = null;

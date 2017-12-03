@@ -20,6 +20,113 @@ public class AcademicManager extends Staff {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
 
+	// hamza
+	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc,
+			ArrayList<String> preReqs) {
+
+		for (String pCrs : preReqs) {
+			if (pCrs.equals(code))
+				preReqs.remove(pCrs);
+		}
+
+		School s = null;
+		for (School sch : Session.getInst().getSchools()) {
+			if (sch.getId().equals(schoolID))
+				s = sch;
+		}
+
+		// Checks if course code is already taken
+		if (s.ifCourseExists(code))
+			return false;
+
+		ArrayList<Course> crsPreReqs = s.getCoursesFromCode(preReqs);
+
+		// Creating new course object
+		Course crs = new Course(code, name, creditHours, desc, crsPreReqs, true);
+
+		// Adds course in school
+		return s.addCourse(crs);
+	}
+
+	// hamza
+	public boolean updateCourse(String code, String name, int creditHours, String desc,
+			ArrayList<String> preReqs) {
+		
+		for (String pCrs : preReqs) {
+			if (pCrs.equals(code))
+				preReqs.remove(pCrs);
+		}
+
+		School s = Session.getInst().getCourseSchool(code);
+
+		// retrieving course object from school
+		Course crs = s.getCourse(code);
+
+		// Returns if invalid course id provided
+		if (crs == null)
+			return false;
+
+		ArrayList<Course> crsPreReqs = s.getCoursesFromCode(preReqs);
+
+		if (!DAL.updateCourseDetails(name, creditHours, desc, crsPreReqs, crs))
+			return false;
+
+		// Updating in ArrayList
+		crs.updateDetails(name, creditHours, desc, crsPreReqs);
+		return true;
+	}
+
+	// hamza
+	public boolean removeCourse(String code) {
+
+		School s = Session.getInst().getCourseSchool(code);
+
+		// retrieving course object from school
+		Course crs = s.getCourse(code);
+
+		// Returns if invalid course id provided
+		if (crs == null)
+			return false;
+
+		return s.removeCourse(crs);
+
+	}
+
+	// hamza
+	public boolean removeFaculty(String empID, String repEmpID) {
+
+		School sch = Session.getInst().getFacultySchool(empID);
+
+		if (!sch.findFaculty(empID))
+			return false;
+
+		// replacement not found in school
+		if (repEmpID != null && !sch.findFaculty(repEmpID))
+			return false;
+
+		return sch.removeFaculty(empID, repEmpID);
+
+	}
+
+	// hamza
+	public boolean registerStudent(String schoolID, String name, Date DOB, String phone, String email, String CNIC,
+			char gender, String eCont, String address, String fCNIC, String fName) {
+		School sch = null;
+		for (School s : Session.getInst().getSchools()) {
+			if (s.getId().equals(schoolID))
+				sch = s;
+		}
+		if (!sch.validateStudent(fCNIC))
+			return false;
+					
+					
+		Student std = new Student(name, new String("123456"), DOB, phone, email, CNIC, gender, eCont, address, null, fCNIC, fName, 0, 0,
+				0, new ArrayList<CourseSection>(), new Transcript());
+
+		return sch.addStudent(std);
+
+	}
+
 
 	public boolean registerStudentInCourse(String schoolID, String rollNo, String courseCode, char secID) {
 		School sch = null;
@@ -135,7 +242,6 @@ public class AcademicManager extends Staff {
 			if (s.getId().equals(schoolID))
 				sch = s;
 		}
-
 		Semester sem = null;
 		for (Semester s : Session.getInst().getSemesters()) {
 			if (s.getSession().equals(session))
@@ -145,6 +251,59 @@ public class AcademicManager extends Staff {
 		Timetable tbl = new Timetable(fileName, filePath, sch, sem);
 		Session.getAcademicDept().addTimeTable(tbl);
 	}
+		
+
+
+
+
+	// hamza
+	public boolean updateStudent(String rollNo, String name, Date DOB, String phone, String email,
+			String CNIC, char gender, String eCont, String address, String fCNIC, String fName) {
+
+		School sch = Session.getInst().getStudentSchool(rollNo);
+
+		Student std = sch.getStudent(rollNo);
+
+		if (std == null)
+			return false;
+
+		if (!sch.validateUpdateStudent(CNIC, std))
+			return false;
+
+		if (!DAL.updateStudentDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName, std))
+			return false;
+
+		std.updateDetails(name, DOB, phone, email, CNIC, gender, eCont, address, fCNIC, fName);
+		return true;
+	}
+
+	// hamza
+	public boolean removeStudent(String rollNo) {
+
+		School sch = Session.getInst().getStudentSchool(rollNo);
+	
+
+		Student std = sch.getStudent(rollNo);
+
+		if (std == null)
+			return false;
+
+		return sch.removeStudent(std);
+	}
+	
+	public boolean isTeacherTeachingInCurrSem(String empID) {
+		
+		for(Course crs:Session.getInst().getFacultySchool(empID).getCourses()) {
+			for(CourseSection crsSec:crs.getSections()) {
+				if(crsSec.getTeacher().getEmpID().equals(empID)&& crsSec.getSemester() == Session.getSem())
+					return true;
+			}
+		}
+		
+		return false;
+	}
+
+		
 
 
 	////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////

@@ -14,6 +14,9 @@ public class Transcript {
 		this.grades = grades;
 	}
 
+	public ArrayList<Grade> getGrades() {
+		return grades;
+	}
 
 	public boolean checkCoursesPassed(ArrayList<Course> cList) {
 		boolean passed;
@@ -77,6 +80,14 @@ public class Transcript {
 		return false;
 	}
 	
+	public Grade getGrade(String courseCode) {
+		for (Grade g : grades) {
+			if (g.getCourseSection().getCourse().getCourseCode().equals(courseCode))
+				return g;
+		}
+		return null;
+	}
+	
 //	public boolean updateGradeSection(CourseSection oldCs, CourseSection newCs) {
 //		for(Grade g: grades) {
 //			if(g.getCourseSection()==oldCs && g.getGrade().equals(LGrade.I)) {
@@ -96,16 +107,5 @@ public class Transcript {
 //			return false;
 //	}
 
-	public ArrayList<Grade> getGrades() {
-		return grades;
-	}
-	
-	public Grade getGrade(String courseCode) {
-		for (Grade g : grades) {
-			if (g.getCourseSection().getCourse().getCourseCode().equals(courseCode))
-				return g;
-		}
-		return null;
-	}
 
 }

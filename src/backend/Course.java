@@ -1,5 +1,8 @@
 package backend;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 /**
@@ -91,7 +94,7 @@ public class Course {
 	}
 
 	public boolean updateDetails(String courseName, int creditHours, String description,
-			ArrayList<Course> prerequisites) {// , School courseSchool) {
+			ArrayList<Course> prerequisites) {
 		this.courseName = courseName;
 		this.creditHours = creditHours;
 		this.description = description;
@@ -112,6 +115,7 @@ public class Course {
 
 		return false;
 	}
+
 
 	public CourseSection getCourseSection(char secID, Semester sem) {
 		for (CourseSection cs : sections) {

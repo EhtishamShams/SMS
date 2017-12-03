@@ -12,8 +12,7 @@ public class CourseSection {
 	private Semester semester = null;
 	private Course course = null;
 	private ArrayList<Attendance> studentAttendances = null;
-	 
-	
+
 	public CourseSection(char sectionID, int maxSeats, int currSeats) {
 		this.sectionID = sectionID;
 		this.maxSeats = maxSeats;
@@ -54,6 +53,14 @@ public class CourseSection {
 		return sectionID;
 	}
 
+	public FacultyMember getTeacher() {
+		return sectionTeacher;
+	}
+
+	public void setTeacher(FacultyMember FM) {
+		sectionTeacher = FM;
+	}
+
 	public ArrayList<Attendance> getStudentAttendance() {
 		return studentAttendances;
 	}
@@ -68,11 +75,12 @@ public class CourseSection {
 
 	}
 
+
     public void addAtd(Attendance a)
     {
     	this.studentAttendances.add(a);
     }
-	
+
 	public boolean decrementCurrSeats() {
 		if (currSeats != 0) {
 			currSeats--;
@@ -80,6 +88,7 @@ public class CourseSection {
 		} else
 			return false;
 	}
+
 
 	public Course getCourse() {
 		return course;

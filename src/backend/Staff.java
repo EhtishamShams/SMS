@@ -13,6 +13,7 @@ public class Staff extends User {
 	protected String empID;
 	protected Date dateHired = null;
 	
+
 	public Staff(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String empID, Date dateHired) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address);

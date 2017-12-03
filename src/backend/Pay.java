@@ -27,6 +27,7 @@ public class Pay {
 		return amount;
 	}
 
+
 	public boolean setAmount(double amount) {
 		boolean set = false;
 		if (amount > -1) {

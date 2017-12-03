@@ -3,6 +3,10 @@
  */
 package backend;
 
+import java.util.ArrayList;
+
+import dal.DBAccess;
+import dal.Load;
 import dal.DAL;
 
 /**
@@ -20,6 +24,25 @@ public class Session {
 	private static Semester sem = null;
 	private static DAL dal = null;
 
+	public static void initialize() {
+
+		inst = new AcademicInstitution("FAST", "LAHORE", new ArrayList<School>(), new ArrayList<User>(),
+				new ArrayList<Department>(), new ArrayList<Semester>());
+		Load load = new Load();
+		load.loadSemesters();
+		load.loadSchools();
+		load.loadFaculty();
+		load.loadCourses();
+		load.loadStudents();
+		load.loadAttendance();
+		load.loadAccountsDepartment();
+		load.loadAcademicDepartment();
+		load.loadHRDepartment();
+		load.loadAllotments();
+		load.loadPays();
+		load.loadFees();
+	}
+
 	public static User getUser() {
 		return user;
 	}
@@ -31,7 +54,7 @@ public class Session {
 	public static UType getType() {
 		return type;
 	}
-	
+
 	public static void setType(UType type) {
 		Session.type = type;
 	}
@@ -60,6 +83,13 @@ public class Session {
 		Session.acdDept = acdDept;
 	}
 
+	public static AccountsDepartment getAccountsDept() {
+		return accountsDept;
+	}
+
+	public static void setAccountsDept(AccountsDepartment accountDept) {
+		Session.accountsDept = accountDept;
+	}
 	public static HRDepartment getHrDept() {
 		return hrDept;
 	}
@@ -76,13 +106,22 @@ public class Session {
 		Session.sem = sem;
 	}
 
-	public static AccountsDepartment getAccountsDept() {
-		return accountsDept;
-	}
+//	 public static void main(String[] args) {
+//	 DBAccess.createConnection();
+//	 initialize();
+//	
+//	 //for(School sch:Session.getInst().getCourse("1")) {
+//	
+//	 for(School sch:Session.getInst().getSchools()) {
+//	 for(Course crs:sch.getCourses()) {
+//	 for(Course pre:crs.getPrerequisites())
+//	 System.out.println(pre.getCourseCode());
+//	 }
+//	
+//	 }
+//	
+//	 }
 
-	public static void setAccountsDept(AccountsDepartment accountsDept) {
-		Session.accountsDept = accountsDept;
-	}
 
 	public static DAL getDal() {
 		return dal;

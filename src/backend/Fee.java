@@ -26,7 +26,7 @@ public class Fee {
 		this.student = st;
 		this.semester = sem;
 	}
-    
+	
 	public double getAmount() {
 		return amount;
 	}
@@ -81,4 +81,5 @@ public class Fee {
 	public void deductAmount(double amount) {
 		this.amount -= amount;
 	}
+
 }

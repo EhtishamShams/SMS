@@ -1,7 +1,7 @@
 package backend;
 
 public class Grade {
-	
+
 	private LGrade grade = null;
 	private CourseSection course = null;
 	

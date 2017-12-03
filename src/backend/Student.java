@@ -1,5 +1,9 @@
 package backend;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -113,6 +117,58 @@ public class Student extends User {
 
 		return csList;
 	}
+
+
+	// hamza
+	public boolean updateDetails(String name, Date DOB, String phone, String email, String CNIC, char gender,
+			String eCont, String address, String fCNIC, String fName) {
+
+		this.name = name;
+		this.DOB = DOB;
+		this.phoneNo = phone;
+		this.email = email;
+		this.CNIC = CNIC;
+		this.gender = gender;
+		this.emergencyContact = eCont;
+		this.address = address;
+		this.fatherCNIC = fCNIC;
+		this.fatherName = fName;
+
+		return true;
+	}
+
+	// hamza
+	public double computeGPA(ArrayList<Grade> grades) {
+
+		double ret = 0;
+		int credits = 0;
+
+		for (Grade g : grades) {
+			int grCreds = g.getCourseSection().getCourse().getCreditHours();
+			credits += grCreds;
+			ret += g.getGrade().getGpa() * grCreds;
+		}
+
+		if (credits != 0)
+			return ret / credits;
+		else
+			return 0;
+	}
+
+	// hamza
+	public double computeCGPA() {
+		int credits = 0;
+		double ret = 0;
+		for (Grade gr : transcript.getGrades()) {
+			credits += gr.getCourseSection().getCourse().getCreditHours();
+			ret += gr.getCourseSection().getCourse().getCreditHours() * gr.getGrade().getGpa();
+		}
+		if (credits != 0)
+			return ret / credits;
+		else
+			return 0;
+	}
+
 
 	public boolean checkCoursesPassed(ArrayList<Course> cList) {
 		return transcript.checkCoursesPassed(cList);
