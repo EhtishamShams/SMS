@@ -54,6 +54,7 @@ import java.awt.event.ActionEvent;
 
 public class AMFrame extends JFrame {
 
+	private AMFrame frame;
 	private JPanel contentPane;
 	private JTextField textField_4;
 	private JTextField textField_5;
@@ -272,6 +273,7 @@ public class AMFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AMFrame() {
+		frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 971, 642);
 		contentPane = new JPanel();
@@ -2730,6 +2732,15 @@ public class AMFrame extends JFrame {
 		sidePanel.add(label_3);
 		
 		JLabel lblLogout = new JLabel("");
+		lblLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Session.getInst().logout();
+				frame.setVisible(false);
+				Login loginFrame = new Login();
+				loginFrame.setVisible(true);
+			}
+		});
 		lblLogout.setBounds(93, 363, 56, 54);
 		sidePanel.add(lblLogout);
 		lblLogout.setIcon(new ImageIcon(AMFrame.class.getResource("/images/logout.png")));

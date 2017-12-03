@@ -6,22 +6,32 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import backend.Session;
+import backend.UType;
+import dal.DAL;
+import dal.DBAccess;
+
 import java.awt.Color;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEnterYourId;
 	private JTextField txtEnterYourPassword;
-
+	private Login frame;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -30,6 +40,9 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					Login frame = new Login();
+					DBAccess.createConnection();
+					Session.setDal(new DAL());
+					Session.initialize();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,6 +55,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 621, 491);
 		contentPane = new JPanel();
@@ -91,7 +105,7 @@ public class Login extends JFrame {
 		JLabel lblPassword = new JLabel("PASSWORD");
 		lblPassword.setFont(new Font("Century Gothic", Font.BOLD, 25));
 		lblPassword.setForeground(Color.WHITE);
-		lblPassword.setBounds(79, 209, 141, 22);
+		lblPassword.setBounds(79, 209, 175, 22);
 		panel_1.add(lblPassword);
 		
 		txtEnterYourPassword = new JTextField();
@@ -119,6 +133,33 @@ public class Login extends JFrame {
 		panel_1.add(separator_1);
 		
 		JButton btnNewButton = new JButton("Staff Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Session.getInst().staffLogin(txtEnterYourId.getText(), txtEnterYourPassword.getText())) {
+					frame.setVisible(false);
+					if (Session.getType() == UType.AcademicManager) {
+						System.out.println("adsfasdf");
+						AMFrame amFrame = new AMFrame();
+						amFrame.setVisible(true);
+					}
+					else if (Session.getType() == UType.FacultyMember) {
+						FacFrame facFrame = new FacFrame();
+						facFrame.setVisible(true);
+					}
+					else if (Session.getType() == UType.FinanceManager) {
+						FMFrame fmFrame = new FMFrame();
+						fmFrame.setVisible(true);
+					}
+					else if (Session.getType() == UType.HRManager) {
+						HRFrame hrFrame = new HRFrame();
+						hrFrame.setVisible(true);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(frame,"Wrong ID or Password!","Alert",JOptionPane.WARNING_MESSAGE);  
+				}
+			}
+		});
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.setFont(new Font("Century Gothic", Font.PLAIN, 13));
 		btnNewButton.setBackground(new Color(97, 212, 195));
@@ -126,6 +167,18 @@ public class Login extends JFrame {
 		panel_1.add(btnNewButton);
 		
 		JButton btnStudetLogin = new JButton("Student Login");
+		btnStudetLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Session.getInst().studentLogin(txtEnterYourId.getText(), txtEnterYourPassword.getText())) {
+					StudentFrame stu = new StudentFrame();
+					frame.setVisible(false);
+					stu.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(frame,"Wrong ID or Password!","Alert",JOptionPane.WARNING_MESSAGE);  
+				}
+			}
+		});
 		btnStudetLogin.setForeground(Color.BLACK);
 		btnStudetLogin.setFont(new Font("Century Gothic", Font.PLAIN, 13));
 		btnStudetLogin.setBackground(new Color(97, 212, 195));

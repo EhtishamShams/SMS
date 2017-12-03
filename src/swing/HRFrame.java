@@ -46,7 +46,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class HRFrame extends JFrame {
-
+	
+	private HRFrame frame;
 	private JPanel contentPane;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -166,6 +167,7 @@ public class HRFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public HRFrame() {
+		frame = this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 957, 629);
@@ -1223,6 +1225,15 @@ public class HRFrame extends JFrame {
 		sidePanel.add(label_4);
 		
 		JLabel lblLogout = new JLabel("");
+		lblLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Session.getInst().logout();
+				frame.setVisible(false);
+				Login loginFrame = new Login();
+				loginFrame.setVisible(true);
+			}
+		});
 		lblLogout.setBounds(93, 363, 56, 54);
 		sidePanel.add(lblLogout);
 		lblLogout.setIcon(new ImageIcon(HRFrame.class.getResource("/images/logout.png")));

@@ -47,7 +47,8 @@ import java.awt.event.MouseEvent;
 
 
 public class FMFrame extends JFrame {
-
+	
+	private FMFrame frame;
 	private JPanel contentPane;
 	private JTextField txtl;
 	private JTextField textField;
@@ -106,6 +107,7 @@ public class FMFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public FMFrame() {
+		frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 971, 642);
 		contentPane = new JPanel();
@@ -513,6 +515,15 @@ public class FMFrame extends JFrame {
 		label.setIcon(new ImageIcon(FMFrame.class.getResource("/images/faculty.png")));
 		
 		JLabel lblLogout = new JLabel("");
+		lblLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Session.getInst().logout();
+				frame.setVisible(false);
+				Login loginFrame = new Login();
+				loginFrame.setVisible(true);
+			}
+		});
 		lblLogout.setBounds(93, 363, 56, 54);
 		sidePanel.add(lblLogout);
 		lblLogout.setIcon(new ImageIcon(FMFrame.class.getResource("/images/logout.png")));

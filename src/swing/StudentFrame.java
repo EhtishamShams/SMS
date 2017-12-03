@@ -41,6 +41,7 @@ import javax.swing.JButton;
 
 public class StudentFrame extends JFrame {
 
+	private StudentFrame frame;
 	private JPanel contentPane;
 	private ArrayList<Container> containers;
 	private JPanel home;
@@ -100,6 +101,7 @@ public class StudentFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public StudentFrame() {
+		frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 971, 642);
 		contentPane = new JPanel();
@@ -293,6 +295,15 @@ public class StudentFrame extends JFrame {
 		sidePanel.add(label_4);
 		
 		JLabel lblLogout = new JLabel("");
+		lblLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Session.getInst().logout();
+				frame.setVisible(false);
+				Login loginFrame = new Login();
+				loginFrame.setVisible(true);
+			}
+		});
 		lblLogout.setBounds(93, 363, 56, 54);
 		sidePanel.add(lblLogout);
 		lblLogout.setIcon(new ImageIcon(HRFrame.class.getResource("/images/logout.png")));
