@@ -295,34 +295,7 @@ public class AcademicManager extends Staff {
 		return false;
 	}
 
-	//////////////////////////////// ADD
-	//////////////////////////////// FACULTY/////////////////////////////////////////////////////////
-	public boolean RegisterFaculty(String schoolid, String name, String password, Date DOB, String phoneNo,
-			String email, String CNIC, char gender, String emergencyContact, String address, Date dateHired,
-			ArrayList<String> degrees, String position, String EmpID) {
 
-		int index = Session.getHrDept().ifStaffExistsByIndex(EmpID);
-		if (index != -1) {
-
-			index = Session.getInst().getSchool(schoolid).ifFacultyExistsByIndex(EmpID);
-			if (index != -1) {
-				Staff stf = new Staff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
-						EmpID, dateHired);
-				FacultyMember temp = new FacultyMember(name, password, DOB, phoneNo, email, CNIC, gender,
-						emergencyContact, address, EmpID, dateHired, degrees, position);
-				//// SQL CONN/////////////////
-				DAL.addFaculty(Session.getSchl(), name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact,
-						address, EmpID, dateHired, degrees, position);
-
-				Session.getInst().getSchool(schoolid).addFacultyMember(temp);
-				Session.getHrDept().addStaff(stf);
-				return true;
-			}
-		}
-
-		return false;
-
-	}
 
 	//////////////////////////////// ADD
 	//////////////////////////////// SECTION////////////////////////////////////////////////////////////
@@ -469,19 +442,25 @@ public class AcademicManager extends Staff {
 	}
 
 	// function for updating school name
-	public boolean updateSchool(String id, String updatedName, AcademicInstitution a) {
-		boolean check = false;
-		check = a.updateSchool(id, updatedName);
-
-		if (check) {
-			DAL.updateSchoolDB(id, name);
-			return true;
-		}
+    // function for updating school name
+    //in class academic manager change 	
+	boolean updateSchool(String id , String updatedName)
+	{
+		AcademicInstitution a= Session.getInst();
+		boolean check= false;
+		check=a.updateSchool(id,updatedName);
+			
+			if(check)
+			{
+				 DAL.updateSchoolDB(id,updatedName);
+				return true;
+			}
 		return check;
 	}
 	// function for adding another school in the institution
 
-	public boolean addSchool(String id, String name, AcademicInstitution a) {
+	public boolean addSchool(String id, String name) {
+		AcademicInstitution a= Session.getInst();
 		return a.Validate(id, name);
 	}
 
@@ -494,5 +473,66 @@ public class AcademicManager extends Staff {
 		} else
 			return false;
 	}
+	//main function in class Academic ManagerFactoryParameters	
+	public boolean startNewSemester(String session, double fee, Date feeDueDate) {
+		boolean check = false;
+		AcademicInstitution a = Session.getInst();
+		Semester curr = Session.getSem();
+		// verification if session already exists
+		for (int i = 0; i < a.getSemesters().size(); i++) {
+			if (a.getSemesters().get(i).getSession().equals(session))
+				return false;
+		}
+		Semester newSem = new Semester(session, true, fee, feeDueDate);
+		a.addSem(newSem);// adding the new semester to the array list of semesters in academic institution
+		check = dal.DAL.addNewSemester(session, fee, feeDueDate); // database insertion call
+		if (check) {
+			curr.setActive(false);// setting the status of the previous semester to !isActive
+			Session.setSem(newSem);// setting the new semester in session class
+		}
+		return check;
+	}
+////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
+	boolean RegisterFaculty(String schoolid, String name, String password, Date DOB, String phoneNo, String email,
+			String CNIC, char gender, String emergencyContact, String address, Date dateHired,
+			ArrayList<String> degrees, String position, String EmpID) {
 
+		int HRindex = Session.getHrDept().ifStaffExistsByIndex(EmpID);
+		int Acdindex = Session.getAcademicDept().ifStaffExistsByIndex(EmpID);
+		int Accindex = Session.getAccountsDept().ifStaffExistsByIndex(EmpID);
+		int index = 0;
+		boolean found = false;
+		if (HRindex == -1 && Acdindex == -1 && Accindex == -1) {
+			ArrayList<Staff> fmlist = new ArrayList<Staff>();
+			fmlist = Session.getInst().getFacultyMemberList();
+
+			for (Staff fm : fmlist) {
+				if (CNIC.equals(fm.getCNIC())) {
+					found = true;
+					break;
+				}
+
+			}
+
+			if (found == false) {
+				index = Session.getInst().getSchool(schoolid).ifFacultyExistsByIndex(EmpID);
+				if (index != -1) {
+					Staff stf = new Staff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
+							EmpID, dateHired);
+					FacultyMember temp = new FacultyMember(name, password, DOB, phoneNo, email, CNIC, gender,
+							emergencyContact, address, EmpID, dateHired, degrees, position);
+					//// SQL CONN/////////////////
+					DAL.addFaculty(Session.getSchl(), name, password, DOB, phoneNo, email, CNIC, gender,
+							emergencyContact, address, EmpID, dateHired, degrees, position);
+
+					Session.getInst().getSchool(schoolid).addFacultyMember(temp);
+					Session.getHrDept().addStaff(stf);
+					return true;
+				}
+
+			}
+		}
+		return found;
+
+	}
 }

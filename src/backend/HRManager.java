@@ -75,44 +75,62 @@ public class HRManager extends Staff {
 		return false;
 	}
 
-	public ArrayList<Staff> getUnallotedStaff() {
-		HRDepartment a = Session.getHrDept();
-		boolean check = false;
-		AcademicDepartment b = Session.getAcademicDept();
-		AccountsDepartment c = Session.getAccountsDept();
-		ArrayList<Staff> abc = null;
-		for (int i = 0; i < a.getStaff().size(); i++) {
-			if (i == 0) {
-				abc = new ArrayList<Staff>();
-				check = true;
-			}
-			if (a.getAllotments().get(i).getAllotedTo().equals(a.staff.get(i))) {
-				abc.add(a.staff.get(i));
-			}
-		}
-		for (int i = 0; i < b.getStaff().size(); i++) {
-			if (i == 0 && check == false) {
-				abc = new ArrayList<Staff>();
-				check = true;
-			}
 
-			if (a.getAllotments().get(i).getAllotedTo().equals(b.staff.get(i))) {
-				abc.add(b.staff.get(i));
-			}
-		}
-		for (int i = 0; i < a.getStaff().size(); i++) {
-			if (i == 0 && check == false) {
-				abc = new ArrayList<Staff>();
-				check = true;
-			}
-			if (a.getAllotments().get(i).getAllotedTo().equals(c.staff.get(i))) {
-				abc.add(c.staff.get(i));
-			}
-		}
 
-		return abc;
-	}
-
+	//faculty issue fixed. Class:HRmanager!
+			public ArrayList<Staff> getUnallotedStaff() {
+			HRDepartment a = Session.getHrDept();
+			boolean check = false;
+			AcademicDepartment b = Session.getAcademicDept();
+			AccountsDepartment c = Session.getAccountsDept();
+			ArrayList<Staff> abc = new ArrayList<Staff>();
+			AcademicInstitution k = Session.getInst();
+			ArrayList<Staff> faculty = k.getFacultyMemberList();
+			for (int i = 0; i < a.getStaff().size(); i++) {
+				for (int j = 0; j < a.getAllotments().size(); j++) {
+					if (a.getStaff().get(i).getEmpID().equals(a.getAllotments().get(j).getAllotedTo().getEmpID())) {
+						check = true;
+					}
+				}
+				if (!check)
+					abc.add(a.getStaff().get(i));
+				check = false;
+			}
+			for (int i = 0; i < b.getStaff().size(); i++) {
+				for (int j = 0; j < a.getAllotments().size(); j++) {
+					if (b.getStaff().get(i).getEmpID().equals(a.getAllotments().get(j).getAllotedTo().getEmpID())) {
+						check = true;
+					}
+				}
+				if (!check)
+					abc.add(a.getStaff().get(i));
+				check = false;
+			}
+			for (int i = 0; i < c.getStaff().size(); i++) {
+				for (int j = 0; j < a.getAllotments().size(); j++) {
+					if (c.getStaff().get(i).getEmpID().equals(a.getAllotments().get(j).getAllotedTo().getEmpID())) {
+						check = true;
+					}
+				}
+				if (!check)
+					abc.add(a.getStaff().get(i));
+				check = false;
+			}
+			for (int i = 0; i < faculty.size(); i++) {
+				for (int j = 0; j < a.getAllotments().size(); j++) {
+					if (faculty.get(i).getEmpID().equals(a.getAllotments().get(j).getAllotedTo().getEmpID())) {
+						check = true;
+					}
+				}
+				if (!check)
+					abc.add(a.getStaff().get(i));
+				check = false;
+			}
+			if (abc.size() == 0) {
+				return null;
+			}
+			return abc;
+		}
 	public ArrayList<Staff> getAllotedStaff() {
 
 		HRDepartment a = Session.getHrDept();
@@ -155,56 +173,10 @@ public class HRManager extends Staff {
 
 	///////////////////////////////////////////////// HIRE
 	///////////////////////////////////////////////// SATFF///////////////////////////////////////////////////////////
-	protected boolean hireEmployee(String name, String password, Date DOB, String phoneNo, String email, String CNIC,
-			char gender, String emergencyContact, String address, String empID, Date dateHired) {
-		int index = Session.getHrDept().ifStaffExistsByIndex(empID);
-		if (index != -1) {
-			Staff temp = new Staff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID,
-					dateHired);
-			Session.getHrDept().addStaff(temp);
-			// SQL CON/////
 
-			DAL.addStaff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID,
-					dateHired);
 
-			return true;
 
-		}
 
-		else
-			return false;
-
-	}
-
-	////////////////////////////////////////////// FIRE
-	////////////////////////////////////////////// STAFF////////////////////////////////////////////////////////////
-
-	protected boolean fireEmployee(String empID) {
-		/// SQL CON//
-		deleteAllotment(empID); // (Muaz Functionality)
-		DAL.removeStaff(empID);
-		return Session.getHrDept().removestaff(empID);
-	}
-
-	//////////////////////////////////////////////// UPDATE
-	//////////////////////////////////////////////// STAFF////////////////////////////////////////////////////////
-
-	protected boolean updateStaff(String n_name, /* String n_password, */Date n_DOB, String n_phoneNo, String n_email,
-			String n_CNIC, char n_gender, String n_emergencyContact, String n_address, String empID, Date n_dateHired) {
-		int index = Session.getHrDept().ifStaffExistsByIndex(empID);
-		if (index != -1) {
-			Staff s1 = Session.getHrDept().getStaffMember(index);
-			s1.updateDetails(n_name, /* n_password, */n_DOB, n_phoneNo, n_email, n_CNIC, n_gender, n_emergencyContact,
-					n_address, empID, n_dateHired);
-			Session.getHrDept().updateStaffMemberToStaff(index, s1);
-
-			// SQL CON//
-			DAL.updateStaff(n_name, /* n_password, */ n_DOB, n_phoneNo, n_email, n_CNIC, n_gender, n_emergencyContact,
-					n_address, empID, n_dateHired);
-			return true;
-		} else
-			return false;
-	}
 
 	public boolean addOffice(String officeID) {
 		HRDepartment dept = Session.getHrDept();
@@ -215,4 +187,136 @@ public class HRManager extends Staff {
 		return false;
 	}
 
+	 protected boolean hireEmployee(Enum<LDepartment> dname,String name, String password, Date DOB, String phoneNo, String email, 
+	    		String CNIC, char gender,String emergencyContact, String address, String empID, Date dateHired)
+	    {
+	   	    int index=0;
+		   	boolean HRindex=Session.getHrDept().checkStaffByCNIC(CNIC);
+		    boolean Acdindex=Session.getAcademicDept().checkStaffByCNIC(CNIC);
+		    boolean Accindex=Session.getAccountsDept().checkStaffByCNIC(CNIC);
+	   	   
+		    if(HRindex==false && Acdindex ==false && Accindex ==false) {
+
+		 	    if(dname==LDepartment.A) {
+		 	    	index=Session.getAcademicDept().ifStaffExistsByIndex(empID);
+		 	    	if(index==-1) {
+		    		Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
+		    		Session.getAcademicDept().addStaff(temp);
+		    		//SQL CON/////
+			    	    DAL.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
+			    	    DAL.addManager(empID,"AcademicManager", Session.getAcademicDept().getName());
+	                 return true;
+		 	    	}
+		    	}
+		 	    
+		 	    if(dname==LDepartment.F) {
+		 	    	index=Session.getAccountsDept().ifStaffExistsByIndex(empID);
+		 	    	if(index==-1) {
+		 	    	Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
+		    		Session.getAccountsDept().addStaff(temp);
+		    		//SQL CON/////
+			    	    DAL.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
+			    	    DAL.addManager(empID,"FinanceManager", Session.getAccountsDept().getName());
+			    	    return true;
+		 	    	}
+		 	    	
+		 	    }
+		 	    
+		 	    if(dname==LDepartment.HR) {
+		 	    	index=Session.getHrDept().ifStaffExistsByIndex(empID);
+		 	    	if(index==-1) {
+		 	    	Staff temp=new Staff(name,password,DOB,phoneNo,email,CNIC,gender,emergencyContact,address,empID,dateHired);
+		    		Session.getHrDept().addStaff(temp);
+		    		//SQL CON/////
+			    	    DAL.addStaff( name, password, DOB, phoneNo, email,  CNIC,gender, emergencyContact, address,empID,dateHired);
+		    		    DAL.addManager(empID,"HRManager", Session.getHrDept().getName());
+			    	    return true;
+		 	    	}
+		 	    }
+	    	    
+		    }
+			return false;
+	    
+	    }
+	 protected boolean fireEmployee(String empID)
+	    {	
+	    	int HRindex=Session.getHrDept().ifStaffExistsByIndex(empID);
+		    int Acdindex=Session.getAcademicDept().ifStaffExistsByIndex(empID);
+		    int Accindex=Session.getAccountsDept().ifStaffExistsByIndex(empID);
+		    //int index=0;
+	         if(HRindex!=-1)
+		    	{
+		    		///SQL CON//
+		        	deleteAllotment(empID); // (Muaz Functionality)
+		        	DAL.removeStaff(empID);
+		    	    DAL.removeManager(empID);
+		        	return Session.getHrDept().removestaff(empID);
+		    	}
+		    	
+		    if(Acdindex !=-1)
+		    	{
+		    		///SQL CON//
+		        	deleteAllotment(empID); // (Muaz Functionality)
+		    	    DAL.removeStaff(empID);
+		    	    DAL.removeManager(empID);
+		        	return Session.getAcademicDept().removestaff(empID);
+		    	}
+		    	
+		    if(Accindex!=-1)
+		    	{
+		    		///SQL CON//
+		        	deleteAllotment(empID); // (Muaz Functionality)
+		    	    DAL.removeStaff(empID);
+		    	    DAL.removeManager(empID);
+		        	return Session.getAcademicDept().removestaff(empID);
+		    	}
+		    
+		    return false;
+	    }
+	 protected boolean updateStaff(String n_name,/* String n_password, */Date n_DOB, String n_phoneNo, 
+	    		String n_email, String n_CNIC, char n_gender,String n_emergencyContact, String n_address, String empID, 
+	    		Date n_dateHired)
+	    {
+	    	
+	    	
+	    	int HRindex=Session.getHrDept().ifStaffExistsByIndex(empID);
+		    int Acdindex=Session.getAcademicDept().ifStaffExistsByIndex(empID);
+		    int Accindex=Session.getAccountsDept().ifStaffExistsByIndex(empID);
+		    //int index=0;
+		    	if(HRindex!=-1)
+		    	{
+		    		Staff s1= Session.getHrDept().getStaffMember(HRindex);
+		    		s1.updateDetails(n_name,/*n_password,*/n_DOB,n_phoneNo,n_email, n_CNIC,n_gender,n_emergencyContact,n_address, empID,n_dateHired);
+		    		Session.getHrDept().updateStaffMemberToStaff(HRindex,s1);
+		    		
+		    	//SQL CON//	
+		   	     DAL.updateStaff(n_name,/* n_password,*/ n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
+		    	 return true;
+		    	}
+		    	
+		    	else if(Acdindex !=-1)
+		    	{Staff s1= Session.getHrDept().getStaffMember(Acdindex);
+	    		s1.updateDetails(n_name,/*n_password,*/n_DOB,n_phoneNo,n_email, n_CNIC,n_gender,n_emergencyContact,n_address, empID,n_dateHired);
+	    		Session.getAcademicDept().updateStaffMemberToStaff(Acdindex,s1);
+	    		
+		    	//SQL CON//	
+		   	     DAL.updateStaff(n_name,/* n_password,*/ n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
+	    		return true;
+		    	}
+		    	
+		    	else if(Accindex!=-1)
+		    	{
+		    		Staff s1= Session.getAccountsDept().getStaffMember(Accindex);
+		    		s1.updateDetails(n_name,/*n_password,*/n_DOB,n_phoneNo,n_email, n_CNIC,n_gender,n_emergencyContact,n_address, empID,n_dateHired);
+		    		Session.getHrDept().updateStaffMemberToStaff(Accindex,s1);
+		    		
+			    	//SQL CON//	
+			   	     DAL.updateStaff(n_name,/* n_password,*/ n_DOB, n_phoneNo,n_email,n_CNIC,n_gender,n_emergencyContact, n_address, empID,n_dateHired);
+			    		return true;
+		   
+		    }
+	    
+	    	else 
+	    		return false;
+	    }
 }

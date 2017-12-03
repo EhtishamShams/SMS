@@ -695,51 +695,7 @@ public class DAL {
 		return false;
 	}
 
-	public static boolean removeStaff(String empID) {
-		try {
-			int userid = 0;
-			String eid = "";
-			Statement stmt = DBAccess.getStatement();
-			ResultSet rs = stmt.executeQuery("select* from facultymember where EmpID='" + empID + "'");
-			while (rs.next())
-				eid = rs.getString(1);
-
-			if (eid != "") {
-				stmt.executeUpdate("Delete from facultymemberdegrees where EmpID='" + empID + "'");
-				stmt.executeUpdate("UPDATE coursesection SET TeacherID = NULL WHERE TeacherID='" + empID + "'");
-				stmt.executeUpdate("Delete from facultymember where EmpID='" + empID + "'");
-				rs = stmt.executeQuery("select UserID from staff where EmpID='" + empID + "'");
-				while (rs.next())
-					userid = rs.getInt(1);
-
-				stmt.executeUpdate("Delete from staff where EmpID='" + empID + "'");
-				stmt.executeUpdate("Delete from user where UserID='" + userid + "'");
-				DBAccess.getConnection().commit();
-				return true;
-
-			}
-
-			else if (eid == "") {
-
-				rs = stmt.executeQuery("select UserID from staff where EmpID='" + empID + "'");
-				while (rs.next())
-					userid = rs.getInt(1);
-
-				if (userid > 0) {
-					stmt.executeUpdate("Delete from staff where EmpID='" + empID + "'");
-					stmt.executeUpdate("Delete from user where UserID='" + userid + "'");
-					DBAccess.getConnection().commit();
-					return true;
-				}
-
-			}
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
-		return false;
-	}
+	
 
 	public static boolean addSection(char sectionID, int maxSeats, int currSeats, FacultyMember sectionTeacher,
 			Semester semester, Course course) {
@@ -1125,4 +1081,121 @@ public class DAL {
 		return check;
 	}
 
+	///////////////////// Dal function
+	public static boolean addNewSemester(String session, double fee, Date feeDueDate) {
+		boolean check;
+
+		Statement stmnt = DBAccess.getStatement();
+		try {
+
+			stmnt.executeUpdate("UPDATE Semester SET IsActive = " + 0 + " WHERE IsActive = " + 1 + "");
+			stmnt.executeUpdate("INSERT INTO Semester (Session,IsActive,PerCreditHourFee,FeeDueDate) VALUES ('"
+					+ session + "'," + 1 + "," + fee + ",'" + feeDueDate + "');");
+			check = true;
+			DBAccess.getConnection().commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			check = false;
+		}
+		return check;
+	}
+	//DAL.java
+	public static boolean addManager(String empID,String ManagerType,String Dname)
+		{
+			try {
+				Statement stmt = DBAccess.getStatement();
+			
+				String empid="";
+				
+				ResultSet rs=stmt.executeQuery("select* from manager where EmpID='"+empID+"'"); 
+				while(rs.next()) 
+			        empid=rs.getString(1); 
+			
+				if(empid=="")
+				{
+					ResultSet rs1=stmt.executeQuery("select* from facultymember where EmpID='"+empID+"'"); 
+					while(rs1.next()) 
+				       empid=rs1.getString(1);
+					if(empid=="") {
+					stmt.executeUpdate("INSERT INTO manager (EmpID,ManagerType,DName) VALUES ('"+empID+"','"+ManagerType+"','"+Dname+"');");
+					DBAccess.getConnection().commit();
+					return true;
+					}
+				}
+
+				}catch(Exception e){ System.out.println(e);}  
+			
+			return false;
+		}
+	public static boolean removeManager(String empID)
+	{
+		try {
+			Statement stmt = DBAccess.getStatement();
+		
+			String empid="";
+			
+			ResultSet rs=stmt.executeQuery("select* from manager where EmpID='"+empID+"'"); 
+			while(rs.next()) 
+		        empid=rs.getString(1); 
+		
+			if(empid!="")
+			{
+				stmt.executeUpdate("Delete from manager where EmpID='"+empID+"'");
+				DBAccess.getConnection().commit();
+				return true;
+				
+			}
+
+			}catch(Exception e){ System.out.println(e);}  
+		
+		return false;
+	}
+
+	public static boolean removeStaff(String empID)
+	{
+		try { 
+			int userid=0; String eid="";
+			Statement stmt = DBAccess.getStatement();
+			ResultSet rs=stmt.executeQuery("select* from facultymember where EmpID='"+empID+"'"); 
+			while(rs.next()) 
+		        eid=rs.getString(1); 
+		
+			if(eid!="")
+			{
+				stmt.executeUpdate("Delete from facultymemberdegrees where EmpID='"+empID+"'");		
+				stmt.executeUpdate("UPDATE coursesection SET TeacherID = NULL WHERE TeacherID='"+empID+"'");
+				stmt.executeUpdate("Delete from facultymember where EmpID='"+empID+"'");
+				rs=stmt.executeQuery("select UserID from staff where EmpID='"+empID+"'"); 
+				while(rs.next()) 
+			        userid=rs.getInt(1); 
+				
+				stmt.executeUpdate("Delete from staff where EmpID='"+empID+"'");
+				stmt.executeUpdate("Delete from user where UserID='"+userid+"'");
+				DBAccess.getConnection().commit();
+				return true;
+				
+			}
+			
+			else if(eid=="")
+			{
+				
+				ResultSet rs1=stmt.executeQuery("select UserID from staff where EmpID='"+empID+"'"); 
+				while(rs1.next()) 
+			        userid=rs1.getInt(1); 
+				
+				if(userid>0) {
+					stmt.executeUpdate("Delete from staff where EmpID='"+empID+"'");
+					stmt.executeUpdate("Delete from user where UserID='"+userid+"'");
+					DBAccess.getConnection().commit();
+					return true;
+				}
+
+			
+			}	
+	
+
+			}catch(Exception e){ System.out.println(e);}  
+		
+		return false;
+	}
 }

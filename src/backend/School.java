@@ -502,22 +502,58 @@ public class School {
 	// }
 	//
 
-	public ArrayList<CourseSection> getFacultyCourseSections(String id) {
-		ArrayList<CourseSection> sec = new ArrayList<CourseSection>();
-		Semester current = Session.getSem();
 
-		for (int i = 0; i < this.courses.size(); i++) {
-			for (int j = 0; j < courses.get(i).getSections().size(); j++) {
-				if (courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id) && courses.get(i)
-						.getSections().get(j).getSemester().getSession().equals(current.getSession())) {
-					sec.add(courses.get(i).getSections().get(j));
-				}
-
-			}
-		}
-
-		return sec;
-
-	}
+	public  ArrayList<CourseSection> getFacultyCourseSections(String id)   //class School just a minor change in implementation, returing null incase the arraylist is empty
+	   {
+		   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
+		   Semester current=Session.getSem();
+		   boolean check=false;
+		    
+		   for(int i=0; i<this.courses.size();i++)   
+		   {
+			   for(int j=0;j<courses.get(i).getSections().size();j++)
+			   {
+				   if(courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id)  &&  courses.get(i).getSections().get(j).getSemester().getSession().equals(current.getSession()))
+				   {
+					   sec.add(courses.get(i).getSections().get(j));
+					   check=true;
+				   }
+				   
+			   }
+		   }
+		if(!check)
+	  	   {
+	  	     return null;
+	  	   }
+		   return sec;
+		   
+	   }
+	   //additional told by SID
+	   public ArrayList<Course> getCurrentSemCourses()		//in class School
+	   {
+		   boolean check=false;
+		   Semester s= Session.getSem();
+		   ArrayList<Course> abc= new ArrayList<Course>();
+		   for(int i=0; i<this.courses.size();i++)
+		   {
+			   for(int j=0; j< this.courses.get(i).getSections().size();j++)
+			   {
+				   if(this.courses.get(i).getSections().get(j).getSemester().getSession().equals(s.getSession()))
+					   check=true;
+			   
+			   }
+			   if(check)
+			   {
+				   abc.add(courses.get(i));
+				   check=false;
+			   }
+		   }
+		   
+		   if(abc.size()==0)
+		   {
+			   return null;
+		   }
+		   return abc;
+	   }
 
 }

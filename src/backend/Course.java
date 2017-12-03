@@ -164,5 +164,24 @@ public class Course {
 		}
 		return false;
 	}
+    public ArrayList<CourseSection> getCurrentSemCourseSecitons() // class: course section will return the course sections of current semster of that course
+ {
+    boolean check=false;
+	   Semester s= Session.getSem();
+	   ArrayList<CourseSection> abc= new ArrayList<CourseSection>();
+	   for(int i=0; i<this.sections.size();i++)
+	   {
+		   if(this.sections.get(i).getSemester().getSession().equals(s.getSession()))
+		   {
+			   abc.add(this.sections.get(i));
+		   		check=true;
+		   }
+	   }
+	   if(!check)
+	   {
+		   return null;
+	   }
+	   return abc;
+ }
 
 }

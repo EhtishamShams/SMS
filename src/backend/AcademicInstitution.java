@@ -253,5 +253,22 @@ public class AcademicInstitution {
 			users.add(f);
 		}
 	}
+	   //yes! i used for each loop :v 	
+		// in class academic Institutions
+		public ArrayList<Staff> getFacultyMemberList() {
+			ArrayList<Staff> abc = new ArrayList<Staff>();
+			for (User u : users) {
+				if ((u instanceof FacultyMember))
+					abc.add((Staff) u);
+			}
+			if (abc.size() == 0) {
+				return null;
+			}
+			return abc;
+		}
+		//academicInstitution helper
+		public void addSem(Semester newSem) {
+			this.semesters.add(newSem);
+		}
 
 }

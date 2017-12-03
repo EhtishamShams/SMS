@@ -104,4 +104,16 @@ public class Department {
 		}
 		return null;
 	}
+/////////////DEPARTMENT.java//////////////
+	protected boolean checkStaffByCNIC(String cnic)
+	{
+		for(Staff s : this.staff)
+		{
+			  if(cnic.equals(s.getCNIC()))
+			  {
+			      return true;
+			  }		  
+		}
+		return false;
+	}
 }
