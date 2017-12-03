@@ -16,7 +16,7 @@ public class DBAccess {
 	public static boolean createConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SMS","root","open1234");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SMS","root","root");
 			con.setAutoCommit(false);
 			stmt=con.createStatement();
 		} catch (SQLException e) {

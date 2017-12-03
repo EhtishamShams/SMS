@@ -168,4 +168,8 @@ public class FacultyMember extends Staff {
 			return abc;
 	}
 	
+	public void addDegree(String degree) {
+		this.degrees.add(degree);
+	}
+	
 }
