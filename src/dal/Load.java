@@ -374,8 +374,9 @@ public class Load {
 		try {
 			Connection conn = DBAccess.getConnection();
 
-			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='Finance'";
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType=?";
 			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, DType.Accounts.toString());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
@@ -398,8 +399,9 @@ public class Load {
 		try {
 			Connection conn = DBAccess.getConnection();
 
-			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='HR'";
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType=?";
 			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, DType.HR.toString());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
@@ -422,8 +424,9 @@ public class Load {
 		try {
 			Connection conn = DBAccess.getConnection();
 
-			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType='Academic'";
+			String query = "Select U.Name, U.Password, U.DateOfBirth, U.PhoneNo, U.Email, U.CNIC, U.Gender, U.EmergencyContact, U.Address, S.empID, S.DateHired From User U join Staff S join manager M on U.userID=S.userID and S.empID=M.empID where M.ManagerType=?";
 			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, DType.Academic.toString());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
