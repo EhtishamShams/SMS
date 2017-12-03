@@ -143,9 +143,11 @@ public class Student extends User {
 		int credits = 0;
 
 		for (Grade g : grades) {
-			int grCreds = g.getCourseSection().getCourse().getCreditHours();
-			credits += grCreds;
-			ret += g.getGrade().getGpa() * grCreds;
+			if(!g.getGrade().equals(LGrade.I)) {
+				int grCreds = g.getCourseSection().getCourse().getCreditHours();
+				credits += grCreds;
+				ret += g.getGrade().getGpa() * grCreds;
+			}
 		}
 
 		if (credits != 0)
@@ -159,8 +161,10 @@ public class Student extends User {
 		int credits = 0;
 		double ret = 0;
 		for (Grade gr : transcript.getGrades()) {
-			credits += gr.getCourseSection().getCourse().getCreditHours();
-			ret += gr.getCourseSection().getCourse().getCreditHours() * gr.getGrade().getGpa();
+			if(!gr.getGrade().equals(LGrade.I)) {
+				credits += gr.getCourseSection().getCourse().getCreditHours();
+				ret += gr.getCourseSection().getCourse().getCreditHours() * gr.getGrade().getGpa();
+			}
 		}
 		if (credits != 0)
 			return ret / credits;
