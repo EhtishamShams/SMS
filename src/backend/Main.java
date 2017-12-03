@@ -84,7 +84,7 @@ public class Main {
         School sch=new School("BSCS", "compsc", fm,std1,lc);
         
       //  mysqlCon con1= new mysqlCon();
-        mysqlCon con= new mysqlCon(); 
+//        mysqlCon con= new mysqlCon(); 
        // con.addFaculty(sch,"ALi", "ehfheriu", d,"020202021", "jun@hotmail.com", "35202-745", 'F',
         //		"03884629231","56D2","L009", d, deg,"senior proff");
         
@@ -94,7 +94,7 @@ public class Main {
         
      // con.removeSection("CS202",'B',s);
      //  con.updateSection("CS202", 'B', f,100,s);
-        con.updateStaff("Hunyboo", d, "3456789876", "tjhbgfh","kjh", 'M',
+        DAL.updateStaff("Hunyboo", d, "3456789876", "tjhbgfh","kjh", 'M',
     			"37462", "kmfkr", "L987",d);
         
         
