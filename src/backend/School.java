@@ -147,13 +147,23 @@ public class School {
 			return false;
 
 		for (CourseSection cSec : c.getSections()) {
-			if (cSec.getSemester().getSession().equals(Session.getSem().getSession()))
-				;// TODO: Call Humna's RemoveCourseSection function here on cSec
+			if (cSec.getSemester().getSession().equals(Session.getSem().getSession())) {
+				removeCourseSectionObject(cSec);
+				c.getSections().remove(cSec);
+			}
+				
 		}
 
 		c.setIsOffered(false);
 
 		return true;
+	}
+	
+	public void removeCourseSectionObject(CourseSection cSec) {
+		
+		for(Student std:students) {
+			std.getCourses().remove(cSec);
+		}
 	}
 
 	// hamza

@@ -42,7 +42,7 @@ public class Transcript {
 
 		for (Grade g : grades) {
 			if (g.getCourseSection().getCourse().getCourseCode().equals(course.getCourseCode())
-					&& !g.getGrade().equals(LGrade.F)) {
+					&& !g.getGrade().equals(LGrade.F) && !g.getGrade().equals(LGrade.I)) {
 				return true;
 			}
 		}
@@ -86,6 +86,19 @@ public class Transcript {
 				return g;
 		}
 		return null;
+	}
+	public ArrayList<Grade> getSemesterGrades(String session){
+		ArrayList<Grade> grades = new ArrayList<>();
+		
+		for(Grade g : this.grades) {
+			if(g.getCourseSection().getSemester().getSession().equals(session))
+				grades.add(g);
+		}
+		
+		if(grades.size()==0)
+			return null;
+		else
+			return grades;
 	}
 
 	// public boolean updateGradeSection(CourseSection oldCs, CourseSection newCs) {

@@ -82,8 +82,10 @@ public class AcademicInstitution {
 				Session.setType(UType.AcademicManager);
 			else if (u instanceof FinanceManager)
 				Session.setType(UType.FinanceManager);
-			else if (u instanceof FacultyMember)
+			else if (u instanceof FacultyMember) {
 				Session.setType(UType.FacultyMember);
+				Session.setSchl(this.getFacultySchool(((FacultyMember) u).getEmpID()));
+			}
 			return true;
 		} else
 			return false;
@@ -271,4 +273,18 @@ public class AcademicInstitution {
 			this.semesters.add(newSem);
 		}
 
+		boolean validateStaffCnic(String CNIC)
+		{
+			boolean check=false;
+			ArrayList<Staff> arr=this.getFacultyMemberList();
+			if(arr!=null)
+			{
+				for(int i=0;i<arr.size();i++)
+				{
+					if(arr.get(i).getCNIC().equals(CNIC))
+						check=true;
+				}
+			}
+			return check;
+		}
 }

@@ -218,13 +218,13 @@ public class Student extends User {
 		return false;
 	}
 
-	public boolean isPassed(Course c) {
-		if (this.transcript.checkCoursePassed(c))
+
+	public boolean isPassed(Course c, Semester sem) {
+		if (this.transcript.checkCoursePassed(c) && !this.isRegistered(c, sem))
 			return true;
 		else
 			return false;
 	}
-
 	public CourseSection getRegisteredCourseSection(Course course, Semester sem) {
 
 		for (CourseSection cs : courses) {

@@ -105,11 +105,11 @@ public class Department {
 		return null;
 	}
 /////////////DEPARTMENT.java//////////////
-	protected boolean checkStaffByCNIC(String cnic)
+	protected boolean checkStaffByCNIC(String cnic, String empID)
 	{
 		for(Staff s : this.staff)
 		{
-			  if(cnic.equals(s.getCNIC()))
+			  if(cnic.equals(s.getCNIC())||s.getEmpID().equals(empID))
 			  {
 			      return true;
 			  }		  
