@@ -32,7 +32,6 @@ public class CourseSection {
 		this.studentAttendances = studentAttendances;
 	}
 
-	
 	public int getMaxSeats() {
 		return maxSeats;
 	}
@@ -65,7 +64,6 @@ public class CourseSection {
 		return studentAttendances;
 	}
 
-
 	public boolean incrementCurrSeats() {
 		if (currSeats != maxSeats) {
 			currSeats++;
@@ -75,11 +73,9 @@ public class CourseSection {
 
 	}
 
-
-    public void addAtd(Attendance a)
-    {
-    	this.studentAttendances.add(a);
-    }
+	public void addAtd(Attendance a) {
+		this.studentAttendances.add(a);
+	}
 
 	public boolean decrementCurrSeats() {
 		if (currSeats != 0) {
@@ -88,7 +84,6 @@ public class CourseSection {
 		} else
 			return false;
 	}
-
 
 	public Course getCourse() {
 		return course;
@@ -113,7 +108,6 @@ public class CourseSection {
 		return attendance;
 	}
 
-
 	public void setCourse(Course course) {
 		this.course = course;
 	}
@@ -127,42 +121,35 @@ public class CourseSection {
 	}
 
 	public void removeStudentAttendance(Student student) {
-		for(Attendance attd: studentAttendances) {
-			if(attd.getStudent().getRollNo().equals(student.getRollNo())){
+		for (Attendance attd : studentAttendances) {
+			if (attd.getStudent().getRollNo().equals(student.getRollNo())) {
 				studentAttendances.remove(attd);
 			}
 		}
 	}
 
-	
-	 public void setFaculty(FacultyMember f) {
-		 sectionTeacher=f;
-	 }
-	 
-	 public FacultyMember getFaculty() {
-		 return sectionTeacher;
-	 }
-	 
-	 
-	 
-	//helper for mark attendance
-	public boolean addAttendance(Attendance a)
-	{
+	public void setFaculty(FacultyMember f) {
+		sectionTeacher = f;
+	}
+
+	public FacultyMember getFaculty() {
+		return sectionTeacher;
+	}
+
+	// helper for mark attendance
+	public boolean addAttendance(Attendance a) {
 		this.studentAttendances.add(a);
 		return true;
 	}
-	 
-	public ArrayList<Attendance>getAttendance(Date day)
-	{
-		ArrayList<Attendance> atd= new ArrayList<Attendance>();
-		
-		for(int i=0;i<this.studentAttendances.size();i++)
-		{
-			if(studentAttendances.get(i).getDay().equals(day))
-			{
+
+	public ArrayList<Attendance> getAttendance(Date day) {
+		ArrayList<Attendance> atd = new ArrayList<Attendance>();
+
+		for (int i = 0; i < this.studentAttendances.size(); i++) {
+			if (studentAttendances.get(i).getDay().equals(day)) {
 				atd.add(studentAttendances.get(i));
 			}
-				
+
 		}
 		return atd;
 	}

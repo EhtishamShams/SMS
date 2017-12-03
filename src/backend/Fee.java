@@ -12,12 +12,12 @@ import java.sql.Date;
  * @author HumnaGul
  */
 public class Fee {
-	
+
 	private double amount;
-    private Date datePaid = null;
-    private Date dueDate = null; 
-    private Student student = null;
-    private Semester semester = null;
+	private Date datePaid = null;
+	private Date dueDate = null;
+	private Student student = null;
+	private Semester semester = null;
 
 	public Fee(double amount, Date datePaid, Date dueDate, Student st, Semester sem) {
 		this.amount = amount;
@@ -26,7 +26,7 @@ public class Fee {
 		this.student = st;
 		this.semester = sem;
 	}
-	
+
 	public double getAmount() {
 		return amount;
 	}

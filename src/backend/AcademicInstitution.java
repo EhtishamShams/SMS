@@ -15,7 +15,7 @@ public class AcademicInstitution {
 	private ArrayList<User> users = null;
 	private ArrayList<Department> depts = null;
 	private ArrayList<Semester> semesters;
-	
+
 	public AcademicInstitution(String name, String location, ArrayList<School> schools, ArrayList<User> users,
 			ArrayList<Department> depts, ArrayList<Semester> sems) {
 		this.name = name;
@@ -56,23 +56,22 @@ public class AcademicInstitution {
 
 	public Staff getStaff(String empID) {
 		for (User u : users) {
-			if ((u instanceof Staff) && ((Staff) u).getEmpID().equals(empID)) 
-				return (Staff)u;
+			if ((u instanceof Staff) && ((Staff) u).getEmpID().equals(empID))
+				return (Staff) u;
 		}
 		return null;
 	}
-	
+
 	public boolean studentLogin(String rollNum, String pass) {
 		User u = getStudent(rollNum);
 		if (u != null && u.matchPassword(pass)) {
 			Session.setUser(u);
 			Session.setType(UType.Student);
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	
+
 	public boolean staffLogin(String empID, String pass) {
 		User u = getStaff(empID);
 		if (u != null && u.matchPassword(pass)) {
@@ -86,18 +85,16 @@ public class AcademicInstitution {
 			else if (u instanceof FacultyMember)
 				Session.setType(UType.FacultyMember);
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	
+
 	public boolean logout() {
 		if (Session.getUser() != null) {
 			Session.setUser(null);
 			Session.setType(UType.LoggedOut);
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
@@ -135,23 +132,23 @@ public class AcademicInstitution {
 		return null;
 	}
 
-//	public Staff getStaff(String empID) {
-//
-//		for (School sch : schools) {
-//			Staff temp = sch.getFacultyMember(empID);
-//			if (temp != null)
-//				return temp;
-//		}
-//
-//		for (Department dep : depts) {
-//			Staff temp = dep.getStaffMember(empID);
-//			if (temp != null)
-//				return temp;
-//		}
-//
-//		return null;
-//	}
-	
+	// public Staff getStaff(String empID) {
+	//
+	// for (School sch : schools) {
+	// Staff temp = sch.getFacultyMember(empID);
+	// if (temp != null)
+	// return temp;
+	// }
+	//
+	// for (Department dep : depts) {
+	// Staff temp = dep.getStaffMember(empID);
+	// if (temp != null)
+	// return temp;
+	// }
+	//
+	// return null;
+	// }
+
 	public void setSchools(ArrayList<School> schools) {
 		this.schools = schools;
 	}
@@ -183,7 +180,7 @@ public class AcademicInstitution {
 				check = false;
 			}
 		}
-		 check=DAL.updateSchoolDB(id,n);
+		check = DAL.updateSchoolDB(id, n);
 		if (check) {
 			School temp = new School(id, n);
 			schools.add(temp);
@@ -199,7 +196,7 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
-	
+
 	public School getStudentSchool(String rollNum) {
 		for (School s : schools) {
 			if (s.ifStudentExists(rollNum))
@@ -207,7 +204,7 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
-	
+
 	public School getFacultySchool(String empID) {
 		for (School s : schools) {
 			if (s.ifFacultyExists(empID))
@@ -215,18 +212,16 @@ public class AcademicInstitution {
 		}
 		return null;
 	}
-	
 
-//	public Student getStudent(String rollNo) {
-//
-//		for (School sch : schools) {
-//			Student temp = sch.getStudent(rollNo);
-//			if (temp != null)
-//				return temp;
-//		}
-//		return null;
-//	}
-
+	// public Student getStudent(String rollNo) {
+	//
+	// for (School sch : schools) {
+	// Student temp = sch.getStudent(rollNo);
+	// if (temp != null)
+	// return temp;
+	// }
+	// return null;
+	// }
 
 	public Student getStudent(String rollNum) {
 		for (User u : users) {
@@ -236,7 +231,6 @@ public class AcademicInstitution {
 		return null;
 	}
 
-
 	public Course getCourse(String code) {
 
 		for (School sch : schools) {
@@ -245,16 +239,14 @@ public class AcademicInstitution {
 		return null;
 	}
 
-
 	public School getCourseSchool(String code) {
-		for(School sch:schools) {
-			if(sch.getCourse(code)!=null)
+		for (School sch : schools) {
+			if (sch.getCourse(code) != null)
 				return sch;
 		}
-		
+
 		return null;
 	}
-
 
 	public void loadFaculty(ArrayList<FacultyMember> arr) {
 		for (FacultyMember f : arr) {

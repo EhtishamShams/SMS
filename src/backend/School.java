@@ -30,7 +30,7 @@ public class School {
 		this.students = students;
 		this.courses = courses;
 	}
-	
+
 	public School(String sid, String n) {
 		this.id = sid;
 		this.name = n;
@@ -205,7 +205,7 @@ public class School {
 		for (Course crs : courses) {
 			for (CourseSection crsSec : crs.getSections()) {
 				if (crsSec.getTeacher().getEmpID().equals(empID)) {
-					if(crsSec.getSemester().getSession().equals(Session.getSem().getSession()))
+					if (crsSec.getSemester().getSession().equals(Session.getSem().getSession()))
 						crsSec.setTeacher(replacement);
 					else
 						crsSec.setTeacher(null);
@@ -247,7 +247,7 @@ public class School {
 		students.remove(std);
 		return true;
 	}
-	
+
 	public boolean ifStudentExists(String rollNum) {
 		for (Student s : students) {
 			if (s.getRollNo().equals(rollNum))
@@ -263,18 +263,17 @@ public class School {
 		}
 		return false;
 	}
-	
-	public ArrayList<Course> getCoursesFromCode(ArrayList<String> code){
-		
+
+	public ArrayList<Course> getCoursesFromCode(ArrayList<String> code) {
+
 		ArrayList<Course> ret = new ArrayList<Course>();
-		
-		for(Course crs:courses) {
+
+		for (Course crs : courses) {
 			ret.add(crs);
 		}
-		
+
 		return ret;
 	}
-
 
 	public Student getStudent(String rollNo) {
 		for (Student s : students) {
@@ -350,129 +349,110 @@ public class School {
 		} else
 			return false;
 	}
-	
-	
 
-	//helper for mark attendance
-//	public Student getStudent(String s)
-//	{
-//		for(int i=0 ; i< this.students.size();i++)
-//		{
-//			if(this.students.get(i).getRollNo().equals(s))
-//			{
-//				return this.students.get(i);
-//			}
-//			
-//		}
-//		return null;
-//	}
-	
-	//////////////////////ADD FACULTY HELPER/////////////////////////////////////////////////
-	
-	public int ifFacultyExistsByIndex(String empID)                  //returning index instead of boolean bcoz coz it later is required for update
+	// helper for mark attendance
+	// public Student getStudent(String s)
+	// {
+	// for(int i=0 ; i< this.students.size();i++)
+	// {
+	// if(this.students.get(i).getRollNo().equals(s))
+	// {
+	// return this.students.get(i);
+	// }
+	//
+	// }
+	// return null;
+	// }
+
+	////////////////////// ADD FACULTY
+	////////////////////// HELPER/////////////////////////////////////////////////
+
+	public int ifFacultyExistsByIndex(String empID) // returning index instead of boolean bcoz coz it later is required
+													// for update
 	{
 		int found = 0;
-		for(FacultyMember fm : this.faculty)
-		{
-			  if(empID.equals(fm.getEmpID()))
-			  {
-			      found=faculty.indexOf(fm);
-				  break;
-			  }
-			  
-			  else
-			  found=-1;
+		for (FacultyMember fm : this.faculty) {
+			if (empID.equals(fm.getEmpID())) {
+				found = faculty.indexOf(fm);
+				break;
+			}
+
+			else
+				found = -1;
 		}
-	
+
 		return found;
-		
+
 	}
-	
-	public FacultyMember getFacultyfromList(String empID)
-	{
-		for(FacultyMember fm : this.faculty)
-		{
-			  if(empID.equals(fm.getEmpID()))
-			  {
-			      return fm;
-			  }
+
+	public FacultyMember getFacultyfromList(String empID) {
+		for (FacultyMember fm : this.faculty) {
+			if (empID.equals(fm.getEmpID())) {
+				return fm;
+			}
 		}
 		return null;
 	}
 
-	//////////////////////////////// ADD FACULTY ////////////////////////////////////////////////////
-	
-	protected boolean addFacultyMember(FacultyMember fm)
-    {
-    	return faculty.add(fm);
-    }
-	
-	
-	////////////////SECTION//////////////////////////////////////////////////////////////////////////
-	public int courseExistsByIndex(String code)
-	{
+	//////////////////////////////// ADD FACULTY
+	//////////////////////////////// ////////////////////////////////////////////////////
+
+	protected boolean addFacultyMember(FacultyMember fm) {
+		return faculty.add(fm);
+	}
+
+	//////////////// SECTION//////////////////////////////////////////////////////////////////////////
+	public int courseExistsByIndex(String code) {
 		int found = 0;
-		for(Course c : this.courses)
-		{
-			  if(code.equals(c.getCourseCode()))
-			  {
-			      found=courses.indexOf(c);
-				  break;
-			  }
-			  
-			  else
-			  found=-1;
+		for (Course c : this.courses) {
+			if (code.equals(c.getCourseCode())) {
+				found = courses.indexOf(c);
+				break;
+			}
+
+			else
+				found = -1;
 		}
-	
+
 		return found;
 	}
-	
-	
-	protected Course getCourseFromCourses(int i)
-	{
+
+	protected Course getCourseFromCourses(int i) {
 		return courses.get(i);
 	}
-	
-	protected void updateCourseToCourses(int i,Course c)
-	{
-		 courses.set(i,c);
+
+	protected void updateCourseToCourses(int i, Course c) {
+		courses.set(i, c);
 	}
-	//////////////////////////////////remove section helper///////////////////////
-	protected ArrayList<Student> getStudentFromStudents(char SectionID)
-	{
-		ArrayList<Student> sectionStudent=new ArrayList<Student>();
-		for(Student s : this.students)
-		{
-			  if(s.ifSectionExists(SectionID)==true)
-			  {
-			    sectionStudent.add(s);
-			  }
+
+	////////////////////////////////// remove section helper///////////////////////
+	protected ArrayList<Student> getStudentFromStudents(char SectionID) {
+		ArrayList<Student> sectionStudent = new ArrayList<Student>();
+		for (Student s : this.students) {
+			if (s.ifSectionExists(SectionID) == true) {
+				sectionStudent.add(s);
+			}
 		}
 		return sectionStudent;
 	}
-	
-	protected boolean facultyExists(FacultyMember f)
-	{
-		boolean found=false;
-		for(FacultyMember fm : this.faculty)
-		{
-			  if(f.getEmpID().equals(fm.getEmpID()))
-			  {
-			      found=true;
-				  break;
-			  }
-		 
+
+	protected boolean facultyExists(FacultyMember f) {
+		boolean found = false;
+		for (FacultyMember fm : this.faculty) {
+			if (f.getEmpID().equals(fm.getEmpID())) {
+				found = true;
+				break;
+			}
+
 		}
-		 return found;
+		return found;
 	}
 
-	
-	
 	public boolean removeStudentCourseRegistration(Student s, CourseSection cs, Semester sem) {
-		
+
 		int sectionKey = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
-		
-		if(s.removeGradeFromTranscript(cs,LGrade.I) && s.removeStudentCourseRegistration(cs)) {
+
+		if (s.removeGradeFromTranscript(cs, LGrade.I) && s.removeStudentCourseRegistration(cs)) {
 			DAL.removeGradeFromTranscript(LGrade.I.toString(), sectionKey, s.getRollNo(), sem.getSession());
 			DAL.removeStudentCourseRegistration(s.getRollNo(), sectionKey);
 			cs.removeStudentAttendance(s);
@@ -480,8 +460,7 @@ public class School {
 			cs.decrementCurrSeats();
 			DAL.decrementCurrSeats(sectionKey);
 			return true;
-		} 
-		else
+		} else
 			return false;
 	}
 
@@ -507,42 +486,38 @@ public class School {
 
 		return null;
 	}
-	
-	
-	//helper for mark attendance
-//	public Course getCourse(String s)
-//	{
-//		for(int i=0 ; i< this.courses.size();i++)
-//		{
-//			if(this.courses.get(i).getCourseCode().equals(s))
-//			{
-//				return this.courses.get(i);
-//			}
-//			
-//		}
-//		return null;
-//	}
-//	
-	
-   public  ArrayList<CourseSection> getFacultyCourseSections(String id)
-   {
-	   ArrayList<CourseSection> sec= new ArrayList<CourseSection>();
-	   Semester current=Session.getSem();  
-	    
-	   for(int i=0; i<this.courses.size();i++)   
-	   {
-		   for(int j=0;j<courses.get(i).getSections().size();j++)
-		   {
-			   if(courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id)  &&  courses.get(i).getSections().get(j).getSemester().getSession().equals(current.getSession()))
-			   {
-				   sec.add(courses.get(i).getSections().get(j));
-			   }
-			   
-		   }
-	   }
-   
-	   return sec;
-	   
-   }
+
+	// helper for mark attendance
+	// public Course getCourse(String s)
+	// {
+	// for(int i=0 ; i< this.courses.size();i++)
+	// {
+	// if(this.courses.get(i).getCourseCode().equals(s))
+	// {
+	// return this.courses.get(i);
+	// }
+	//
+	// }
+	// return null;
+	// }
+	//
+
+	public ArrayList<CourseSection> getFacultyCourseSections(String id) {
+		ArrayList<CourseSection> sec = new ArrayList<CourseSection>();
+		Semester current = Session.getSem();
+
+		for (int i = 0; i < this.courses.size(); i++) {
+			for (int j = 0; j < courses.get(i).getSections().size(); j++) {
+				if (courses.get(i).getSections().get(j).getSectionTeacher().empID.equals(id) && courses.get(i)
+						.getSections().get(j).getSemester().getSession().equals(current.getSession())) {
+					sec.add(courses.get(i).getSections().get(j));
+				}
+
+			}
+		}
+
+		return sec;
+
+	}
 
 }

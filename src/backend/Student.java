@@ -17,7 +17,7 @@ public class Student extends User {
 	private int creditsAttempted;
 	private ArrayList<CourseSection> courses = null;
 	private Transcript transcript = null;
-	
+
 	public Student(String name, String password, Date DOB, String phoneNo, String email, String CNIC, char gender,
 			String emergencyContact, String address, String rollNo, String fatherCNIC, String fatherName, float cGPA,
 			int creditsEarned, int creditsAttempted, ArrayList<CourseSection> courses, Transcript transcript) {
@@ -83,7 +83,7 @@ public class Student extends User {
 	public void setCreditsAttempted(int creditsAttempted) {
 		this.creditsAttempted = creditsAttempted;
 	}
-	
+
 	public Grade getCourseGrade(String courseCode) {
 		return transcript.getGrade(courseCode);
 	}
@@ -117,7 +117,6 @@ public class Student extends User {
 
 		return csList;
 	}
-
 
 	// hamza
 	public boolean updateDetails(String name, Date DOB, String phone, String email, String CNIC, char gender,
@@ -168,7 +167,6 @@ public class Student extends User {
 		else
 			return 0;
 	}
-
 
 	public boolean checkCoursesPassed(ArrayList<Course> cList) {
 		return transcript.checkCoursesPassed(cList);
@@ -234,48 +232,43 @@ public class Student extends User {
 
 		return null;
 	}
-	
-	
-	
-	//////////////////////////REMOVE SECTION HELPER/////////////////////////////////
-	public boolean ifSectionExists(char SectionID)
-	{
-		
-		for(CourseSection cs : this.courses)
-		{
-			  if(cs.getSectionID()==SectionID)
-			  {
-			     return true;
-			  }
+
+	////////////////////////// REMOVE SECTION
+	////////////////////////// HELPER/////////////////////////////////
+	public boolean ifSectionExists(char SectionID) {
+
+		for (CourseSection cs : this.courses) {
+			if (cs.getSectionID() == SectionID) {
+				return true;
+			}
 		}
-	
+
 		return false;
 	}
-	
-	///////////////////////NOUMAN//////////////
-	
-//	public boolean removeStudentCourseRegistration(CourseSection cs) {
-//		if(this.courses.contains(cs)) {
-//			this.courses.remove(cs);
-//			return true;
-//		}
-//		else
-//			return false;
-//	}
-	
-	
-	/*public void viewDetails()
-	{
-		super.viewDetails();
-		System.out.println("RollNo : \t" + rollNo);
-		System.out.println("FatherCNIC : \t" + fatherCNIC);
-		System.out.println("FatherName : \t" + fatherName);
-		System.out.println("CGPA : \t" + CGPA);
-		System.out.println("Credits Earned : \t" + creditsEarned);
-		System.out.println("Credits Attempted : \t" + creditsAttempted);
-		
-		
-    	
-	}*/
-	
+
+	/////////////////////// NOUMAN//////////////
+
+	// public boolean removeStudentCourseRegistration(CourseSection cs) {
+	// if(this.courses.contains(cs)) {
+	// this.courses.remove(cs);
+	// return true;
+	// }
+	// else
+	// return false;
+	// }
+
+	/*
+	 * public void viewDetails() { super.viewDetails();
+	 * System.out.println("RollNo : \t" + rollNo);
+	 * System.out.println("FatherCNIC : \t" + fatherCNIC);
+	 * System.out.println("FatherName : \t" + fatherName);
+	 * System.out.println("CGPA : \t" + CGPA);
+	 * System.out.println("Credits Earned : \t" + creditsEarned);
+	 * System.out.println("Credits Attempted : \t" + creditsAttempted);
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
+
 }

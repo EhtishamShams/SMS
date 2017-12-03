@@ -143,11 +143,14 @@ public class Load {
 							stdCourses.getString(3).charAt(0)));
 				}
 
-//				Student std = new Student(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
-//						rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8), rs.getString(9),
-//						rs.getString(10), rs.getString(12), rs.getString(11), (float) rs.getDouble(13), rs.getInt(14),
-//						rs.getInt(15), courses);
-				
+				// Student std = new Student(rs.getString(1), rs.getString(2), rs.getDate(3),
+				// rs.getString(4),
+				// rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8),
+				// rs.getString(9),
+				// rs.getString(10), rs.getString(12), rs.getString(11), (float)
+				// rs.getDouble(13), rs.getInt(14),
+				// rs.getInt(15), courses);
+
 				Student std = new Student(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8), rs.getString(9),
 						rs.getString(10), rs.getString(12), rs.getString(11), (float) rs.getDouble(13), rs.getInt(14),

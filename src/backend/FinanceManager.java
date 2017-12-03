@@ -18,35 +18,34 @@ public class FinanceManager extends Staff {
 			char gender, String emergencyContact, String address, String empID, Date dateHired) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
-	
-    public boolean payStaff(String empID, String datePaid, double amount) {
-    		AccountsDepartment dept = Session.getAccountsDept();
-    		
-    		if (!dept.checkPay(empID, Date.valueOf(datePaid))) {
-        		Staff s = Session.getInst().getStaff(empID);
-    			Pay p = new Pay(amount, Date.valueOf(datePaid), s);
-    			return dept.addPay(p);
-    		}
-    		return false;
-    }
-    
-    
-    public boolean updateFee(String rollNum, String datePaid, String semester) {
-    		Fee f = Session.getAccountsDept().getFee(rollNum, semester);
-    		Date oldDate = f.getDatePaid();
-    		f.setDatePaid(Date.valueOf(datePaid));
-    		boolean check = Session.getDal().updateFeeDate(f);
-    		if (!check)
-    			f.setDatePaid(oldDate);
-    		return check;
-    }
-    
-    public ArrayList<Pay> getPays(String empID){
-    		return Session.getAccountsDept().getPays(empID);
-    }
-    
-    public ArrayList<Fee> getFees(String rollNum){
+
+	public boolean payStaff(String empID, String datePaid, double amount) {
+		AccountsDepartment dept = Session.getAccountsDept();
+
+		if (!dept.checkPay(empID, Date.valueOf(datePaid))) {
+			Staff s = Session.getInst().getStaff(empID);
+			Pay p = new Pay(amount, Date.valueOf(datePaid), s);
+			return dept.addPay(p);
+		}
+		return false;
+	}
+
+	public boolean updateFee(String rollNum, String datePaid, String semester) {
+		Fee f = Session.getAccountsDept().getFee(rollNum, semester);
+		Date oldDate = f.getDatePaid();
+		f.setDatePaid(Date.valueOf(datePaid));
+		boolean check = Session.getDal().updateFeeDate(f);
+		if (!check)
+			f.setDatePaid(oldDate);
+		return check;
+	}
+
+	public ArrayList<Pay> getPays(String empID) {
+		return Session.getAccountsDept().getPays(empID);
+	}
+
+	public ArrayList<Fee> getFees(String rollNum) {
 		return Session.getAccountsDept().getFees(rollNum);
 	}
-    
+
 }

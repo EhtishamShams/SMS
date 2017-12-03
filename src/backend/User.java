@@ -18,7 +18,7 @@ public class User {
 
 	protected String name;
 	protected String password;
-    protected Date DOB = null;
+	protected Date DOB = null;
 	protected String phoneNo;
 	protected String email;
 	protected String CNIC;
@@ -109,36 +109,36 @@ public class User {
 		this.address = address;
 	}
 
+	////////////////////////////////////// USER UPDATE
+	////////////////////////////////////// DETAILS//////////////////////////////////////
 
-    //////////////////////////////////////USER  UPDATE DETAILS//////////////////////////////////////
-    
- protected void updateDetails(String name, /*String password,*/ Date DOB, String phoneNo, String email, String CNIC, char gender, String emergencyContact, String address) 
-    {
-    	this.name = name;
-     //   this.password = password;
-        this.DOB = DOB;
-        this.phoneNo = phoneNo;
-        this.email = email;
-        this.CNIC = CNIC;
-        this.gender = gender;
-        this.emergencyContact = emergencyContact;
-        this.address = address;
-    }
+	protected void updateDetails(String name, /* String password, */ Date DOB, String phoneNo, String email,
+			String CNIC, char gender, String emergencyContact, String address) {
+		this.name = name;
+		// this.password = password;
+		this.DOB = DOB;
+		this.phoneNo = phoneNo;
+		this.email = email;
+		this.CNIC = CNIC;
+		this.gender = gender;
+		this.emergencyContact = emergencyContact;
+		this.address = address;
+	}
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    public void viewDetails()     //NO NEED AS HAVE TO UPDATE WITH GUI 
-    {
-    	System.out.println("***** User Information *****");
-    	System.out.println("Name : \t" + name);
-    	System.out.println("DOB : \t" + DOB);
-    	System.out.println("Phone # : \t" + phoneNo);
-    	System.out.println("Email : \t" + email);
-    	System.out.println("CNIC : \t" + CNIC);
-    	System.out.println("Gender : \t" + gender);
-    	System.out.println("Emergency Contact : \t" + emergencyContact);
-    	System.out.println("Address : \t" + address);
-    		
-    }
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	public void viewDetails() // NO NEED AS HAVE TO UPDATE WITH GUI
+	{
+		System.out.println("***** User Information *****");
+		System.out.println("Name : \t" + name);
+		System.out.println("DOB : \t" + DOB);
+		System.out.println("Phone # : \t" + phoneNo);
+		System.out.println("Email : \t" + email);
+		System.out.println("CNIC : \t" + CNIC);
+		System.out.println("Gender : \t" + gender);
+		System.out.println("Emergency Contact : \t" + emergencyContact);
+		System.out.println("Address : \t" + address);
+
+	}
 
 	public boolean changePassword(String old, String newPass) {
 		if (matchPassword(old)) {

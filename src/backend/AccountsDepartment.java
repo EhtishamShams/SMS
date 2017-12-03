@@ -20,15 +20,13 @@ import java.util.ArrayList;
 public class AccountsDepartment extends Department {
 
 	private ArrayList<Pay> pays = null;
-    private ArrayList<Fee> fees = null;
-
+	private ArrayList<Fee> fees = null;
 
 	public AccountsDepartment(ArrayList<Pay> pays, ArrayList<Fee> fees, String name, ArrayList<Staff> staff) {
 		super(name, staff);
 		this.pays = pays;
 		this.fees = fees;
 	}
-
 
 	public Fee getStudentFee(String rollNo, String session) {
 		for (Fee f : fees) {
@@ -66,52 +64,49 @@ public class AccountsDepartment extends Department {
 
 		return false;
 	}
-    
-    
 
-    public ArrayList<Pay> getAllPays() {
-        return pays;
-    }
+	public ArrayList<Pay> getAllPays() {
+		return pays;
+	}
 
-    public void setPays(ArrayList<Pay> pays) {
-        this.pays = pays;
-    }
+	public void setPays(ArrayList<Pay> pays) {
+		this.pays = pays;
+	}
 
-    public ArrayList<Fee> getAllFees() {
-        return fees;
-    }
+	public ArrayList<Fee> getAllFees() {
+		return fees;
+	}
 
-    public void setFees(ArrayList<Fee> fees) {
-        this.fees = fees;
-    }
-    
+	public void setFees(ArrayList<Fee> fees) {
+		this.fees = fees;
+	}
 
-    public boolean checkPay(String empID, Date payDate) {
+	public boolean checkPay(String empID, Date payDate) {
 		for (Pay p : pays) {
 			if (p.getStaffMember().getEmpID().equals(empID) && p.getDatePaid().equals(payDate))
 				return true;
 		}
 		return false;
-}
-    
-    public boolean addPay(Pay p) {
+	}
+
+	public boolean addPay(Pay p) {
 		boolean check = Session.getDal().addPay(p);
 		if (check)
 			pays.add(p);
 		return check;
 	}
-    
-    public Fee getFee(String rollNum, String semester) {
-    		for (Fee f : fees) {
-    			if (f.getStudent().getRollNo().equals(rollNum) && f.getSemester().getSession().equals(semester))
-    				return f;
-    		}
-    		return null;
-    }
-    
-    public ArrayList<Pay> getPays(String empID){
+
+	public Fee getFee(String rollNum, String semester) {
+		for (Fee f : fees) {
+			if (f.getStudent().getRollNo().equals(rollNum) && f.getSemester().getSession().equals(semester))
+				return f;
+		}
+		return null;
+	}
+
+	public ArrayList<Pay> getPays(String empID) {
 		ArrayList<Pay> arr = new ArrayList<Pay>();
-		for(Pay p : pays) {
+		for (Pay p : pays) {
 			if (p.getStaffMember().getEmpID().equals(empID))
 				arr.add(p);
 		}
@@ -120,10 +115,10 @@ public class AccountsDepartment extends Department {
 		else
 			return arr;
 	}
-    
-    public ArrayList<Fee> getFees(String rollNum){
+
+	public ArrayList<Fee> getFees(String rollNum) {
 		ArrayList<Fee> arr = new ArrayList<Fee>();
-		for(Fee f : fees) {
+		for (Fee f : fees) {
 			if (f.getStudent().getRollNo().equals(rollNum))
 				arr.add(f);
 		}

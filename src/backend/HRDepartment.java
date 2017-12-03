@@ -21,7 +21,8 @@ public class HRDepartment extends Department {
 	private ArrayList<Office> offices = null;
 	private ArrayList<Allotment> allotments = null;
 
-	public HRDepartment(ArrayList<Office> offices, ArrayList<Allotment> allotments, String name, ArrayList<Staff> staff) {
+	public HRDepartment(ArrayList<Office> offices, ArrayList<Allotment> allotments, String name,
+			ArrayList<Staff> staff) {
 		super(name, staff);
 		this.offices = offices;
 		this.allotments = allotments;
@@ -52,14 +53,14 @@ public class HRDepartment extends Department {
 	}
 
 	// Helper function for add allotment
-//	public Office getOffice(String Oid) {
-//		for (int i = 0; i < (this.offices.size()); i++) {
-//			if (this.offices.get(i).getID().equals(Oid)) {
-//				return offices.get(i);
-//			}
-//		}
-//		return null;
-//	}
+	// public Office getOffice(String Oid) {
+	// for (int i = 0; i < (this.offices.size()); i++) {
+	// if (this.offices.get(i).getID().equals(Oid)) {
+	// return offices.get(i);
+	// }
+	// }
+	// return null;
+	// }
 
 	// Helper function to for Add Allotment
 	public boolean addAllotment(Allotment a) {

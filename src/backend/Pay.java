@@ -14,19 +14,18 @@ import java.sql.Date;
 public class Pay {
 
 	private double amount;
-    private Date datePaid = null;
-    private Staff staffMember = null;
-	
+	private Date datePaid = null;
+	private Staff staffMember = null;
+
 	public Pay(double amount, Date datePaid, Staff st) {
-        this.amount = amount;
-        this.datePaid = datePaid;
-        this.staffMember = st;
-    }
+		this.amount = amount;
+		this.datePaid = datePaid;
+		this.staffMember = st;
+	}
 
 	public Double getAmount() {
 		return amount;
 	}
-
 
 	public boolean setAmount(double amount) {
 		boolean set = false;
@@ -53,5 +52,5 @@ public class Pay {
 	public void setStaffMember(Staff staffMember) {
 		this.staffMember = staffMember;
 	}
-	
+
 }
