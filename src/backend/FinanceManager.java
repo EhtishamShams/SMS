@@ -33,7 +33,12 @@ public class FinanceManager extends Staff {
 	public boolean updateFee(String rollNum, String datePaid, String semester) {
 		Fee f = Session.getAccountsDept().getFee(rollNum, semester);
 		Date oldDate = f.getDatePaid();
-		f.setDatePaid(Date.valueOf(datePaid));
+		
+		Date arg = null;
+		if(datePaid!=null)
+			arg = Date.valueOf(datePaid);
+		
+		f.setDatePaid(arg);
 		boolean check = Session.getDal().updateFeeDate(f);
 		if (!check)
 			f.setDatePaid(oldDate);

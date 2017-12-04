@@ -512,18 +512,21 @@ public class DAL {
 		}
 	}
 
-	public static boolean updateFacultyDetails(String empID, String name, Date DOB, String phoneNo, String email,
-			String CNIC, char gender, String emergencyContact, String address, ArrayList<String> degrees,
+ public static boolean updateFacultyDetails(String empID, String name, Date DOB, String phoneNo, String email,
+			String CNIC, char gender, String emergencyContact, String address, Date n_dateHired, ArrayList<String> degrees,
 			String position) {
 		try {
 			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
 
-			int userID = getUserIDFacultyMember(empID);
+			int userID = 0;
+			userID=getUserIDFacultyMember(empID);
+			if(userID!=0) {
 			stmt.executeUpdate("update user set name ='" + name + "',DateOfBirth = '" + DOB + "',PhoneNo='" + phoneNo
 					+ "', email='" + email + "',CNIC='" + CNIC + "',Gender='" + gender + "',EmergencyContact='"
 					+ emergencyContact + "',Address='" + address + "' where UserID=" + userID + ";");
-
+			stmt = DBAccess.getStatement();
+			stmt.executeUpdate("UPDATE staff SET DateHired='" + n_dateHired + "'  WHERE EmpID='" + empID + "';");
 			stmt = DBAccess.getStatement();
 			stmt.executeUpdate("delete from facultymemberdegrees where EmpID='" + empID + "';");
 
@@ -538,10 +541,11 @@ public class DAL {
 			con.commit();
 
 			return true;
+			}
 		} catch (Exception e) {
 			System.out.println(e);
-			return false;
 		}
+		return false;
 	}
 
 	public static boolean addFee(Fee f) {
@@ -847,27 +851,14 @@ public class DAL {
 
 	}
 
-	public static boolean addAllotmentDB(String oid, String Empid) {
+     public static boolean addAllotmentDB(String oid, String Empid) {
 		try {
+			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			String allotment = ""; // just a typo
-			String temp = "";
-
-			ResultSet rs = stmt.executeQuery("select* from Allotment where EmpID='" + Empid + "'");
-			while (rs.next())
-				allotment = rs.getString(1); // () <-this cannot be empty
-
-			ResultSet rs1 = stmt.executeQuery("select* from Allotment where OfficeID='" + oid + "'");
-			while (rs.next())
-				temp = rs1.getString(1); // () <-this cannot be empty
-
-			if (allotment == "" && temp == "") {
-
-				stmt.executeUpdate("INSERT INTO Allotment (OfficeID,EmpID)" + "VALUES('" + oid + "','" + Empid + "');");
-
-				return true;
-
-			}
+			
+			stmt.executeUpdate("INSERT INTO Allotment (OfficeID,EmpID)" + "VALUES('" + oid + "','" + Empid + "');");
+			con.commit();
+			return true;
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -876,16 +867,13 @@ public class DAL {
 
 	public static boolean deleteAllotmentDB(String empid) {
 		try {
+			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			String allotment = "";
 
-			ResultSet rs = stmt.executeQuery("select* from Allotment where EmpID='" + empid + "'");
-			while (rs.next())
-				allotment = rs.getString(1);
-			if (allotment != "") {
-				stmt.executeUpdate("delete from Allotment where EmpID='" + empid + "'");
-				return true;
-			}
+			stmt.executeUpdate("delete from Allotment where EmpID='" + empid + "'");
+			con.commit();
+			
+			return true;
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -895,16 +883,12 @@ public class DAL {
 
 	public static boolean updateAllotmentDB(String oid, String eid) {
 		try {
+			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			String allotment = "";
 
-			ResultSet rs = stmt.executeQuery("select* from Allotment where OfficeID='" + oid + "'");
-			while (rs.next())
-				allotment = rs.getString(1);
-			if (allotment == "") {
-				stmt.executeUpdate("UPDATE Allotment SET OfficeID='" + oid + "' where EmpID='" + eid + "'");
-				return true;
-			}
+			stmt.executeUpdate("UPDATE Allotment SET OfficeID='" + oid + "' where EmpID='" + eid + "'");
+			con.commit();
+			return true;
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -914,22 +898,13 @@ public class DAL {
 
 	public static boolean addSchoolDB(String sid, String name) {
 		try {
+			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			String sch = "";
-			String temp = "";
 
-			ResultSet rs = stmt.executeQuery("select* from School where SchoolID='" + sid + "'");
-			while (rs.next())
-				sch = rs.getString(1);
-
-			rs = stmt.executeQuery("select* from School where Name='" + name + "'");
-			while (rs.next())
-				temp = rs.getString(1);
-
-			if (sch == "" && temp == "") {
 				stmt.executeUpdate("INSERT INTO School (SchoolID,Name)" + "VALUES('" + sid + "','" + name + "');");
+				con.commit();
 				return true;
-			}
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -939,6 +914,7 @@ public class DAL {
 
 	public static boolean updateSchoolDB(String sid, String name) {
 		try {
+			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
 			String sch = "";
 
@@ -948,6 +924,7 @@ public class DAL {
 			if (sch != "") {
 				stmt.executeUpdate("UPDATE School SET Name = '" + name + "' WHERE SchoolID='" + sid + "'");
 
+				con.commit();
 				return true;
 			}
 
@@ -957,14 +934,15 @@ public class DAL {
 		return false;
 	}
 
-	public static boolean markAttendanceDB(int sid, String rollno, Date d, LAttendance a) {
+	public static boolean markAttendanceDB( String rollno, Date d, LAttendance a) {
 		try {
 
 			Statement stmt = DBAccess.getStatement();
+			Connection conn = DBAccess.getConnection();
 
-			stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)" + "VALUES('" + rollno + "','" + d
-					+ "','" + sid + "','" + a + "');");
-
+		
+			stmt.executeUpdate("UPDATE Attendance SET Status = '" + a.toString() + "' WHERE RollNo = '" + rollno + "'  AND Day = '" +d + "'");
+			conn.commit();
 			return true;
 
 		} catch (Exception e) {
@@ -976,12 +954,14 @@ public class DAL {
 
 	public static boolean addAttendanceDB(LAttendance atd, String rollno, int key, Date d) {
 		try {
+			Connection conn = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
 
 			stmt.executeUpdate("INSERT INTO Attendance (RollNo,Day,SectionKey,Status)" + "VALUES('" + rollno + "','" + d
 					+ "','" + key + "','" + atd + "');");
 
 			DBAccess.getStatement();
+			conn.commit();
 			return true;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -992,13 +972,14 @@ public class DAL {
 	public static ArrayList<String> returnCourse(String code) {
 		ArrayList<String> codes = new ArrayList<String>();
 		try {
-
+			Connection conn = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
 			ResultSet rs = stmt.executeQuery("select * from CoursePrerequisites where CourseCode='" + code + "';");
 
 			while (rs.next()) {
 				codes.add(rs.getString(2));
 			}
+			conn.commit();
 			return codes;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -1007,12 +988,12 @@ public class DAL {
 
 	}
 
-	public boolean addPay(Pay p) {
+	 public boolean addPay(Pay p) {
 		boolean check = true;
 		Statement stmnt = DBAccess.getStatement();
 		try {
-			stmnt.executeUpdate("INSERT INTO Pay VALUES (" + p.getAmount() + ", " + "'" + p.getDatePaid() + "', "
-					+ p.getStaffMember().getEmpID() + ")");
+			stmnt.executeUpdate("INSERT INTO Pay VALUES (" + p.getAmount() + ", " + "'" + p.getDatePaid() + "', '"
+					+ p.getStaffMember().getEmpID() + "')");
 			DBAccess.getConnection().commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1021,19 +1002,25 @@ public class DAL {
 		return check;
 	}
 
-	public boolean updateFeeDate(Fee f) {
-		boolean check = true;
-		Statement stmnt = DBAccess.getStatement();
-		try {
-			stmnt.executeUpdate("UPDATE Fee SET DatePaid = '" + f.getDatePaid() + "' WHERE RollNo = '"
-					+ f.getStudent().getRollNo() + "' AND Session = '" + f.getSemester().getSession() + "'");
-			DBAccess.getConnection().commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			check = false;
+	 public boolean updateFeeDate(Fee f) {
+			boolean check = true;
+			Statement stmnt = DBAccess.getStatement();
+			try {
+				if(f.getDatePaid()!=null) {
+					stmnt.executeUpdate("UPDATE Fee SET DatePaid = '" + f.getDatePaid() + "' WHERE RollNo = '"
+							+ f.getStudent().getRollNo() + "' AND Session = '" + f.getSemester().getSession() + "'");
+				}
+				else {
+					stmnt.executeUpdate("UPDATE Fee SET DatePaid = null WHERE RollNo = '"
+							+ f.getStudent().getRollNo() + "' AND Session = '" + f.getSemester().getSession() + "'");
+				}
+				DBAccess.getConnection().commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				check = false;
+			}
+			return check;
 		}
-		return check;
-	}
 
 	public boolean addOffice(Office o) {
 		boolean check = true;

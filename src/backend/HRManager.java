@@ -21,7 +21,7 @@ public class HRManager extends Staff {
 	}
 
 	// add allotment functionality
-	boolean addAllotment(String oid, String eid) {
+	public boolean addAllotment(String oid, String eid) {
 		AcademicInstitution k = Session.getInst();
 		HRDepartment d = Session.getHrDept();
 		Staff s = k.getStaff(eid);
@@ -42,7 +42,7 @@ public class HRManager extends Staff {
 
 	// update allotment functionality
 
-	boolean updateAllotment(String eid, String oid) {
+	public boolean updateAllotment(String eid, String oid) {
 		AcademicInstitution k = Session.getInst();
 		HRDepartment d = Session.getHrDept();
 		Staff s = k.getStaff(eid);
@@ -60,7 +60,7 @@ public class HRManager extends Staff {
 	}
 
 	// remove Allotment functionality
-	boolean deleteAllotment(String eid) {
+	public boolean deleteAllotment(String eid) {
 		AcademicInstitution k = Session.getInst();
 		HRDepartment d = Session.getHrDept();
 		Staff s = k.getStaff(eid);
@@ -157,11 +157,12 @@ public class HRManager extends Staff {
 				if (a.getOffices().get(i).getID().equals(a.getAllotments().get(j).getAllotedOffice().getID())) {
 					check = true;
 				}
-				if (!check) {
-					abc.add(a.getOffices().get(i));
-				}
-				check = false;
+
 			}
+			if (!check) {
+				abc.add(a.getOffices().get(i));
+			}
+			check = false;
 
 		}
 		if (abc.size() == 0) {
@@ -182,7 +183,7 @@ public class HRManager extends Staff {
 		return false;
 	}
 
-	protected boolean hireEmployee(String dname, String name, String password, Date DOB, String phoneNo,
+	public boolean hireEmployee(String dname, String name, String password, Date DOB, String phoneNo,
 			String email, String CNIC, char gender, String emergencyContact, String address, String empID,
 			Date dateHired) {
 		int index = 0;
@@ -199,6 +200,7 @@ public class HRManager extends Staff {
 					Staff temp = new AcademicManager(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
 							empID, dateHired);
 					Session.getAcademicDept().addStaff(temp);
+					Session.getInst().getUsers().add(temp);
 					// SQL CON/////
 					DAL.addStaff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID,
 							dateHired);
@@ -213,6 +215,7 @@ public class HRManager extends Staff {
 					Staff temp = new FinanceManager(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
 							empID, dateHired);
 					Session.getAccountsDept().addStaff(temp);
+					Session.getInst().getUsers().add(temp);
 					// SQL CON/////
 					DAL.addStaff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID,
 							dateHired);
@@ -228,6 +231,7 @@ public class HRManager extends Staff {
 					Staff temp = new HRManager(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
 							empID, dateHired);
 					Session.getHrDept().addStaff(temp);
+					Session.getInst().getUsers().add(temp);
 					// SQL CON/////
 					DAL.addStaff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID,
 							dateHired);
@@ -240,8 +244,7 @@ public class HRManager extends Staff {
 		return false;
 
 	}
-
-	protected boolean fireEmployee(String empID) {
+	public boolean fireEmployee(String empID) {
 		int HRindex = Session.getHrDept().ifStaffExistsByIndex(empID);
 		int Acdindex = Session.getAcademicDept().ifStaffExistsByIndex(empID);
 		int Accindex = Session.getAccountsDept().ifStaffExistsByIndex(empID);
@@ -274,7 +277,7 @@ public class HRManager extends Staff {
 		return false;
 	}
 
-	protected boolean updateStaff(String n_name, /* String n_password, */Date n_DOB, String n_phoneNo, String n_email,
+	public boolean updateStaff(String n_name, /* String n_password, */Date n_DOB, String n_phoneNo, String n_email,
 			String n_CNIC, char n_gender, String n_emergencyContact, String n_address, String empID, Date n_dateHired) {
 
 		int HRindex = Session.getHrDept().ifStaffExistsByIndex(empID);

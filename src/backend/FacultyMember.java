@@ -53,8 +53,7 @@ public class FacultyMember extends Staff {
 		this.degrees = degrees;
 		this.position = position;
 
-		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
-				degrees, position);
+		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,	degrees, position);
 
 		return true;
 	}
@@ -65,16 +64,21 @@ public class FacultyMember extends Staff {
 
 	// mark attendance functionality
 	public boolean markAttendance(String rollno, LAttendance atd, Date day, CourseSection cs) {
-		Semester sem = Session.getSem();
-		School sch = Session.getSchl();
-		Student s = sch.getStudent(rollno);
-
-		int key = DAL.getSectionKey(cs.getSectionID(), cs.getCourse().getCourseCode(), sem.getSession());
-		Attendance at = new Attendance(atd, day, s);
-
-		boolean check = cs.addAttendance(at);
-		if (check) {
-			check = DAL.markAttendanceDB(key, rollno, day, atd);
+		boolean check=false;
+		ArrayList<Attendance> atn=cs.getAttendance(day);
+		if(atn!=null)
+		{
+			for(int i=0;i<cs.getAttendance(day).size();i++)
+			{
+				if(atn.get(i).getStudent().getRollNo().equals(rollno))
+				{
+					atn.get(i).setStatus(atd);
+				}
+				
+			}
+		
+			check = DAL.markAttendanceDB( rollno, day, atd);
+		
 		}
 		return check;
 	}

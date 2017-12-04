@@ -179,7 +179,7 @@ public class AcademicInstitution {
 		boolean check = true;
 		for (int i = 0; i < (this.schools.size()); i++) {
 			if (this.schools.get(i).getId().equals(id) || this.schools.get(i).getName().equals(n)) {
-				check = false;
+				return false;
 			}
 		}
 		check = DAL.updateSchoolDB(id, n);
@@ -268,6 +268,20 @@ public class AcademicInstitution {
 			}
 			return abc;
 		}
+		
+		public ArrayList<Staff> getManagerList() {
+			ArrayList<Staff> abc = new ArrayList<Staff>();
+			for (User u : users) {
+				if ((u instanceof AcademicManager || u instanceof HRManager|| u instanceof FinanceManager))
+					abc.add((Staff) u);
+			}
+			if (abc.size() == 0) {
+				return null;
+			}
+			return abc;
+		}		
+		
+	
 		//academicInstitution helper
 		public void addSem(Semester newSem) {
 			this.semesters.add(newSem);
