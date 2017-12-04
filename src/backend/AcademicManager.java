@@ -535,13 +535,13 @@ public class AcademicManager extends Staff {
 
 			if (found == false) {
 				index = Session.getInst().getSchool(schoolid).ifFacultyExistsByIndex(EmpID);
-				if (index != -1) {
+				if (index == -1) {
 					Staff stf = new Staff(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,
 							EmpID, dateHired);
 					FacultyMember temp = new FacultyMember(name, password, DOB, phoneNo, email, CNIC, gender,
 							emergencyContact, address, EmpID, dateHired, degrees, position);
 					//// SQL CONN/////////////////
-					DAL.addFaculty(Session.getSchl(), name, password, DOB, phoneNo, email, CNIC, gender,
+					DAL.addFaculty(Session.getInst().getSchool(schoolid), name, password, DOB, phoneNo, email, CNIC, gender,
 							emergencyContact, address, EmpID, dateHired, degrees, position);
 
 					Session.getInst().getSchool(schoolid).addFacultyMember(temp);

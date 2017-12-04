@@ -121,11 +121,15 @@ public class CourseSection {
 	}
 
 	public void removeStudentAttendance(Student student) {
+		ArrayList<Attendance> toRemove = new ArrayList<>();
+		
 		for (Attendance attd : studentAttendances) {
 			if (attd.getStudent().getRollNo().equals(student.getRollNo())) {
-				studentAttendances.remove(attd);
+				toRemove.add(attd);
 			}
 		}
+		
+		studentAttendances.remove(toRemove);
 	}
 
 	public void setFaculty(FacultyMember f) {

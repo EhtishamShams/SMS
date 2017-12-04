@@ -562,7 +562,7 @@ public class FMFrame extends JFrame {
 		separator_1.setBounds(70, 50, 61, 2);
 		home.add(separator_1);
 
-		viewDetails(new User("A", "B", new Date(1, 2, 3), "C", "D", "E", 'M', "F", "G"));
+		viewDetails(Session.getUser());
 
 		JPanel topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 953, 152);
