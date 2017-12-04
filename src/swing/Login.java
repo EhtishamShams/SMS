@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import backend.Session;
 import backend.UType;
+import backend.User;
 import dal.DAL;
 import dal.DBAccess;
 
@@ -45,6 +46,8 @@ public class Login extends JFrame {
 					DBAccess.createConnection();
 					Session.setDal(new DAL());
 					Session.initialize();
+					for(User U:Session.getInst().getUsers())
+						System.out.println(U.getName());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

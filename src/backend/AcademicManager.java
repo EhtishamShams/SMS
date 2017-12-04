@@ -199,7 +199,7 @@ public class AcademicManager extends Staff {
 			CourseSection oldCs = std.getRegisteredCourseSection(c, sem);
 			CourseSection newCs = sch.getCourseSection(c, newID, sem);
 
-			if (oldCs != null && newCs != null)
+			if (oldCs != null && newCs != null && oldCs.getSectionID()!=newCs.getSectionID())
 				return sch.updateStudentCourseRegistration(std, oldCs, newCs, sem);
 			else
 				return false;

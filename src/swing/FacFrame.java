@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.JSeparator;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import java.awt.Container;
@@ -35,6 +37,9 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FacFrame extends JFrame {
 	FacFrame frame;
@@ -42,14 +47,27 @@ public class FacFrame extends JFrame {
 	private ArrayList<Container> containers;
 	private JPanel home;
 	private JPanel manageAttendance;
-	private JPanel updateAttendance;
 	private JPanel addAttendance;
 	private JPanel updateGrade;
-	ArrayList<CourseSection> cs;
-	CourseSection c;
-	private JComboBox comboBox_3;
-
-
+	private JScrollPane updateAttendance;
+	private ArrayList<CourseSection> cs;
+	private CourseSection c;
+	private ArrayList<CourseSection> facultyCurrSemCrsSecs = null;
+	private JComboBox comboBox_2 = new JComboBox();
+	private JComboBox comboBox = new JComboBox();
+	private JComboBox comboBox_3 = new JComboBox();
+	private JComboBox comboBox_5 = new JComboBox();
+	private JComboBox comboBox_4 = new JComboBox();
+	private JComboBox comboBox_6 = new JComboBox();
+	
+	private ArrayList<Date> attendancesDate = null;
+	private ArrayList<JComboBox> attenCombos = null;
+	private ArrayList<Attendance> attendances = new ArrayList<Attendance>();
+	private JButton updateBtn = null;
+	private ArrayList<JLabel> attenLbls = null;
+	private JTextField addDatefield = null;
+	
+	private ArrayList<Student> sectionStudents = null;
 	/**
 	 * Launch the application.
 	 */
@@ -112,105 +130,118 @@ public class FacFrame extends JFrame {
 		contentPane.setLayout(null);
 		containers = new ArrayList<Container>();
 		
-		updateAttendance = new JPanel();
-		updateAttendance.setLayout(null);
-		updateAttendance.setPreferredSize(new Dimension(704, 430));
-		updateAttendance.setForeground(Color.WHITE);
-		updateAttendance.setBackground(Color.BLACK);
-		updateAttendance.setBounds(249, 152, 704, 442);
-		contentPane.add(updateAttendance);
+								
+		home = new JPanel();
+		home.setBackground(Color.BLACK);
+		home.setBounds(249, 152, 704, 442);
+		contentPane.add(home);
+		home.setLayout(null);
 		
-		JLabel label_3 = new JLabel("Select Section");
-		label_3.setForeground(Color.WHITE);
-		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_3.setBounds(133, 84, 156, 35);
-		updateAttendance.add(label_3);
+		JLabel label = new JLabel("UserImage");
+		label.setIcon(new ImageIcon(StudentFrame.class.getResource("/images/user2.png")));
+		label.setBounds(54, 71, 99, 152);
+		home.add(label);
 		
-		JLabel label_15 = new JLabel("Select Date");
-		label_15.setForeground(Color.WHITE);
-		label_15.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_15.setBounds(133, 176, 149, 35);
-		updateAttendance.add(label_15);
+		JLabel label_2 = new JLabel("Profile");
+		label_2.setForeground(Color.WHITE);
+		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_2.setBounds(69, 25, 93, 16);
+		home.add(label_2);
 		
-		JSeparator separator_12 = new JSeparator();
-		separator_12.setBounds(133, 118, 139, 2);
-		updateAttendance.add(separator_12);
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(70, 50, 61, 2);
+		home.add(separator_2);
+		JLabel lblUserName = new JLabel(Session.getUser().getName());
+		lblUserName.setForeground(Color.WHITE);
+		lblUserName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblUserName.setBounds(70, 252, 331, 27);
+		home.add(lblUserName);
 		
-		JSeparator separator_13 = new JSeparator();
-		separator_13.setBounds(133, 209, 139, 2);
-		updateAttendance.add(separator_13);
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(71, 283, 61, 2);
+		home.add(separator_1_1);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.addItem("HAHA");
-		comboBox_2.addItem("@@");
-		comboBox_2.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				int sectionIndex = comboBox_2.getSelectedIndex();
-				System.out.println("HAHA");
-//				c = cs.get(sectionIndex);
-//				ArrayList<Date> dates = cs.getDatesOfAttendance();
-//				for (int i = 0; i < dates.size(); i++)
-//				{
-//					comboBox_3.addItem(dates.getDate());
-//				}
-			}
-		});
-		comboBox_2.setBounds(305, 93, 156, 26);
-		updateAttendance.add(comboBox_2);
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBounds(71, 323, 61, 2);
+		home.add(separator_2_1);
 		
-		comboBox_3 = new JComboBox();
-		comboBox_3.setBounds(305, 185, 156, 26);
-		updateAttendance.add(comboBox_3);
+		JLabel label_7_1 = new JLabel(Session.getUser().getPhoneNo());
+		label_7_1.setForeground(Color.WHITE);
+		label_7_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_7_1.setBounds(70, 292, 331, 27);
+		home.add(label_7_1);
 		
-		JLabel lblUpdateAttendance_1 = new JLabel("Update Attendance");
-		lblUpdateAttendance_1.setForeground(Color.WHITE);
-		lblUpdateAttendance_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblUpdateAttendance_1.setBounds(22, 13, 201, 35);
-		updateAttendance.add(lblUpdateAttendance_1);
+		JLabel lblEmail = new JLabel(Session.getUser().getEmail());
+		lblEmail.setForeground(Color.WHITE);
+		lblEmail.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEmail.setBounds(70, 334, 331, 27);
+		home.add(lblEmail);
 		
-		JSeparator separator_14 = new JSeparator();
-		separator_14.setBounds(22, 46, 201, 2);
-		updateAttendance.add(separator_14);
+		JSeparator separator_3_1 = new JSeparator();
+		separator_3_1.setBounds(71, 365, 61, 2);
+		home.add(separator_3_1);
 		
-		JButton btnShow = new JButton("Show");
-		btnShow.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String[] columnNames = {"Name",
-		                "Roll Number",
-		                "Status"};
-				
-				//ArrayList<Attendance> attn = getAttendancesAtDate(Date);
-				
-				//display all names, roll numbers and attendances in table
-				
-//				JTable table2 = new JTable();
-//				DefaultTableModel dtm = new DefaultTableModel(0, 0);
-//				dtm.setColumnIdentifiers(columnNames);
-//				table2.setModel(dtm);
-//				
-//				JScrollPane scrollPane_3 = new JScrollPane(table2);
-//				scrollPane_3.setForeground(Color.WHITE);
-//				scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-//				scrollPane_3.setBackground(Color.WHITE);
-//				scrollPane_3.setAlignmentX(0.0f);
-//				scrollPane_3.setBounds(22, yTable, 629, 98);
-//				updateAttendance.add(scrollPane_3);
-				
-				
-				
-//				for (int i = 0; i < attn.size(); i++)
-//				{
-//					String name = attn.getStudent.getName();
-//					String rollNo = attn.getStudent.getRollNo();
-//					String status = attn.getStatus();
-//					dtm.addRow(new Object[] {rollNo, name, status});
-//				}
-				
-			}
-		});
-		btnShow.setBounds(504, 184, 97, 25);
-		updateAttendance.add(btnShow);
+		JSeparator separator_4_1 = new JSeparator();
+		separator_4_1.setBounds(71, 405, 61, 2);
+		home.add(separator_4_1);
+		
+		JLabel lblHStreet = new JLabel("Address: " + Session.getUser().getAddress());
+		lblHStreet.setForeground(Color.WHITE);
+		lblHStreet.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblHStreet.setBounds(70, 374, 331, 27);
+		home.add(lblHStreet);
+		
+		JSeparator separator_5_1 = new JSeparator();
+		separator_5_1.setBounds(418, 405, 61, 2);
+		home.add(separator_5_1);
+		
+		JLabel lblGenderM = new JLabel("Gender: "+ Session.getUser().getGender());
+		lblGenderM.setForeground(Color.WHITE);
+		lblGenderM.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblGenderM.setBounds(417, 374, 175, 27);
+		home.add(lblGenderM);
+		
+		JLabel lblDob = new JLabel("DOB: " + Session.getUser().getDOB());
+		lblDob.setForeground(Color.WHITE);
+		lblDob.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblDob.setBounds(417, 334, 281, 27);
+		home.add(lblDob);
+		
+		JSeparator separator_6_1 = new JSeparator();
+		separator_6_1.setBounds(418, 365, 61, 2);
+		home.add(separator_6_1);
+		
+		JSeparator separator_7_1 = new JSeparator();
+		separator_7_1.setBounds(418, 323, 61, 2);
+		home.add(separator_7_1);
+		
+		JLabel lblCnic = new JLabel("CNIC: " + Session.getUser().getCNIC());
+		lblCnic.setForeground(Color.WHITE);
+		lblCnic.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblCnic.setBounds(417, 292, 281, 27);
+		home.add(lblCnic);
+		
+		JSeparator separator_8 = new JSeparator();
+		separator_8.setBounds(418, 283, 61, 2);
+		home.add(separator_8);
+		
+		JLabel lblEmergency = new JLabel("Emergency Num: " + Session.getUser().getEmergencyContact());
+		lblEmergency.setForeground(Color.WHITE);
+		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEmergency.setBounds(417, 252, 281, 27);
+		home.add(lblEmergency);
+		
+		JLabel lblDateHired = new JLabel("Date Hired: " + ((FacultyMember)Session.getUser()).getDateHired().toString());
+		lblDateHired.setForeground(Color.WHITE);
+		lblDateHired.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblDateHired.setBounds(70, 405, 331, 27);
+		home.add(lblDateHired);
+		
+		JLabel lblPosition = new JLabel("Position: " + ((FacultyMember)Session.getUser()).getPosition());
+		lblPosition.setForeground(Color.WHITE);
+		lblPosition.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblPosition.setBounds(417, 405, 281, 27);
+		home.add(lblPosition);
 		
 		updateGrade = new JPanel();
 		updateGrade.setLayout(null);
@@ -229,8 +260,23 @@ public class FacFrame extends JFrame {
 		JSeparator separator_15 = new JSeparator();
 		separator_15.setBounds(133, 118, 139, 2);
 		updateGrade.add(separator_15);
+		comboBox_4.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (comboBox_4.getSelectedIndex() != -1) {
+					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
+					sectionStudents = Session.getSchl().getStudentFromStudents(crsSec.getSectionID(),crsSec.getCourse().getCourseCode(),Session.getSem().getSession());
+					comboBox_5.removeAllItems();
+					comboBox_6.removeAllItems();
+					if (sectionStudents != null && sectionStudents.size() > 0) {
+						for (Student s : sectionStudents) {
+							comboBox_5.addItem(s.getRollNo() + " " + s.getName());
+						}
+					}
+				}
+			}
+		});
 		
-		JComboBox comboBox_4 = new JComboBox();
+		
 		comboBox_4.setBounds(305, 93, 156, 26);
 		updateGrade.add(comboBox_4);
 		
@@ -245,6 +291,14 @@ public class FacFrame extends JFrame {
 		updateGrade.add(separator_17);
 		
 		JButton button = new JButton("Update");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox_4.getSelectedIndex() != -1 && comboBox_5.getSelectedIndex() != -1 && comboBox_6.getSelectedIndex() != -1) {
+					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
+					((FacultyMember)Session.getUser()).updateGrade(sectionStudents.get(comboBox_5.getSelectedIndex()).getRollNo(), comboBox_6.getSelectedItem().toString(), crsSec);
+				}
+			}
+		});
 		button.setBounds(267, 332, 97, 25);
 		updateGrade.add(button);
 		
@@ -257,8 +311,22 @@ public class FacFrame extends JFrame {
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setBounds(133, 200, 139, 2);
 		updateGrade.add(separator_3);
+		comboBox_5.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				comboBox_6.removeAllItems();
+				LGrade[] grade_types = LGrade.values();
+				for (LGrade gr : grade_types)
+					comboBox_6.addItem(gr.toString());
+				if(comboBox_5.getSelectedIndex() != -1 && comboBox_4.getSelectedIndex() != -1) {
+					Grade g = sectionStudents.get(comboBox_5.getSelectedIndex()).getCourseGrade(facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex()));
+					if (g != null) {
+						comboBox_6.setSelectedItem(g.getGrade().toString());
+					}
+				}
+			}
+		});
 		
-		JComboBox comboBox_5 = new JComboBox();
+		
 		comboBox_5.setBounds(305, 175, 156, 26);
 		updateGrade.add(comboBox_5);
 		
@@ -272,7 +340,7 @@ public class FacFrame extends JFrame {
 		separator_4.setBounds(133, 284, 139, 2);
 		updateGrade.add(separator_4);
 		
-		JComboBox comboBox_6 = new JComboBox();
+		
 		comboBox_6.setBounds(305, 259, 156, 26);
 		updateGrade.add(comboBox_6);
 		
@@ -304,13 +372,16 @@ public class FacFrame extends JFrame {
 		separator_1.setBounds(133, 252, 139, 2);
 		addAttendance.add(separator_1);
 		
-		JComboBox comboBox = new JComboBox();
+		
 		comboBox.setBounds(305, 136, 156, 26);
 		addAttendance.add(comboBox);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(305, 228, 156, 26);
-		addAttendance.add(comboBox_1);
+//		JComboBox comboBox_1 = new JComboBox();
+//		comboBox_1.setBounds(305, 228, 156, 26);
+//		addAttendance.add(comboBox_1);
+		addDatefield = new JTextField("");
+		addDatefield.setBounds(305, 228, 156, 26);
+		addAttendance.add(addDatefield);
 		
 		JLabel lblAddAttendance_1 = new JLabel("Add Attendance");
 		lblAddAttendance_1.setForeground(Color.WHITE);
@@ -323,32 +394,174 @@ public class FacFrame extends JFrame {
 		addAttendance.add(separator_11);
 		
 		JButton btnNewButton = new JButton("Add");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedIndex() != -1 && !addDatefield.getText().equals("")) {
+					try {
+						((FacultyMember)Session.getUser()).addAttendance(facultyCurrSemCrsSecs.get(comboBox.getSelectedIndex()), Date.valueOf(addDatefield.getText()));
+						showPanel("Manage Attendance");
+					} catch (IllegalArgumentException ex) {
+						JOptionPane.showMessageDialog(frame,"Invalid input! Make sure the date is in '2017-04-09' format!","Alert",JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
 		btnNewButton.setBounds(268, 306, 97, 25);
 		addAttendance.add(btnNewButton);
 		
-								
-		home = new JPanel();
-		home.setBackground(Color.BLACK);
-		home.setBounds(249, 152, 704, 442);
-		contentPane.add(home);
-		home.setLayout(null);
+		updateAttendance = new JScrollPane();
+		updateAttendance.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		updateAttendance.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		updateAttendance.setBounds(249, 152, 704, 442);
+		contentPane.add(updateAttendance);
 		
-		JLabel label = new JLabel("UserImage");
-		label.setIcon(new ImageIcon(StudentFrame.class.getResource("/images/user2.png")));
-		label.setBounds(54, 71, 99, 152);
-		home.add(label);
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setPreferredSize(new Dimension(704, 4030));
+		panel.setForeground(Color.WHITE);
+		panel.setBackground(Color.BLACK);
+		updateAttendance.setViewportView(panel);
 		
-		JLabel label_2 = new JLabel("Profile");
-		label_2.setForeground(Color.WHITE);
-		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_2.setBounds(69, 25, 93, 16);
-		home.add(label_2);
+		JLabel label_3 = new JLabel("Select Section");
+		label_3.setForeground(Color.WHITE);
+		label_3.setFont(new Font("Dialog", Font.PLAIN, 20));
+		label_3.setBounds(133, 84, 156, 35);
+		panel.add(label_3);
 		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(70, 50, 61, 2);
-		home.add(separator_2);
-
-		viewDetails(new User("A", "B", new Date(1,2,3), "C", "D", "E", 'M', "F", "G"));
+		JLabel label_7 = new JLabel("Select Date");
+		label_7.setForeground(Color.WHITE);
+		label_7.setFont(new Font("Dialog", Font.PLAIN, 20));
+		label_7.setBounds(133, 176, 149, 35);
+		panel.add(label_7);
+		
+		JSeparator separator_5 = new JSeparator();
+		separator_5.setBounds(133, 118, 139, 2);
+		panel.add(separator_5);
+		
+		JSeparator separator_6 = new JSeparator();
+		separator_6.setBounds(133, 209, 139, 2);
+		panel.add(separator_6);
+		comboBox_2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (updateBtn != null) {
+					panel.remove(updateBtn);
+					updateBtn = null;
+				}
+				if (attenCombos != null) {
+					for (JComboBox jb : attenCombos)
+						panel.remove(jb);
+					attenCombos = null;
+				}
+				if (attenLbls != null) {
+					for (JLabel lb : attenLbls)
+						panel.remove(lb);
+					attenLbls = null;
+				}
+				panel.repaint();
+				panel.setVisible(false);
+				panel.setVisible(true);
+				
+				attendancesDate = null;
+				if (comboBox_2.getSelectedIndex() != -1)
+					attendancesDate = ((FacultyMember)Session.getUser()).extractDate(facultyCurrSemCrsSecs.get(comboBox_2.getSelectedIndex()));
+				comboBox_3.removeAllItems();
+				if (attendancesDate != null) {
+					for (Date d : attendancesDate) {
+						comboBox_3.addItem(d.toString());
+					}
+				}
+			}
+		});
+		
+		
+		comboBox_2.setBounds(305, 93, 156, 26);
+		panel.add(comboBox_2);
+		
+		comboBox_3.setBounds(305, 185, 156, 26);
+		panel.add(comboBox_3);
+		
+		JLabel label_8 = new JLabel("Update Attendance");
+		label_8.setForeground(Color.WHITE);
+		label_8.setFont(new Font("Dialog", Font.PLAIN, 20));
+		label_8.setBounds(22, 13, 201, 35);
+		panel.add(label_8);
+		
+		JSeparator separator_7 = new JSeparator();
+		separator_7.setBounds(22, 46, 201, 2);
+		panel.add(separator_7);
+		
+		JButton button_1 = new JButton("Show");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (updateBtn != null) {
+					panel.remove(updateBtn);
+					updateBtn = null;
+				}
+				if (attenCombos != null) {
+					for (JComboBox jb : attenCombos)
+						panel.remove(jb);
+					attenCombos = null;
+				}
+				if (attenLbls != null) {
+					for (JLabel lb : attenLbls)
+						panel.remove(lb);
+					attenLbls = null;
+				}
+				panel.repaint();
+				panel.setVisible(false);
+				panel.setVisible(true);
+				attendances = null;
+				if (comboBox_2.getSelectedIndex() != -1 && comboBox_3.getSelectedIndex() != -1)
+					attendances = ((FacultyMember)Session.getUser()).getAttendanceByDate(facultyCurrSemCrsSecs.get(comboBox_2.getSelectedIndex()), attendancesDate.get(comboBox_3.getSelectedIndex()));
+				if (attendances != null) {
+					attenCombos = new ArrayList<JComboBox>();
+					attenLbls = new ArrayList<JLabel>();
+					updateBtn = new JButton("Update");
+					updateBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							for (int i = 0; i < attenCombos.size(); i++) {
+								Attendance atd = attendances.get(i);
+								((FacultyMember) Session.getUser()).markAttendance(atd.getStudent().getRollNo(),
+										LAttendance.valueOf(attenCombos.get(i).getSelectedItem().toString()),
+										attendancesDate.get(comboBox_3.getSelectedIndex()),
+										facultyCurrSemCrsSecs.get(comboBox_2.getSelectedIndex()));
+								showPanel("Manage Attendance");
+							}
+						}
+					});
+					panel.add(updateBtn);
+					int y = 300;
+					updateBtn.setBounds(305, 250, 97, 25);
+					for (Attendance a : attendances) {
+						JLabel rollNumLbl = new JLabel(a.getStudent().getRollNo());
+						rollNumLbl.setBounds(50, y, 201, 35);
+						rollNumLbl.setForeground(Color.WHITE);
+						panel.add(rollNumLbl);
+						attenLbls.add(rollNumLbl);
+						JLabel stuLbl = new JLabel(a.getStudent().getName());
+						stuLbl.setBounds(180, y, 201, 35);
+						stuLbl.setForeground(Color.WHITE);
+						panel.add(stuLbl);
+						attenLbls.add(stuLbl);
+						JComboBox jbox = new JComboBox();
+						jbox.setBounds(500, y, 100, 26);
+						jbox.addItem("P");
+						jbox.addItem("A");
+						jbox.addItem("L");
+						jbox.setSelectedItem(a.getStatus().toString());
+						jbox.setVisible(true);
+						panel.add(jbox);
+						attenCombos.add(jbox);
+						y += 50;
+					}
+					panel.repaint();
+					panel.setVisible(false);
+					panel.setVisible(true);
+				}
+			}
+		});
+		button_1.setBounds(504, 184, 97, 25);
+		panel.add(button_1);
 		
 				
 		
@@ -366,12 +579,16 @@ public class FacFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 				showPanel(evlbl.getText());
-				
-//				cs = Session.getUser().getCourseSections();
-//				for (int i = 0; i < cs.size(); i++)
-//				{
-//					comboBox.addItem(cs.get(i).getCourse().getName() + cs.get(i).getSectionID() );
-//				}
+
+				addDatefield.setText("");
+				facultyCurrSemCrsSecs = null;
+				facultyCurrSemCrsSecs = ((FacultyMember) Session.getUser()).getCurrentSemesterCourseSections();
+				comboBox.removeAllItems();
+				if (facultyCurrSemCrsSecs != null) {
+					for (CourseSection c : facultyCurrSemCrsSecs) {
+						comboBox.addItem(c.getCourse().getCourseCode() + " " + c.getSectionID() + " " + c.getCourse().getCourseName());
+					}
+				}
 			}
 		});
 		lblAddAttendance.setForeground(Color.WHITE);
@@ -379,21 +596,39 @@ public class FacFrame extends JFrame {
 		lblAddAttendance.setBounds(133, 90, 182, 35);
 		manageAttendance.add(lblAddAttendance);
 		
+		
+		
 		JLabel lblUpdateAttendance = new JLabel("Update Attendance");
 		lblUpdateAttendance.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 //				ArrayList<CourseSection> Session.getUser().getCourseSections();
-				
+				if (updateBtn != null) {
+					panel.remove(updateBtn);
+					updateBtn = null;
+				}
+				if (attenCombos != null) {
+					for (JComboBox jb : attenCombos)
+						panel.remove(jb);
+					attenCombos = null;
+				}
+				if (attenLbls != null) {
+					for (JLabel lb : attenLbls)
+						panel.remove(lb);
+					attenLbls = null;
+				}
 				showPanel(evlbl.getText());
 				
-				//ArrayList<CourseSection> cs = Session.getUser().getCourseSections();
-//				for (int i = 0; i < cs.size(); i++)
-//				{
-//					comboBox.addItem(cs.getCourse().getName());
-//				}
-				
+				facultyCurrSemCrsSecs = null;
+				facultyCurrSemCrsSecs = ((FacultyMember) Session.getUser()).getCurrentSemesterCourseSections();
+				comboBox_2.removeAllItems();
+				comboBox_3.removeAllItems();
+				if (facultyCurrSemCrsSecs != null) {
+					for (CourseSection c : facultyCurrSemCrsSecs) {
+						comboBox_2.addItem(c.getCourse().getCourseCode() + " " + c.getSectionID() + " " + c.getCourse().getCourseName());
+					}
+				}
 				
 			}
 		});
@@ -401,6 +636,8 @@ public class FacFrame extends JFrame {
 		lblUpdateAttendance.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblUpdateAttendance.setBounds(133, 182, 217, 35);
 		manageAttendance.add(lblUpdateAttendance);
+
+		viewDetails(new User("A", "B", new Date(1,2,3), "C", "D", "E", 'M', "F", "G"));
 		
 		JPanel sidePanel = new JPanel();
 		sidePanel.setBounds(0, 152, 250, 442);
@@ -415,6 +652,16 @@ public class FacFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 				showPanel(evlbl.getText());
+				facultyCurrSemCrsSecs = null;
+				facultyCurrSemCrsSecs = ((FacultyMember) Session.getUser()).getCurrentSemesterCourseSections();
+				comboBox_4.removeAllItems();
+				comboBox_5.removeAllItems();
+				comboBox_6.removeAllItems();
+				if (facultyCurrSemCrsSecs != null) {
+					for (CourseSection c : facultyCurrSemCrsSecs) {
+						comboBox_4.addItem(c.getCourse().getCourseCode() + " " + c.getSectionID() + " " + c.getCourse().getCourseName());
+					}
+				}
 
 //				cs = Session.getUser().getCourseSections();
 //				for (int i = 0; i < cs.size(); i++)
@@ -522,85 +769,6 @@ public class FacFrame extends JFrame {
 	
 	public void viewDetails(User user)
 	{
-		JLabel lblEhtishamulhaq = new JLabel(user.getName());
-		lblEhtishamulhaq.setForeground(Color.WHITE);
-		lblEhtishamulhaq.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblEhtishamulhaq.setBounds(70, 252, 175, 27);
-		home.add(lblEhtishamulhaq);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(71, 283, 61, 2);
-		home.add(separator_1);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(71, 323, 61, 2);
-		home.add(separator_2);
-		
-		JLabel label_7 = new JLabel(user.getPhoneNo());
-		label_7.setForeground(Color.WHITE);
-		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_7.setBounds(70, 292, 175, 27);
-		home.add(label_7);
-		
-		JLabel lblPrincessshamsgmailcom = new JLabel(user.getEmail());
-		lblPrincessshamsgmailcom.setForeground(Color.WHITE);
-		lblPrincessshamsgmailcom.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPrincessshamsgmailcom.setBounds(70, 334, 205, 27);
-		home.add(lblPrincessshamsgmailcom);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(71, 365, 61, 2);
-		home.add(separator_3);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(71, 405, 61, 2);
-		home.add(separator_4);
-		
-		JLabel lblHStreet = new JLabel(user.getAddress());
-		lblHStreet.setForeground(Color.WHITE);
-		lblHStreet.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblHStreet.setBounds(70, 374, 239, 27);
-		home.add(lblHStreet);
-		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(418, 405, 61, 2);
-		home.add(separator_5);
-		
-		JLabel lblGenderM = new JLabel("Gender: "+ user.getGender());
-		lblGenderM.setForeground(Color.WHITE);
-		lblGenderM.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblGenderM.setBounds(417, 374, 175, 27);
-		home.add(lblGenderM);
-		
-		JLabel lblDob = new JLabel("DOB: " + user.getDOB());
-		lblDob.setForeground(Color.WHITE);
-		lblDob.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblDob.setBounds(417, 334, 250, 27);
-		home.add(lblDob);
-		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setBounds(418, 365, 61, 2);
-		home.add(separator_6);
-		
-		JSeparator separator_7 = new JSeparator();
-		separator_7.setBounds(418, 323, 61, 2);
-		home.add(separator_7);
-		
-		JLabel lblCnic = new JLabel("CNIC: " + user.getCNIC());
-		lblCnic.setForeground(Color.WHITE);
-		lblCnic.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCnic.setBounds(417, 292, 175, 27);
-		home.add(lblCnic);
-		
-		JSeparator separator_8 = new JSeparator();
-		separator_8.setBounds(418, 283, 61, 2);
-		home.add(separator_8);
-		
-		JLabel lblEmergency = new JLabel("Emergency: " + user.getEmergencyContact());
-		lblEmergency.setForeground(Color.WHITE);
-		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblEmergency.setBounds(417, 252, 192, 27);
-		home.add(lblEmergency);
 		//home.setVisible(false);
 		home.setVisible(true);
 	}

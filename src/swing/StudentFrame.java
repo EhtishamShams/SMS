@@ -83,7 +83,7 @@ public class StudentFrame extends JFrame {
 		{
 			containers.get(0).setVisible(true);
 		}
-		if (a.equals("Attendence"))
+		if (a.equals("Attendance"))
 		{
 			containers.get(1).setVisible(true);
 		}
@@ -109,6 +109,28 @@ public class StudentFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		containers = new ArrayList<Container>();
+						
+						transcript = new JScrollPane();
+						transcript.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+						transcript.setBounds(249, 152, 704, 443);
+						contentPane.add(transcript);
+						
+						panel_1 = new JPanel();
+						panel_1.setLayout(null);
+						panel_1.setPreferredSize(new Dimension(704, 2000));
+						
+						panel_1.setBackground(Color.BLACK);
+						transcript.setViewportView(panel_1);
+						
+						JSeparator separator_4 = new JSeparator();
+						separator_4.setBounds(264, 41, 121, 2);
+						panel_1.add(separator_4);
+						
+						JLabel label_8 = new JLabel("Transcript");
+						label_8.setForeground(Color.WHITE);
+						label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+						label_8.setBounds(264, 13, 147, 27);
+						panel_1.add(label_8);
 				
 						timetable = new JPanel();
 						timetable.setBackground(Color.BLACK);
@@ -153,28 +175,6 @@ public class StudentFrame extends JFrame {
 						timetable.add(btnOpen);
 						
 						timetable.setVisible(false);
-				
-				transcript = new JScrollPane();
-				transcript.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-				transcript.setBounds(249, 152, 704, 443);
-				contentPane.add(transcript);
-				
-				panel_1 = new JPanel();
-				panel_1.setLayout(null);
-				panel_1.setPreferredSize(new Dimension(704, 2000));
-				
-				panel_1.setBackground(Color.BLACK);
-				transcript.setViewportView(panel_1);
-				
-				JSeparator separator_4 = new JSeparator();
-				separator_4.setBounds(264, 41, 121, 2);
-				panel_1.add(separator_4);
-				
-				JLabel label_8 = new JLabel("Transcript");
-				label_8.setForeground(Color.WHITE);
-				label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-				label_8.setBounds(264, 13, 147, 27);
-				panel_1.add(label_8);
 		
 		
 		
@@ -224,7 +224,8 @@ public class StudentFrame extends JFrame {
 		separator_2.setBounds(70, 50, 61, 2);
 		home.add(separator_2);
 		
-		viewDetails(new User("A", "B", new Date(1,2,3), "C", "D", "E", 'M', "F", "G"));
+		Student std = (Student) Session.getUser();
+		viewDetails(std);
 		
 		JPanel sidePanel = new JPanel();
 		sidePanel.setBounds(0, 152, 250, 442);
@@ -241,6 +242,8 @@ public class StudentFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 				showPanel(evlbl.getText());
+				Student std = (Student) Session.getUser();
+				viewTranscript(std);
 			}
 		});
 		lblManageStudents.setForeground(Color.WHITE);
@@ -248,13 +251,15 @@ public class StudentFrame extends JFrame {
 		lblManageStudents.setBounds(57, 142, 182, 27);
 		sidePanel.add(lblManageStudents);
 		
-		JLabel lblManageCourses = new JLabel("Attendence");
+		JLabel lblManageCourses = new JLabel("Attendance");
 		lblManageCourses.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblManageCourses.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 				showPanel(evlbl.getText());
+				Student std = (Student) Session.getUser();
+				viewAttendance(std);
 			}
 		});
 		lblManageCourses.setForeground(Color.WHITE);
@@ -360,7 +365,7 @@ public class StudentFrame extends JFrame {
 		containers.add(transcript);
 	}
 	
-	public void viewDetails(User user)
+	public void viewDetails(Student user)
 	{
 		JLabel lblEhtishamulhaq = new JLabel(user.getName());
 		lblEhtishamulhaq.setForeground(Color.WHITE);
@@ -441,65 +446,52 @@ public class StudentFrame extends JFrame {
 		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		lblEmergency.setBounds(417, 252, 192, 27);
 		home.add(lblEmergency);
-		//home.setVisible(false);
 		home.setVisible(true);
-//		
-//		ArrayList<Attendance> attendances = new ArrayList<Attendance>();
-//		
-//		ArrayList<CourseSection> courseSections= new ArrayList<CourseSection>();
-//		
-//		Course course1 = new Course("EN", "English", 3, "description",
-//				null, courseSections);
-//		Course course2 = new Course("MT", "Math", 3, "description",
-//				null, courseSections);
-//		Course course3 = new Course("PH", "Physics", 3, "description",
-//				null, courseSections);
-//		
-//		Semester semester1 = new Semester("Fall 2017", new Date(3,4,5));
-//		Semester semester2 = new Semester("Fall 2018", new Date(3,4,5));
-//		Semester semester3 = new Semester("Fall 2018", new Date(3,4,6));
 		
-
-
-//		CourseSection section1 = new CourseSection('A', 10, 5, null, semester1,
-//				course1, attendances);
-//		
-//		CourseSection section2 = new CourseSection('B', 10, 5 , null, semester2,
-//				course2, attendances);
-//		CourseSection section3 = new CourseSection('C', 11, 5 , null, semester3,
-//				course3, attendances);
+		//student info
 		
-//		courseSections.add(section1);
-//		courseSections.add(section2);
-//		courseSections.add(section3);
-//		
-//		Student student = new Student("Name", "password", new Date(5,6,7), "phoneNo", "email", "CNIC", 'M',
-//				"emergency", "address", "rollNo", "fatherCNIC", "fatherName", 5,
-//				0, 0, courseSections, null);
-//		
-//		Attendance a1 = new Attendance(LAttendance.A, new Date(9,10,11), student );
-//		Attendance a2 = new Attendance(LAttendance.P, new Date(2,5,6), student );
-//		attendances.add(a1);
-//		attendances.add(a2);
-//		
-//		ArrayList<Grade> grades = new ArrayList<Grade>();
-//		Grade grade1 = new Grade(LGrade.A, section1);
-//		Grade grade2 = new Grade(LGrade.B, section2);
-//		Grade grade3 = new Grade(LGrade.C, section3);
-//		grades.add(grade1);
-//		grades.add(grade2);
-//		grades.add(grade3);
-//		
-//		Transcript transcript = new Transcript(grades);
+		JLabel lblRollNo = new JLabel("Roll No: " + user.getRollNo());
+		lblRollNo.setForeground(Color.WHITE);
+		lblRollNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblRollNo.setBounds(400, 40, 250, 27);
+		home.add(lblRollNo);
+	
 		
+		JSeparator separator_10 = new JSeparator();
+		separator_10.setBounds(400, 70, 61, 2);
+		home.add(separator_10);
 		
-//		viewTranscript(transcript);
-//		viewAttendance(student);
+		JLabel lblSchool = new JLabel(Session.getInst().getStudentSchool(user.getRollNo()).getName());
+		lblSchool.setForeground(Color.WHITE);
+		lblSchool.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblSchool.setBounds(400, 75, 250, 27);
+		home.add(lblSchool);
+		
+		JSeparator separator_11 = new JSeparator();
+		separator_11.setBounds(400, 110, 61, 2);
+		home.add(separator_11);
+		
+		JLabel lblFatherName = new JLabel("Father Name: " + user.getFatherName());
+		lblFatherName.setForeground(Color.WHITE);
+		lblFatherName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblFatherName.setBounds(400, 120, 250, 27);
+		home.add(lblFatherName);
+		
+		JSeparator separator_12 = new JSeparator();
+		separator_12.setBounds(400, 157, 61, 2);
+		home.add(separator_12);
+		
+		JLabel lblFatherCNIC = new JLabel("Father CNIC: " + user.getFatherCNIC());
+		lblFatherCNIC.setForeground(Color.WHITE);
+		lblFatherCNIC.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblFatherCNIC.setBounds(400, 170, 250, 27);
+		home.add(lblFatherCNIC);
+		
 	}
 	
 	public void viewAttendance(Student student)
 	{
-		ArrayList<CourseSection> sections = student.getStudiedCourses();
+		ArrayList<CourseSection> sections = student.checkSemesterRegistrations(Session.getSem());
 		ArrayList<Attendance> attendances;
 		String name;
 		char secID;
@@ -543,9 +535,9 @@ public class StudentFrame extends JFrame {
 		
 	}
 	
-	public void viewTranscript(Transcript transcript)
+	public void viewTranscript(Student std)
 	{
-		ArrayList<Grade> grades = transcript.getGrades();
+		ArrayList<Grade> grades = std.getTranscript().getGrades();
 		String[] columnNames = {"Code",
                 "Course Name",
                 "Crd Hrs", "Grade"};
@@ -556,19 +548,34 @@ public class StudentFrame extends JFrame {
 		
 		DefaultTableModel dtm = null;
 		String session;
-		String session2;
 		
 		ArrayList<String> sessions = new ArrayList<String>();
 		///////////////////
 		// loop for every semester //
 		
+		JLabel label_11 = new JLabel("CGPA: "+Double.toString(std.computeCGPA()));
+		label_11.setForeground(Color.WHITE);
+		label_11.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_11.setBounds(20, 60, 98, 27);
+		panel_1.add(label_11);
+		
+		JLabel label_12 = new JLabel("Credits Earned: "+Integer.toString(std.getCreditsEarned()));
+		label_12.setForeground(Color.WHITE);
+		label_12.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_12.setBounds(200, 60, 150, 27);
+		panel_1.add(label_12);
+		
+		JLabel label13 = new JLabel("Credits Attempted: "+Integer.toString(std.getCreditsAttempted()));
+		label13.setForeground(Color.WHITE);
+		label13.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label13.setBounds(400, 60, 200, 27);
+		panel_1.add(label13);
 		
 		for (int i = 0; i < grades.size(); i++)
 		{
-			//Date year = grades.get(0).getCourseSection().getSemester().getYear();
-			
 			
 			session = grades.get(i).getCourseSection().getSemester().getSession();
+			
 			if (!sessions.contains(session))
 			{
 				sessions.add(session);
@@ -592,29 +599,11 @@ public class StudentFrame extends JFrame {
 				label_9.setBounds(12, ySession, 103, 41);
 				panel_1.add(label_9);
 				
-				JLabel label_10 = new JLabel("GPA: 3.8");
+				JLabel label_10 = new JLabel("GPA: "+Double.toString((std.computeGPA(std.getTranscript().getSemesterGrades(session)))));
 				label_10.setForeground(Color.WHITE);
 				label_10.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 				label_10.setBounds(161, yDetails, 84, 27);
 				panel_1.add(label_10);
-				
-				JLabel label_11 = new JLabel("CGPA: 3.8");
-				label_11.setForeground(Color.WHITE);
-				label_11.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-				label_11.setBounds(257, yDetails, 98, 27);
-				panel_1.add(label_11);
-				
-				JLabel label_12 = new JLabel("Cr. Attempted : 19");
-				label_12.setForeground(Color.WHITE);
-				label_12.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-				label_12.setBounds(364, yDetails, 170, 27);
-				panel_1.add(label_12);
-				
-				JLabel label_13 = new JLabel("Cr. Earned: 19");
-				label_13.setForeground(Color.WHITE);
-				label_13.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-				label_13.setBounds(525, yDetails, 126, 27);
-				panel_1.add(label_13);
 				
 				yTable+= 170;
 				ySession += 170;

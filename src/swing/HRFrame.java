@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import backend.*;
+import dal.DAL;
 import javafx.scene.control.DatePicker;
 
 import java.awt.Color;
@@ -41,6 +42,8 @@ import java.sql.Date;
 import javax.swing.JLayeredPane;
 import java.awt.Dimension;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,7 +53,6 @@ public class HRFrame extends JFrame {
 	private HRFrame frame;
 	private JPanel contentPane;
 	private JTextField textField_1;
-	private JTextField textField_2;
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
@@ -59,8 +61,6 @@ public class HRFrame extends JFrame {
 	private JTextField textField_10;
 	private JTextField textField_11;
 	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
 	private JTextField textField_15;
 	private JTextField textField_16;
 	private JTextField textField_17;
@@ -98,6 +98,9 @@ public class HRFrame extends JFrame {
 	private ArrayList<Container> containers;
 	private JTextField textField;
 	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_13;
+	private JTextField textField_14;
 
 	/**
 	 * Launch the application.
@@ -167,6 +170,8 @@ public class HRFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public HRFrame() {
+		HRManager user = (HRManager)Session.getUser();
+		
 		frame = this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -212,16 +217,6 @@ public class HRFrame extends JFrame {
 		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		label_3.setBounds(33, 102, 54, 27);
 		panel_2.add(label_3);
-		
-		textField_2 = new JTextField();
-		textField_2.setText("Mustafa");
-		textField_2.setForeground(Color.WHITE);
-		textField_2.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_2.setColumns(10);
-		textField_2.setBorder(null);
-		textField_2.setBackground(new Color(36, 47, 65));
-		textField_2.setBounds(364, 106, 130, 20);
-		panel_2.add(textField_2);
 		
 		JLabel label_13 = new JLabel("Date of Birth");
 		label_13.setForeground(Color.WHITE);
@@ -353,33 +348,39 @@ public class HRFrame extends JFrame {
 		comboBox_3.addItem("Academic");
 		panel_2.add(comboBox_3);
 		
-		JLabel label_21 = new JLabel("Picture");
+		JLabel label_21 = new JLabel("Date Hired");
 		label_21.setForeground(Color.WHITE);
 		label_21.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		label_21.setBounds(33, 447, 61, 27);
 		panel_2.add(label_21);
 		
-		JButton button_4 = new JButton("Upload Photo");
-		button_4.setForeground(Color.BLACK);
-		button_4.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_4.setBackground(new Color(36, 47, 65));
-		button_4.setBounds(191, 447, 130, 23);
-		panel_2.add(button_4);
+		textField_14 = new JTextField();
+		textField_14.setForeground(Color.WHITE);
+		textField_14.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField_14.setColumns(10);
+		textField_14.setBorder(null);
+		textField_14.setBackground(new Color(36, 47, 65));
+		textField_14.setBounds(191, 447, 130, 23);
+		panel_2.add(textField_14);
 		
 		JButton button_5 = new JButton("Update");
 		button_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String empID = textField_11.getText();
-				String name = textField_9.getText() + " " + textField_2.getText();
-				//Date date = DatePicker.class..
-				String phone = textField_15.getText();
-				String email = textField_16.getText();
-				String cnic = textField_17.getText();
-				String emergency = textField_18.getText();
+				String name = textField_9.getText();
+				Date dateOfBirth = Date.valueOf(textField.getText());
+				String phone = textField_5.getText();
+				String email = textField_6.getText();
+				String cnic = textField_7.getText();
+				String emergency = textField_8.getText();
 				char gender = (char) comboBox_1.getSelectedItem();
-				String address = textField_20.getText();
+				String address = textField_10.getText();
 				String department = (String) comboBox_3.getSelectedItem();
+				Date dateHired = Date.valueOf(textField_14.getText());
+				
+				user.updateStaff(name, dateOfBirth, phone, email, cnic, gender, emergency, address, empID, dateHired);
+				
 			}
 		});
 		button_5.setForeground(Color.BLACK);
@@ -408,11 +409,167 @@ public class HRFrame extends JFrame {
 		button_6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//
-				//Session.academicInstitution.getStaff(textField_11.getText());
+				
+				Staff staff = Session.getInst().getStaff(textField_11.getText());
 				//Show if exists or not
+				
+				if(staff!=null)
+				{
+					textField_9.setText(staff.getName());
+					textField.setText(staff.getDOB().toString());
+					textField_5.setText(staff.getPhoneNo());
+					textField_6.setText(staff.getEmail());
+					textField_7.setText(staff.getCNIC());
+					textField_8.setText(staff.getEmergencyContact());
+					textField_10.setText(staff.getAddress());
+					textField_14.setText(staff.getDateHired().toString());
+				}
+				else
+					JOptionPane.showMessageDialog(frame,"Staff not found!","Alert",JOptionPane.WARNING_MESSAGE); 
 			}
 		});
+		
+		
+		updateAllotment = new JPanel();
+		updateAllotment.setBounds(249, 152, 704, 442);
+		contentPane.add(updateAllotment);
+		updateAllotment.setLayout(null);
+		updateAllotment.setOpaque(true);
+		updateAllotment.setBackground(Color.BLACK);
+		
+		JLabel lblUpdateAllotment_1 = new JLabel("Update Allotment");
+		lblUpdateAllotment_1.setForeground(Color.WHITE);
+		lblUpdateAllotment_1.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+		lblUpdateAllotment_1.setBounds(41, 23, 246, 27);
+		updateAllotment.add(lblUpdateAllotment_1);
+		
+		JSeparator separator_9 = new JSeparator();
+		separator_9.setBounds(41, 55, 225, 5);
+		updateAllotment.add(separator_9);
+		
+		JLabel label_8 = new JLabel("Staff:");
+		label_8.setForeground(Color.WHITE);
+		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_8.setBounds(387, 88, 42, 27);
+		updateAllotment.add(label_8);
+		
+		JSeparator separator_5 = new JSeparator();
+		separator_5.setBounds(387, 110, 42, 5);
+		updateAllotment.add(separator_5);
+		
+		JLabel label_9 = new JLabel("Office ID:");
+		label_9.setForeground(Color.WHITE);
+		label_9.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_9.setBounds(177, 88, 78, 27);
+		updateAllotment.add(label_9);
+		
+		JSeparator separator_7 = new JSeparator();
+		separator_7.setBounds(177, 110, 71, 5);
+		updateAllotment.add(separator_7);
+		
+		JScrollPane scrollPane_1 = new JScrollPane((Component) null);
+		scrollPane_1.setBounds(160, 126, 100, 288);
+		updateAllotment.add(scrollPane_1);
+		
+		JList list_1 = new JList(listModel2);
+		scrollPane_1.setViewportView(list_1);
+		
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//remove previous items
+				String empID = (String) list_2.getSelectedValue();
+				String officeID = (String) list_1.getSelectedValue();
+				
+				if(user.updateAllotment(empID,officeID))
+					JOptionPane.showMessageDialog(frame,"Allotment updated!","Alert",JOptionPane.OK_OPTION); 
+				else
+					JOptionPane.showMessageDialog(frame,"Could not update allotment!","Alert",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		btnUpdate.setBounds(532, 256, 89, 23);
+		updateAllotment.add(btnUpdate);
+		
+		JScrollPane scrollPane_2 = new JScrollPane((Component) null);
+		scrollPane_2.setBounds(359, 126, 100, 288);
+		updateAllotment.add(scrollPane_2);
+		
+		list_2 = new JList(listModel3);
+		scrollPane_2.setViewportView(list_2);
+		
+		addAllotments = new JScrollPane();
+		addAllotments.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		addAllotments.setBounds(249, 152, 704, 442);
+		contentPane.add(addAllotments);
+		
+		panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setOpaque(true);
+		panel_3.setBackground(Color.BLACK);
+		addAllotments.setViewportView(panel_3);
+		
+		JLabel label_7 = new JLabel("Add Allotments\r\n\r\n");
+		label_7.setForeground(Color.WHITE);
+		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+		label_7.setBounds(38, 11, 211, 27);
+		panel_3.add(label_7);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(38, 43, 211, 5);
+		panel_3.add(separator_1);
+		
+		JLabel lblStaffType = new JLabel("Staff:");
+		lblStaffType.setForeground(Color.WHITE);
+		lblStaffType.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblStaffType.setBounds(360, 71, 42, 27);
+		panel_3.add(lblStaffType);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(360, 93, 42, 5);
+		panel_3.add(separator_2);
+		
+		JLabel label_38 = new JLabel("Office ID:");
+		label_38.setForeground(Color.WHITE);
+		label_38.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_38.setBounds(150, 71, 78, 27);
+		panel_3.add(label_38);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(150, 93, 71, 5);
+		panel_3.add(separator_3);
+		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String empID = (String) list.getSelectedValue();
+				String officeID = (String) list_3.getSelectedValue();
+				
+				if(user.addAllotment(officeID, empID))
+					JOptionPane.showMessageDialog(frame,"Allotment done!","Alert",JOptionPane.OK_OPTION); 
+				else
+					JOptionPane.showMessageDialog(frame,"Could not do allotment!","Alert",JOptionPane.WARNING_MESSAGE); 
+			}
+		});
+		btnAdd.setBounds(505, 239, 89, 23);
+		panel_3.add(btnAdd);
+		
+		JScrollPane scrollPane = new JScrollPane((Component) null);
+		scrollPane.setBounds(332, 109, 100, 288);
+		panel_3.add(scrollPane);
+		list = new JList(listModel5);
+		list.setSelectedIndex(0);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(list);
+		
+		JScrollPane scrollPane_4 = new JScrollPane((Component) null);
+		scrollPane_4.setBounds(135, 109, 100, 288);
+		panel_3.add(scrollPane_4);
+		
+		list_3 = new JList(listModel4);
+		list_3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_4.setViewportView(list_3);
 		removeAllotment = new JPanel();
 		removeAllotment.setLayout(null);
 		removeAllotment.setOpaque(true);
@@ -474,15 +631,18 @@ public class HRFrame extends JFrame {
 						removeAllotment.add(scrollPane_5);
 						
 						//dtm.addRow(new Object[] {.....}
-						dtm.addRow(new Object[] { "LOL", "LOL", "LOL"});
+						dtm.addRow(new Object[] { staffMember.getEmpID(), staffMember.getName(), staffMember.getDOB()});
 						
 						btnRemove_1 = new JButton("Remove");
 						btnRemove_1.setBounds(270, 215, 97, 25);
 						btnRemove_1.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
-								//Session.getUser().removeAllotment((String) dtm.getValueAt(0, 0));
-			
+								user.deleteAllotment((String) dtm.getValueAt(0, 0));
+								if(user.deleteAllotment((String) dtm.getValueAt(0, 0)))
+									JOptionPane.showMessageDialog(frame,"Allotment deletd!","Alert",JOptionPane.OK_OPTION); 
+								else
+									JOptionPane.showMessageDialog(frame,"Could not delete allotment!","Alert",JOptionPane.WARNING_MESSAGE); 
 							}
 						});
 						removeAllotment.add(btnRemove_1);
@@ -496,310 +656,6 @@ public class HRFrame extends JFrame {
 		button.setBackground(SystemColor.menu);
 		button.setBounds(476, 89, 130, 23);
 		removeAllotment.add(button);
-		
-		
-		updateAllotment = new JPanel();
-		updateAllotment.setBounds(249, 152, 704, 442);
-		contentPane.add(updateAllotment);
-		updateAllotment.setLayout(null);
-		updateAllotment.setOpaque(true);
-		updateAllotment.setBackground(Color.BLACK);
-		
-		JLabel lblUpdateAllotment_1 = new JLabel("Update Allotment");
-		lblUpdateAllotment_1.setForeground(Color.WHITE);
-		lblUpdateAllotment_1.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		lblUpdateAllotment_1.setBounds(41, 23, 246, 27);
-		updateAllotment.add(lblUpdateAllotment_1);
-		
-		JSeparator separator_9 = new JSeparator();
-		separator_9.setBounds(41, 55, 225, 5);
-		updateAllotment.add(separator_9);
-		
-		JLabel label_8 = new JLabel("Staff:");
-		label_8.setForeground(Color.WHITE);
-		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_8.setBounds(387, 88, 42, 27);
-		updateAllotment.add(label_8);
-		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(387, 110, 42, 5);
-		updateAllotment.add(separator_5);
-		
-		JLabel label_9 = new JLabel("Office ID:");
-		label_9.setForeground(Color.WHITE);
-		label_9.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_9.setBounds(177, 88, 78, 27);
-		updateAllotment.add(label_9);
-		
-		JSeparator separator_7 = new JSeparator();
-		separator_7.setBounds(177, 110, 71, 5);
-		updateAllotment.add(separator_7);
-		
-		JScrollPane scrollPane_1 = new JScrollPane((Component) null);
-		scrollPane_1.setBounds(160, 126, 100, 288);
-		updateAllotment.add(scrollPane_1);
-		
-		JList list_1 = new JList(listModel2);
-		scrollPane_1.setViewportView(list_1);
-		
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//remove previous items
-				String empID = (String) list_2.getSelectedValue();
-				String officeID = (String) list_1.getSelectedValue();
-				//Session.getUser().UpdateAllotment(empID,officeID);
-			}
-		});
-		btnUpdate.setBounds(532, 256, 89, 23);
-		updateAllotment.add(btnUpdate);
-		
-		JScrollPane scrollPane_2 = new JScrollPane((Component) null);
-		scrollPane_2.setBounds(359, 126, 100, 288);
-		updateAllotment.add(scrollPane_2);
-		
-		list_2 = new JList(listModel3);
-		scrollPane_2.setViewportView(list_2);
-		
-		addAllotments = new JScrollPane();
-		addAllotments.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		addAllotments.setBounds(249, 152, 704, 442);
-		contentPane.add(addAllotments);
-		
-		panel_3 = new JPanel();
-		panel_3.setLayout(null);
-		panel_3.setOpaque(true);
-		panel_3.setBackground(Color.BLACK);
-		addAllotments.setViewportView(panel_3);
-		
-		JLabel label_7 = new JLabel("Add Allotments\r\n\r\n");
-		label_7.setForeground(Color.WHITE);
-		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_7.setBounds(38, 11, 211, 27);
-		panel_3.add(label_7);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(38, 43, 211, 5);
-		panel_3.add(separator_1);
-		
-		JLabel lblStaffType = new JLabel("Staff:");
-		lblStaffType.setForeground(Color.WHITE);
-		lblStaffType.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblStaffType.setBounds(360, 71, 42, 27);
-		panel_3.add(lblStaffType);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(360, 93, 42, 5);
-		panel_3.add(separator_2);
-		
-		JLabel label_38 = new JLabel("Office ID:");
-		label_38.setForeground(Color.WHITE);
-		label_38.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_38.setBounds(150, 71, 78, 27);
-		panel_3.add(label_38);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(150, 93, 71, 5);
-		panel_3.add(separator_3);
-		
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String empID = (String) list.getSelectedValue();
-				String officeID = (String) list_3.getSelectedValue();
-				//Session.getUser().addAllotment(officeID, empID);
-			}
-		});
-		btnAdd.setBounds(505, 239, 89, 23);
-		panel_3.add(btnAdd);
-		
-		JScrollPane scrollPane = new JScrollPane((Component) null);
-		scrollPane.setBounds(332, 109, 100, 288);
-		panel_3.add(scrollPane);
-		list = new JList(listModel5);
-		list.setSelectedIndex(0);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane.setViewportView(list);
-		
-		JScrollPane scrollPane_4 = new JScrollPane((Component) null);
-		scrollPane_4.setBounds(135, 109, 100, 288);
-		panel_3.add(scrollPane_4);
-		
-		list_3 = new JList(listModel4);
-		list_3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane_4.setViewportView(list_3);
-				
-		button_6.setForeground(Color.WHITE);
-		button_6.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_6.setBackground(new Color(36, 47, 65));
-		button_6.setBounds(539, 59, 130, 23);
-		panel_2.add(button_6);
-		
-		updateStaff = new JScrollPane();
-		updateStaff.setBounds(249, 152, 704, 442);
-		contentPane.add(updateStaff);
-		updateStaff.setViewportView(panel_2);
-		
-		textField = new JTextField();
-		textField.setForeground(Color.WHITE);
-		textField.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(new Color(36, 47, 65));
-		textField.setBounds(191, 145, 154, 22);
-		panel_2.add(textField);
-		updateStaff.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);;
-		//Create the list and put it in a scroll pane.
-		
-		//manageAllotment.setVisible(false);
-		
-		addOffice = new JPanel();
-		addOffice.setBounds(249, 152, 704, 442);
-		contentPane.add(addOffice);
-		addOffice.setLayout(null);
-		addOffice.setBackground(Color.BLACK);
-		
-		JLabel label_11 = new JLabel("Add Office\r\n\r\n");
-		label_11.setForeground(Color.WHITE);
-		label_11.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_11.setBounds(41, 23, 246, 27);
-		addOffice.add(label_11);
-		
-		JSeparator separator_12 = new JSeparator();
-		separator_12.setBounds(41, 55, 135, 2);
-		addOffice.add(separator_12);
-		
-		JLabel label_12 = new JLabel("Office ID:");
-		label_12.setForeground(Color.WHITE);
-		label_12.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_12.setBounds(259, 91, 105, 27);
-		addOffice.add(label_12);
-		
-		JSeparator separator_13 = new JSeparator();
-		separator_13.setBounds(259, 116, 77, 2);
-		addOffice.add(separator_13);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBackground(SystemColor.menu);
-		textField_1.setBounds(346, 96, 77, 22);
-		addOffice.add(textField_1);
-		
-		JButton button_3 = new JButton("Add");
-		button_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String id = textField_1.getText();
-				//boolean result = Session.getUser().addOffce(id);
-				//if (result == false)
-				//{
-				//	//error prompt
-				//}
-				//else
-				//{
-				//	//success prompt
-				//}
-			}
-		});
-		button_3.setFont(new Font("Century Gothic", Font.BOLD, 11));
-		button_3.setBounds(304, 160, 89, 23);
-		addOffice.add(button_3);
-		
-		removeStaff = new JScrollPane();
-		removeStaff.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		removeStaff.setBackground(Color.BLACK);
-		removeStaff.setBounds(249, 152, 704, 442);
-		contentPane.add(removeStaff);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setPreferredSize(new Dimension(704, 430));
-		panel_1.setForeground(Color.WHITE);
-		panel_1.setBackground(Color.BLACK);
-		removeStaff.setViewportView(panel_1);
-		
-		JLabel label_34 = new JLabel("Remove Staff");
-		label_34.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
-				label_34.setForeground(Color.WHITE);
-				label_34.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-				label_34.setBounds(33, 11, 227, 35);
-				panel_1.add(label_34);
-				
-				JSeparator separator_16 = new JSeparator();
-				separator_16.setBounds(33, 48, 139, 2);
-				panel_1.add(separator_16);
-				
-				JLabel label_35 = new JLabel("Search Employee by ID");
-				label_35.setForeground(Color.WHITE);
-				label_35.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-				label_35.setBounds(54, 60, 179, 17);
-				panel_1.add(label_35);
-				
-				textField_21 = new JTextField();
-				textField_21.setText("4321");
-				textField_21.setForeground(Color.WHITE);
-				textField_21.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-				textField_21.setColumns(10);
-				textField_21.setBorder(null);
-				textField_21.setBackground(new Color(36, 47, 65));
-				textField_21.setBounds(245, 58, 282, 22);
-				panel_1.add(textField_21);
-				
-				JButton button_9 = new JButton("Search");
-				button_9.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						
-						//if Staff staff = Session.academicInstitution.getStaff(textField_21.getText()) returns not null;
-						
-						String[] columnNames = {"Emp ID",
-				                "Name",
-				                "DOB"};
-						
-						JTable table2 = new JTable();
-						DefaultTableModel dtm = new DefaultTableModel(0, 0);
-						dtm.setColumnIdentifiers(columnNames);
-						table2.setModel(dtm);
-
-						JScrollPane scrollPane_3 = new JScrollPane(table2);
-						scrollPane_3.setForeground(Color.WHITE);
-						scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
-						scrollPane_3.setBackground(Color.WHITE);
-						scrollPane_3.setAlignmentX(0.0f);
-						scrollPane_3.setBounds(197, 100, 279, 40);
-						panel_1.add(scrollPane_3);
-						
-						//dtm.addRow(new Object[] { staff.getEmpID(),staff.getName(),staff.getDOB() });
-					    dtm.addRow(new Object[] { "23","Blah","2017" }); //
-					    String name = (String) dtm.getValueAt(0, 1);
-						
-						button_10 = new JButton("Remove");
-						button_10.setBounds(265, 199, 117, 29);
-						panel_1.add(button_10);
-						
-						button_10.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent arg0) {
-								//if (Session.user.removeStaff((String) dtm.getValueAt(0, 0) == false))
-								//{
-									//error prompt
-								//}
-							}
-						});
-						
-						panel_1.repaint();
-						
-						//else prompt of no student found
-					}
-				});
-				button_9.setForeground(Color.BLACK);
-				button_9.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-				button_9.setBackground(new Color(36, 47, 65));
-				button_9.setBounds(539, 59, 130, 23);
-				panel_1.add(button_9);
 		
 		manageAllotments = new JPanel();
 		manageAllotments.setLayout(null);
@@ -855,6 +711,181 @@ public class HRFrame extends JFrame {
 		lblUpdateAllotment.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblUpdateAllotment.setBounds(133, 266, 199, 35);
 		manageAllotments.add(lblUpdateAllotment);
+		//Create the list and put it in a scroll pane.
+		
+		//manageAllotment.setVisible(false);
+		
+		addOffice = new JPanel();
+		addOffice.setBounds(249, 152, 704, 442);
+		contentPane.add(addOffice);
+		addOffice.setLayout(null);
+		addOffice.setBackground(Color.BLACK);
+		
+		JLabel label_11 = new JLabel("Add Office\r\n\r\n");
+		label_11.setForeground(Color.WHITE);
+		label_11.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+		label_11.setBounds(41, 23, 246, 27);
+		addOffice.add(label_11);
+		
+		JSeparator separator_12 = new JSeparator();
+		separator_12.setBounds(41, 55, 135, 2);
+		addOffice.add(separator_12);
+		
+		JLabel label_12 = new JLabel("Office ID:");
+		label_12.setForeground(Color.WHITE);
+		label_12.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_12.setBounds(259, 91, 105, 27);
+		addOffice.add(label_12);
+		
+		JSeparator separator_13 = new JSeparator();
+		separator_13.setBounds(259, 116, 77, 2);
+		addOffice.add(separator_13);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBackground(SystemColor.menu);
+		textField_1.setBounds(346, 96, 77, 22);
+		addOffice.add(textField_1);
+		
+		JButton button_3 = new JButton("Add");
+		button_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String id = textField_1.getText();
+				boolean result = user.addOffice(id);
+				if (result == false)
+				{
+					JOptionPane.showMessageDialog(frame,"Could not add office!","Alert",JOptionPane.WARNING_MESSAGE);  
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame,"Office added successfully!","Alert",JOptionPane.OK_OPTION);  
+				}
+			}
+		});
+		button_3.setFont(new Font("Century Gothic", Font.BOLD, 11));
+		button_3.setBounds(304, 160, 89, 23);
+		addOffice.add(button_3);
+		
+		button_6.setForeground(Color.WHITE);
+		button_6.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		button_6.setBackground(new Color(36, 47, 65));
+		button_6.setBounds(539, 59, 130, 23);
+		panel_2.add(button_6);
+		
+		updateStaff = new JScrollPane();
+		updateStaff.setBounds(249, 152, 704, 442);
+		contentPane.add(updateStaff);
+		updateStaff.setViewportView(panel_2);
+		
+		textField = new JTextField();
+		textField.setForeground(Color.WHITE);
+		textField.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField.setColumns(10);
+		textField.setBorder(null);
+		textField.setBackground(new Color(36, 47, 65));
+		textField.setBounds(191, 145, 154, 22);
+		panel_2.add(textField);
+		
+		updateStaff.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		removeStaff = new JScrollPane();
+		removeStaff.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		removeStaff.setBackground(Color.BLACK);
+		removeStaff.setBounds(249, 152, 704, 442);
+		contentPane.add(removeStaff);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setPreferredSize(new Dimension(704, 430));
+		panel_1.setForeground(Color.WHITE);
+		panel_1.setBackground(Color.BLACK);
+		removeStaff.setViewportView(panel_1);
+		
+		JLabel label_34 = new JLabel("Remove Staff");
+		label_34.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+				label_34.setForeground(Color.WHITE);
+				label_34.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+				label_34.setBounds(33, 11, 227, 35);
+				panel_1.add(label_34);
+				
+				JSeparator separator_16 = new JSeparator();
+				separator_16.setBounds(33, 48, 139, 2);
+				panel_1.add(separator_16);
+				
+				JLabel label_35 = new JLabel("Search Employee by ID");
+				label_35.setForeground(Color.WHITE);
+				label_35.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+				label_35.setBounds(54, 60, 179, 17);
+				panel_1.add(label_35);
+				
+				textField_21 = new JTextField();
+				textField_21.setText("4321");
+				textField_21.setForeground(Color.WHITE);
+				textField_21.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+				textField_21.setColumns(10);
+				textField_21.setBorder(null);
+				textField_21.setBackground(new Color(36, 47, 65));
+				textField_21.setBounds(245, 58, 282, 22);
+				panel_1.add(textField_21);
+				
+				JButton button_9 = new JButton("Search");
+				button_9.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						Staff staff = Session.getInst().getStaff(textField_21.getText());
+						
+						if(staff!=null)
+						{
+							String[] columnNames = {"Emp ID",
+					                "Name",
+					                "DOB"};
+							
+							JTable table2 = new JTable();
+							DefaultTableModel dtm = new DefaultTableModel(0, 0);
+							dtm.setColumnIdentifiers(columnNames);
+							table2.setModel(dtm);
+	
+							JScrollPane scrollPane_3 = new JScrollPane(table2);
+							scrollPane_3.setForeground(Color.WHITE);
+							scrollPane_3.setFont(new Font("Century Gothic", Font.PLAIN, 13));
+							scrollPane_3.setBackground(Color.WHITE);
+							scrollPane_3.setAlignmentX(0.0f);
+							scrollPane_3.setBounds(197, 100, 279, 40);
+							panel_1.add(scrollPane_3);
+							
+							dtm.addRow(new Object[] { staff.getEmpID(),staff.getName(),staff.getDOB() });
+						    String name = (String) dtm.getValueAt(0, 1);
+							
+							button_10 = new JButton("Remove");
+							button_10.setBounds(265, 199, 117, 29);
+							panel_1.add(button_10);
+							
+							button_10.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(MouseEvent arg0) {
+									if (user.fireEmployee((String) dtm.getValueAt(0, 0)))
+									{
+										JOptionPane.showMessageDialog(frame,"Staff removed!","Alert",JOptionPane.OK_OPTION);
+									}
+									else
+										JOptionPane.showMessageDialog(frame,"Staff could not be removed!","Alert",JOptionPane.WARNING_MESSAGE);
+								}
+							});
+							
+							panel_1.repaint();
+						}
+						else
+							JOptionPane.showMessageDialog(frame,"Staff not found!","Alert",JOptionPane.WARNING_MESSAGE); 
+					}
+				});
+				button_9.setForeground(Color.BLACK);
+				button_9.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+				button_9.setBackground(new Color(36, 47, 65));
+				button_9.setBounds(539, 59, 130, 23);
+				panel_1.add(button_9);
 		
 		manageStaff = new JPanel();
 		manageStaff.setBounds(249, 152, 704, 442);
@@ -954,24 +985,6 @@ public class HRFrame extends JFrame {
 		label_25.setBounds(33, 140, 99, 27);
 		panel.add(label_25);
 		
-		textField_13 = new JTextField();
-		textField_13.setForeground(Color.WHITE);
-		textField_13.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_13.setColumns(10);
-		textField_13.setBorder(null);
-		textField_13.setBackground(new Color(36, 47, 65));
-		textField_13.setBounds(364, 144, 40, 20);
-		panel.add(textField_13);
-		
-		textField_14 = new JTextField();
-		textField_14.setForeground(Color.WHITE);
-		textField_14.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		textField_14.setColumns(10);
-		textField_14.setBorder(null);
-		textField_14.setBackground(new Color(36, 47, 65));
-		textField_14.setBounds(414, 144, 80, 20);
-		panel.add(textField_14);
-		
 		JLabel label_26 = new JLabel("Phone");
 		label_26.setForeground(Color.WHITE);
 		label_26.setFont(new Font("Century Gothic", Font.PLAIN, 15));
@@ -1048,10 +1061,6 @@ public class HRFrame extends JFrame {
 		comboBox_4.addItem('F');
 		panel.add(comboBox_4);
 		
-		JComboBox comboBox_5 = new JComboBox();
-		comboBox_5.setBounds(191, 145, 154, 20);
-		panel.add(comboBox_5);
-		
 		textField_19 = new JTextField();
 		textField_19.setText("First");
 		textField_19.setForeground(Color.WHITE);
@@ -1094,25 +1103,28 @@ public class HRFrame extends JFrame {
 		comboBox_6.addItem("Academic");
 		panel.add(comboBox_6);
 		
-		JLabel label_33 = new JLabel("Picture");
+		JLabel label_33 = new JLabel("Date Hired");
 		label_33.setForeground(Color.WHITE);
 		label_33.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		label_33.setBounds(33, 447, 61, 27);
 		panel.add(label_33);
 		
-		JButton button_7 = new JButton("Upload Photo");
-		button_7.setForeground(Color.BLACK);
-		button_7.setFont(new Font("Century Gothic", Font.ITALIC, 13));
-		button_7.setBackground(new Color(36, 47, 65));
-		button_7.setBounds(191, 447, 130, 23);
-		panel.add(button_7);
+		textField_13 = new JTextField();
+		textField_13.setForeground(Color.WHITE);
+		textField_13.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField_13.setColumns(10);
+		textField_13.setBorder(null);
+		textField_13.setBackground(new Color(36, 47, 65));
+		textField_13.setBounds(191, 447, 154, 20);
+		panel.add(textField_13);
 		
 		JButton button_8 = new JButton("Register");
 		button_8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String name = textField_19.getText() + " " + textField_12.getText();
-				//Date date = DatePicker.class..
+				Date dateOfBirth = Date.valueOf(textField_4.getText());
+				Date dateHired = Date.valueOf(textField_13.getText());
 				String phone = textField_15.getText();
 				String email = textField_16.getText();
 				String cnic = textField_17.getText();
@@ -1121,8 +1133,16 @@ public class HRFrame extends JFrame {
 				String address = textField_20.getText();
 				String department = (String) comboBox_6.getSelectedItem();
 				
-				//Session.user.registerStaff(name,date,phone,email,cnic,emergency,gender,address,department);
-				//show prompt depending on return
+				int EID = 1;
+				
+				while(DAL.ifEIDexists("E"+Integer.toString(EID))) {
+					EID++;
+				}
+				
+				if(user.hireEmployee(department, name, "12345", dateOfBirth, phone, email, cnic, gender, emergency, address, "E"+Integer.toString(EID), dateHired))
+					JOptionPane.showMessageDialog(frame,"Employee hired!","Alert",JOptionPane.OK_OPTION);
+				else
+					JOptionPane.showMessageDialog(frame,"Could not hire employee!","Alert",JOptionPane.WARNING_MESSAGE);
 				
 				
 				
@@ -1133,6 +1153,15 @@ public class HRFrame extends JFrame {
 		button_8.setBackground(new Color(36, 47, 65));
 		button_8.setBounds(191, 485, 130, 23);
 		panel.add(button_8);
+		
+		textField_4 = new JTextField();
+		textField_4.setForeground(Color.WHITE);
+		textField_4.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		textField_4.setColumns(10);
+		textField_4.setBorder(null);
+		textField_4.setBackground(new Color(36, 47, 65));
+		textField_4.setBounds(191, 145, 154, 20);
+		panel.add(textField_4);
 		
 		
 		home = new JPanel();
@@ -1155,15 +1184,103 @@ public class HRFrame extends JFrame {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(86, 48, 61, 2);
 		home.add(separator);
+		JLabel lblEhtishamulhaq = new JLabel(user.getName());
+		lblEhtishamulhaq.setForeground(Color.WHITE);
+		lblEhtishamulhaq.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEhtishamulhaq.setBounds(70, 252, 175, 27);
+		home.add(lblEhtishamulhaq);
+		
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(71, 283, 61, 2);
+		home.add(separator_1_1);
+		
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBounds(71, 323, 61, 2);
+		home.add(separator_2_1);
+		
+		JLabel label_7_1 = new JLabel(user.getPhoneNo());
+		label_7_1.setForeground(Color.WHITE);
+		label_7_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		label_7_1.setBounds(70, 292, 175, 27);
+		home.add(label_7_1);
+		
+		JLabel lblPrincessshamsgmailcom = new JLabel(user.getEmail());
+		lblPrincessshamsgmailcom.setForeground(Color.WHITE);
+		lblPrincessshamsgmailcom.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblPrincessshamsgmailcom.setBounds(70, 334, 205, 27);
+		home.add(lblPrincessshamsgmailcom);
+		
+		JSeparator separator_3_1 = new JSeparator();
+		separator_3_1.setBounds(71, 365, 61, 2);
+		home.add(separator_3_1);
+		
+		JSeparator separator_4_1 = new JSeparator();
+		separator_4_1.setBounds(71, 405, 61, 2);
+		home.add(separator_4_1);
+		
+		JLabel lblHStreet = new JLabel(user.getAddress());
+		lblHStreet.setForeground(Color.WHITE);
+		lblHStreet.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblHStreet.setBounds(70, 374, 239, 27);
+		home.add(lblHStreet);
+		
+		JSeparator separator_5_1 = new JSeparator();
+		separator_5_1.setBounds(418, 405, 61, 2);
+		home.add(separator_5_1);
+		
+		JLabel lblGenderM = new JLabel("Gender: "+ user.getGender());
+		lblGenderM.setForeground(Color.WHITE);
+		lblGenderM.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblGenderM.setBounds(417, 374, 175, 27);
+		home.add(lblGenderM);
+		
+		JLabel lblDob = new JLabel("DOB: " + user.getDOB());
+		lblDob.setForeground(Color.WHITE);
+		lblDob.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblDob.setBounds(417, 334, 250, 27);
+		home.add(lblDob);
+		
+		JSeparator separator_6 = new JSeparator();
+		separator_6.setBounds(418, 365, 61, 2);
+		home.add(separator_6);
+		
+		JSeparator separator_7_1 = new JSeparator();
+		separator_7_1.setBounds(418, 323, 61, 2);
+		home.add(separator_7_1);
+		
+		JLabel lblCnic = new JLabel("CNIC: " + user.getCNIC());
+		lblCnic.setForeground(Color.WHITE);
+		lblCnic.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblCnic.setBounds(417, 292, 175, 27);
+		home.add(lblCnic);
+		
+		JSeparator separator_8 = new JSeparator();
+		separator_8.setBounds(418, 283, 61, 2);
+		home.add(separator_8);
+		
+		JLabel lblEmergency = new JLabel("Emergency: " + user.getEmergencyContact());
+		lblEmergency.setForeground(Color.WHITE);
+		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblEmergency.setBounds(417, 252, 192, 27);
+		home.add(lblEmergency);;
 		
 		
-		viewDetails(new User("A", "B", new Date(1,2,3), "C", "D", "E", 'M', "F", "G"));
+		viewDetails(Session.getUser());
 		
 		JPanel sidePanel = new JPanel();
 		sidePanel.setBounds(0, 152, 250, 442);
 		sidePanel.setBackground(new Color(36,47,65));
 		contentPane.add(sidePanel);
 		sidePanel.setLayout(null);
+		
+		JLabel lblManageRegistrations = new JLabel("Manage Staff");
+		lblManageRegistrations.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JLabel evlbl = (JLabel) arg0.getComponent();
+				showPanel(evlbl.getText());
+			}
+		});
 		
 		JLabel lblManageFaculty = new JLabel("Add Office");
 		lblManageFaculty.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1180,6 +1297,11 @@ public class HRFrame extends JFrame {
 		lblManageFaculty.setBounds(57, 137, 182, 27);
 		
 		sidePanel.add(lblManageFaculty);
+		lblManageRegistrations.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblManageRegistrations.setForeground(Color.WHITE);
+		lblManageRegistrations.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblManageRegistrations.setBounds(57, 87, 182, 27);
+		sidePanel.add(lblManageRegistrations);
 		
 		JLabel lblManageStudents = new JLabel("Manage Allotments");
 		lblManageStudents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1194,20 +1316,6 @@ public class HRFrame extends JFrame {
 		lblManageStudents.setFont(new Font("Century Gothic", Font.PLAIN, 17));
 		lblManageStudents.setBounds(57, 189, 182, 27);
 		sidePanel.add(lblManageStudents);
-		
-		JLabel lblManageRegistrations = new JLabel("Manage Staff");
-		lblManageRegistrations.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				JLabel evlbl = (JLabel) arg0.getComponent();
-				showPanel(evlbl.getText());
-			}
-		});
-		lblManageRegistrations.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblManageRegistrations.setForeground(Color.WHITE);
-		lblManageRegistrations.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblManageRegistrations.setBounds(57, 87, 182, 27);
-		sidePanel.add(lblManageRegistrations);
 		
 		JLabel label_1 = new JLabel("");
 		label_1.setIcon(new ImageIcon(HRFrame.class.getResource("/images/student.png")));
@@ -1297,124 +1405,49 @@ public class HRFrame extends JFrame {
 	
 	public void viewDetails(User user)
 	{
-		JLabel lblEhtishamulhaq = new JLabel(user.getName());
-		lblEhtishamulhaq.setForeground(Color.WHITE);
-		lblEhtishamulhaq.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblEhtishamulhaq.setBounds(70, 252, 175, 27);
-		home.add(lblEhtishamulhaq);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(71, 283, 61, 2);
-		home.add(separator_1);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(71, 323, 61, 2);
-		home.add(separator_2);
-		
-		JLabel label_7 = new JLabel(user.getPhoneNo());
-		label_7.setForeground(Color.WHITE);
-		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_7.setBounds(70, 292, 175, 27);
-		home.add(label_7);
-		
-		JLabel lblPrincessshamsgmailcom = new JLabel(user.getEmail());
-		lblPrincessshamsgmailcom.setForeground(Color.WHITE);
-		lblPrincessshamsgmailcom.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPrincessshamsgmailcom.setBounds(70, 334, 205, 27);
-		home.add(lblPrincessshamsgmailcom);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(71, 365, 61, 2);
-		home.add(separator_3);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(71, 405, 61, 2);
-		home.add(separator_4);
-		
-		JLabel lblHStreet = new JLabel(user.getAddress());
-		lblHStreet.setForeground(Color.WHITE);
-		lblHStreet.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblHStreet.setBounds(70, 374, 239, 27);
-		home.add(lblHStreet);
-		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(418, 405, 61, 2);
-		home.add(separator_5);
-		
-		JLabel lblGenderM = new JLabel("Gender: "+ user.getGender());
-		lblGenderM.setForeground(Color.WHITE);
-		lblGenderM.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblGenderM.setBounds(417, 374, 175, 27);
-		home.add(lblGenderM);
-		
-		JLabel lblDob = new JLabel("DOB: " + user.getDOB());
-		lblDob.setForeground(Color.WHITE);
-		lblDob.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblDob.setBounds(417, 334, 250, 27);
-		home.add(lblDob);
-		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setBounds(418, 365, 61, 2);
-		home.add(separator_6);
-		
-		JSeparator separator_7 = new JSeparator();
-		separator_7.setBounds(418, 323, 61, 2);
-		home.add(separator_7);
-		
-		JLabel lblCnic = new JLabel("CNIC: " + user.getCNIC());
-		lblCnic.setForeground(Color.WHITE);
-		lblCnic.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCnic.setBounds(417, 292, 175, 27);
-		home.add(lblCnic);
-		
-		JSeparator separator_8 = new JSeparator();
-		separator_8.setBounds(418, 283, 61, 2);
-		home.add(separator_8);
-		
-		JLabel lblEmergency = new JLabel("Emergency: " + user.getEmergencyContact());
-		lblEmergency.setForeground(Color.WHITE);
-		lblEmergency.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblEmergency.setBounds(417, 252, 192, 27);
-		home.add(lblEmergency);
 		//home.setVisible(false);
 		home.setVisible(true);
 	}
 	
 	public void fillUnallotedOfficeIDs(DefaultListModel listModel)
 	{
+		HRManager user = (HRManager)Session.getUser();
+				
 		listModel.removeAllElements();
-		listModel.addElement("HAHA");
-//		ArrayList<Office> offices = Session.getUser().getUnallotedOffice();
-//		for (int i = 0; i < offices.size(); i++)
-//		{
-//			listModel.addElement(offices.get(i).getID());
-//		}
+		ArrayList<Office> offices = user.getUnallotedOffice();
+		for (int i = 0; i < offices.size(); i++)
+		{
+			listModel.addElement(offices.get(i).getID());
+		}
 	}
 	
 	public void fillUnallotedStaffMembers(DefaultListModel listModel)
 	{
+		HRManager user = (HRManager)Session.getUser();
+				
 		listModel.removeAllElements();
-		listModel.addElement("HAHA");
-//		ArrayList<StaffMember> staff = Session.getUser().getUnallotedStaff();
-//		for (int i = 0; i < staff.size(); i++)
-//		{
-//			listModel.addElement(staff.get(i).getID());
-//		}
-        
+		ArrayList<Staff> staff = user.getUnallotedStaff();
+		if(staff!=null)
+		{
+			for (int i = 0; i < staff.size(); i++)
+			{
+				listModel.addElement(staff.get(i).getEmpID());
+			}
+		}
         
 		
 	}
 	
 	public void fillAllotedStaffMembers(DefaultListModel listModel)
 	{
+		HRManager user = (HRManager)Session.getUser();
 		listModel.removeAllElements();
 
-		listModel.addElement("HAHA");
-//		ArrayList<StaffMember> staff = Session.getUser().getAllotedStaff();
-//		for (int i = 0; i < staff.size(); i++)
-//		{
-//			listModel.addElement(staff.get(i).getID());
-//		}
+		ArrayList<Staff> staff = user.getAllotedStaff();
+		for (int i = 0; i < staff.size(); i++)
+		{
+			listModel.addElement(staff.get(i).getEmpID());
+		}
         
         
 		

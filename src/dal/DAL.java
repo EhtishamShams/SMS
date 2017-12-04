@@ -108,7 +108,7 @@ public class DAL {
 			pst.setString(2, c.getCourseCode());
 			pst.executeUpdate();
 
-			query = "Delete from coursesection Where CourseCode = (Select CourseCode From (Select * From coursesection) As A join semester s on A.session=s.session where s.IsActive=true and s.CourseCode=?)";
+			query = "Delete from coursesection Where CourseCode = (Select CourseCode From (Select * From coursesection) As A join semester s on A.session=s.session where s.IsActive=true and A.CourseCode=?)";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, c.getCourseCode());
 			pst.execute();
