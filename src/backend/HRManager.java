@@ -254,8 +254,8 @@ public class HRManager extends Staff {
 			deleteAllotment(empID); // (Muaz Functionality)
 			DAL.removeManager(empID);
 			DAL.removeStaff(empID);
-		
-			return Session.getHrDept().removestaff(empID);
+		   Session.getHrDept().removestaff(empID);
+		   return Session.getInst().removeStaff(empID);
 		}
 
 		if (Acdindex != -1) {
@@ -263,15 +263,18 @@ public class HRManager extends Staff {
 			deleteAllotment(empID); // (Muaz Functionality)
 			DAL.removeManager(empID);
 			DAL.removeStaff(empID);
-			return Session.getAcademicDept().removestaff(empID);
+			 Session.getAcademicDept().removestaff(empID);
+			 return Session.getInst().removeStaff(empID);
+			 
+			 
 		}
 		if (Accindex != -1) {
 			/// SQL CON//
 			deleteAllotment(empID); // (Muaz Functionality)
 			DAL.removeManager(empID);
 			DAL.removeStaff(empID);
-			return Session.getAcademicDept().removestaff(empID);
-			
+			Session.getAcademicDept().removestaff(empID);
+			 return Session.getInst().removeStaff(empID);
 		}
 
 		return false;

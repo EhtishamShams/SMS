@@ -19,6 +19,25 @@ public class AcademicManager extends Staff {
 			char gender, String emergencyContact, String address, String empID, Date dateHired) {
 		super(name, password, DOB, phoneNo, email, CNIC, gender, emergencyContact, address, empID, dateHired);
 	}
+	
+	protected boolean updateFacultyDetails(String School_id,String empID, String name, Date DOB, String phoneNo, String email,
+			String CNIC, char gender, String emergencyContact, String address, Date n_dateHired, ArrayList<String> degrees,
+			String position)
+	{
+		
+		Staff s=Session.getHrDept().getStaffMember(empID);
+		if(s!=null) {
+			FacultyMember fm = Session.getInst().getSchool(School_id).getFacultyfromList(empID);
+			if(fm!=null){
+				fm.updateFaculty(name,DOB,phoneNo,email,CNIC,gender,emergencyContact, address, empID,dateHired,degrees, position);
+				DAL.updateFacultyDetails(empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,n_dateHired,
+						degrees, position);
+				return true;
+			}
+		}
+		return false;
+
+		}
 
 	// hamza
 	public boolean addCourse(String schoolID, String code, String name, int creditHours, String desc,
@@ -109,7 +128,7 @@ public class AcademicManager extends Staff {
 
 	// hamza
 	public boolean registerStudent(String schoolID, String name, Date DOB, String phone, String email, String CNIC,
-			char gender, String eCont, String address, String fCNIC, String fName) {
+			char gender, String eCont, String address, String rollNo, String fCNIC, String fName) {
 		School sch = null;
 		for (School s : Session.getInst().getSchools()) {
 			if (s.getId().equals(schoolID))
@@ -118,12 +137,12 @@ public class AcademicManager extends Staff {
 		if (!sch.validateStudent(fCNIC))
 			return false;
 
-		Student std = new Student(name, new String("123456"), DOB, phone, email, CNIC, gender, eCont, address, null,
+		Student std = new Student(name, new String("123456"), DOB, phone, email, CNIC, gender, eCont, address, rollNo,
 				fCNIC, fName, 0, 0, 0, new ArrayList<CourseSection>(), new Transcript());
 
 		return sch.addStudent(std);
 
-	}
+	}	
 
 	public boolean registerStudentInCourse(String schoolID, String rollNo, String courseCode, char secID) {
 		School sch = null;
@@ -340,44 +359,44 @@ public class AcademicManager extends Staff {
 
 	////////////////////////////////////// REMOVE
 	////////////////////////////////////// SECTION/////////////////////////////////////////////////////////
-	public boolean removeSection(String schoolid, String c_code, char sID) {
-		int index = 0;
-		boolean secIndex = false;
-		boolean remove = false;
-		index = Session.getInst().getSchool(schoolid).courseExistsByIndex(c_code);
-		if (index != -1) {
-			Course tempcourse = Session.getSchl().getCourseFromCourses(index);
-			secIndex = tempcourse.ifSectionExists(sID);
-			if (secIndex == true) {
-				// SQL CON/////
-				if (DAL.removeSection(c_code, sID, Session.getSem()) == true) {
-					tempcourse.removeCourseSection(sID);
-					Session.getSchl().updateCourseToCourses(index, tempcourse);
+	  public boolean removeSection(String schoolid, String c_code, char sID) {
+		    int index = 0;
+		    boolean secIndex = false;
+		    boolean remove = false;
+		    index = Session.getInst().getSchool(schoolid).courseExistsByIndex(c_code);
+		    if (index != -1) {
+		      Course tempcourse = Session.getSchl().getCourseFromCourses(index);
+		      secIndex = tempcourse.ifSectionExists(sID);
+		      if (secIndex == true) {
+		        // SQL CON/////
+		        if (DAL.removeSection(c_code, sID, Session.getSem()) == true) {
+		          tempcourse.removeCourseSection(sID);
+		          Session.getSchl().updateCourseToCourses(index, tempcourse);
 
-					ArrayList<Student> sectionStudents = Session.getInst().getSchool(schoolid)
-							.getStudentFromStudents(sID);
-					;
-					if (sectionStudents != null) {
-						for (Student s : sectionStudents) {
-							removeStudentCourseRegistration(schoolid, s.getRollNo(), c_code, sID); // Noumans
-																									// functionality
-						}
-					}
+		          ArrayList<Student> sectionStudents = Session.getInst().getSchool(schoolid)
+		              .getStudentFromStudents(sID,c_code,Session.getSem().getSession());
+		          ;
+		          if (sectionStudents != null) {
+		            for (Student s : sectionStudents) {
+		              removeStudentCourseRegistration(schoolid, s.getRollNo(), c_code, sID); // Noumans
+		                                                  // functionality
+		            }
+		          }
 
-					remove = true;
-				}
-			} else {
-				// System.out.println("Section Doesnot Exist");
-				remove = false;
-			}
-		}
+		          remove = true;
+		        }
+		      } else {
+		        // System.out.println("Section Doesnot Exist");
+		        remove = false;
+		      }
+		    }
 
-		/*
-		 * else { System.out.println("Course Doesnot Exist"); }
-		 */
+		    /*
+		     * else { System.out.println("Course Doesnot Exist"); }
+		     */
 
-		return remove;
-	}
+		    return remove;
+		  }
 
 	//////////////////////////////////// UPDATE
 	//////////////////////////////////// SECTION///////////////////////////////////////
@@ -444,7 +463,7 @@ public class AcademicManager extends Staff {
 	// function for updating school name
     // function for updating school name
     //in class academic manager change 	
-	boolean updateSchool(String id , String updatedName)
+	public boolean updateSchool(String id , String updatedName)
 	{
 		AcademicInstitution a= Session.getInst();
 		boolean check= false;
@@ -493,7 +512,7 @@ public class AcademicManager extends Staff {
 		return check;
 	}
 ////////////////////////////////ADD FACULTY/////////////////////////////////////////////////////////
-	boolean RegisterFaculty(String schoolid, String name, String password, Date DOB, String phoneNo, String email,
+ public	boolean RegisterFaculty(String schoolid, String name, String password, Date DOB, String phoneNo, String email,
 			String CNIC, char gender, String emergencyContact, String address, Date dateHired,
 			ArrayList<String> degrees, String position, String EmpID) {
 

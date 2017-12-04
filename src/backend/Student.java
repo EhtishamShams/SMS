@@ -239,10 +239,10 @@ public class Student extends User {
 
 	////////////////////////// REMOVE SECTION
 	////////////////////////// HELPER/////////////////////////////////
-	public boolean ifSectionExists(char SectionID) {
+	 public boolean ifSectionExists(char SectionID,String courseCode, String semester) {
 
 		for (CourseSection cs : this.courses) {
-			if (cs.getSectionID() == SectionID) {
+			if (cs.getSectionID() == SectionID && cs.getCourse().getCourseCode().equals(courseCode) && cs.getSemester().getSession().equals(semester)) {
 				return true;
 			}
 		}
@@ -250,6 +250,14 @@ public class Student extends User {
 		return false;
 	}
 
+	 public Grade getCourseGrade(CourseSection cs) {
+		    for (Grade g : transcript.getGrades()) {
+		      if (g.getCourseSection().getCourse().getCourseCode().equals(cs.getCourse().getCourseCode()) && g.getCourseSection().getSectionID() == cs.getSectionID() 
+		          && g.getCourseSection().getSemester().getSession().equals(cs.getSemester().getSession()))
+		        return g;
+		    }
+		    return null;
+		  }
 	/////////////////////// NOUMAN//////////////
 
 	// public boolean removeStudentCourseRegistration(CourseSection cs) {

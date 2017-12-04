@@ -182,7 +182,7 @@ public class AcademicInstitution {
 				return false;
 			}
 		}
-		check = DAL.updateSchoolDB(id, n);
+		check = DAL.addSchoolDB(id, n);
 		if (check) {
 			School temp = new School(id, n);
 			schools.add(temp);
@@ -300,5 +300,17 @@ public class AcademicInstitution {
 				}
 			}
 			return check;
+		}
+
+		public boolean removeStaff(String empID) {
+			for (User u : users) {
+				if (      (u instanceof Staff  && ((Staff) u).getEmpID().equals(empID) ))
+				{
+					users.remove(u);
+					return true;
+				}
+			}
+			
+			return false;
 		}
 }

@@ -40,23 +40,7 @@ public class FacultyMember extends Staff {
 		this.position = position;
 	}
 
-	public boolean updateDetails(String name, Date DOB, String phoneNo, String email, String CNIC, char gender,
-			String emergencyContact, String address, ArrayList<String> degrees, String position) {
-		this.name = name;
-		this.DOB = DOB;
-		this.phoneNo = phoneNo;
-		this.email = email;
-		this.CNIC = CNIC;
-		this.gender = gender;
-		this.emergencyContact = emergencyContact;
-		this.address = address;
-		this.degrees = degrees;
-		this.position = position;
 
-		DAL.updateFacultyDetails(this.empID, name, DOB, phoneNo, email, CNIC, gender, emergencyContact, address,	degrees, position);
-
-		return true;
-	}
 
 	public Student getStudentAttendance(String rollNo) {
 		return Session.getInst().getStudent(rollNo);
@@ -90,17 +74,17 @@ public class FacultyMember extends Staff {
 		return sec;
 	}
 
-	public boolean updateGrade(String rollNum, String grade, String courseCode, String secID, String semester) {
-		Student stu = Session.getInst().getStudent(rollNum);
-		Grade g = stu.getCourseGrade(courseCode);
-		LGrade oldVal = g.getGrade();
-		g.setGrade(LGrade.valueOf(grade));
-		boolean check = Session.getDal().updateGrade(g, stu.getRollNo());
-		if (!check)
-			g.setGrade(oldVal);
-		return check;
+	public boolean updateGrade(String rollNum, String grade, CourseSection cs) {
+	    Student stu = Session.getInst().getStudent(rollNum);
+	    Grade g = stu.getCourseGrade(cs);
+	    LGrade oldVal = g.getGrade();
+	    g.setGrade(LGrade.valueOf(grade));
+	    boolean check = Session.getDal().updateGrade(g, stu.getRollNo());
+	    if (!check)
+	      g.setGrade(oldVal);
+	    return check;
 
-	}
+	  }
 
 	public boolean addAttendance(CourseSection b, Date d) {
 
@@ -158,5 +142,22 @@ public class FacultyMember extends Staff {
 	public void addDegree(String degree) {
 		this.degrees.add(degree);
 	}
+	protected void updateFaculty(String n_name, Date n_DOB, String n_phoneNo, String n_email, String n_CNIC, char n_gender,
+			String n_emergencyContact, String n_address, String n_empID, Date n_dateHired, ArrayList<String> n_degrees,
+			String n_position)
+	{
+		this.name = n_name;
+		this.DOB = n_DOB;
+		this.phoneNo = n_phoneNo;
+		this.email = n_email;
+		this.CNIC = n_CNIC;
+		this.gender = n_gender;
+		this.emergencyContact = n_emergencyContact;
+		this.address = n_address;
+		this.degrees = n_degrees;
+		this.position = n_position;
+
+	}
+		
 
 }

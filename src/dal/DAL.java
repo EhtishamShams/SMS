@@ -54,16 +54,17 @@ public class DAL {
 		try {
 			Connection conn = DBAccess.getConnection();
 
-			String query = "Insert into User(Name, DateOfBirth, PhoneNo, CNIC, email, gender, emergencyContact, Address) Values(?,?,?,?,?,?,?,?)";
+			String query = "Insert into User(Name, Password,DateOfBirth, PhoneNo, CNIC, email, gender, emergencyContact, Address) Values(?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setString(1, std.getName());
-			pst.setDate(2, (java.sql.Date) std.getDOB());
-			pst.setString(3, std.getPhoneNo());
-			pst.setString(4, std.getCNIC());
-			pst.setString(5, std.getEmail());
-			pst.setString(6, Character.toString(std.getGender()));
-			pst.setString(7, std.getEmergencyContact());
-			pst.setString(8, std.getAddress());
+			pst.setString(2, "123456");
+			pst.setDate(3, (java.sql.Date) std.getDOB());
+			pst.setString(4, std.getPhoneNo());
+			pst.setString(5, std.getCNIC());
+			pst.setString(6, std.getEmail());
+			pst.setString(7, Character.toString(std.getGender()));
+			pst.setString(8, std.getEmergencyContact());
+			pst.setString(9, std.getAddress());
 			pst.execute();
 
 			query = "Select UserID From User Where CNIC=?";
@@ -73,15 +74,16 @@ public class DAL {
 			rs.next();
 			String userID = rs.getString(1);
 
-			query = "Insert into Student(UserID, FatherName, FatherCNIC, CGPA, CreditsEarned, CreditsAttempted, SchoolID) Values(?,?,?,?,?,?,?)";
+			query = "Insert into Student(UserID, RollNo, FatherName, FatherCNIC, CGPA, CreditsEarned, CreditsAttempted, SchoolID) Values(?,?,?,?,?,?,?,?)";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, userID);
-			pst.setString(2, std.getFatherName());
-			pst.setString(3, std.getFatherCNIC());
-			pst.setDouble(4, std.getCGPA());
-			pst.setInt(5, std.getCreditsEarned());
-			pst.setInt(6, std.getCreditsAttempted());
-			pst.setString(7, sch.getId());
+			pst.setString(2, std.getRollNo());
+			pst.setString(3, std.getFatherName());
+			pst.setString(4, std.getFatherCNIC());
+			pst.setDouble(5, std.getCGPA());
+			pst.setInt(6, std.getCreditsEarned());
+			pst.setInt(7, std.getCreditsAttempted());
+			pst.setString(8, sch.getId());
 			pst.execute();
 
 			conn.commit();
@@ -213,7 +215,7 @@ public class DAL {
 		try {
 			Connection conn = DBAccess.getConnection();
 
-			String query = "Update User Set Name=?, DateOfBirth=?, PhoneNo=?, CNIC=?, email=?, gender=?, emergencyContact=?, Address=? Where CNIC=?)";
+			String query = "Update User Set Name=?, DateOfBirth=?, PhoneNo=?, CNIC=?, email=?, gender=?, emergencyContact=?, Address=? Where CNIC=?";
 			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setString(1, name);
 			pst.setDate(2, (java.sql.Date) DOB);
@@ -916,17 +918,12 @@ public class DAL {
 		try {
 			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
-			String sch = "";
-
-			ResultSet rs = stmt.executeQuery("select* from School where SchoolID='" + sid + "'");
-			while (rs.next())
-				sch = rs.getString(1);
-			if (sch != "") {
+		
 				stmt.executeUpdate("UPDATE School SET Name = '" + name + "' WHERE SchoolID='" + sid + "'");
 
 				con.commit();
 				return true;
-			}
+			
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -1186,5 +1183,45 @@ public class DAL {
 		return false;
 	}
 
+	 public static boolean ifEIDexists(String EID) {
+		boolean exists = false;;
 
+		try {
+			Connection con = DBAccess.getConnection();
+			Statement stmt = DBAccess.getStatement();
+
+			ResultSet rs = stmt.executeQuery("select * from staff where EmpID='" + EID +"';");
+
+			while (rs.next())
+				exists = true;
+
+			con.commit();
+
+			return exists;
+		} catch (Exception e) {
+			System.out.println(e);
+			return exists;
+		}
+	}
+
+	  public static boolean ifRollNoExists(String RollNo) {
+			boolean exists = false;;
+
+			try {
+				Connection con = DBAccess.getConnection();
+				Statement stmt = DBAccess.getStatement();
+
+				ResultSet rs = stmt.executeQuery("select * from student where RollNo='" + RollNo +"';");
+
+				while (rs.next())
+					exists = true;
+
+				con.commit();
+
+				return exists;
+			} catch (Exception e) {
+				System.out.println(e);
+				return exists;
+			}
+		}
 }

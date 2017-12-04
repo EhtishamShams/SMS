@@ -179,13 +179,6 @@ public class School {
 		if (!DAL.removeFaculty(empID, repEmpID))
 			return false;
 
-		// Removing Staff
-		for (Staff u : Session.getAcademicDept().getStaff()) {
-			if (u.getCNIC().equals(facM.getCNIC())) {
-				Session.getInst().getUsers().remove(u);
-			}
-		}
-
 		// Removing User
 		for (User u : Session.getInst().getUsers()) {
 			if (u.getCNIC().equals(facM.getCNIC())) {
@@ -208,7 +201,7 @@ public class School {
 		FacultyMember replacement = null;
 
 		for (FacultyMember fac : faculty) {
-			if (fac.getEmpID() == repEmpID)
+			if (fac.getEmpID().equals( repEmpID))
 				replacement = fac;
 		}
 
@@ -237,22 +230,33 @@ public class School {
 		for (User u : Session.getInst().getUsers()) {
 			if (u.getCNIC().equals(std.getCNIC())) {
 				Session.getInst().getUsers().remove(u);
+				break;
 			}
 		}
+		
+		ArrayList<Attendance> toRemove;
 
 		// Removing Attendance
 		for (CourseSection crs : std.getStudiedCourses()) {
+			toRemove = new ArrayList<>();
+			
 			for (Attendance att : crs.getStudentAttendance()) {
-				if (att.getStudent() == std)
-					crs.getStudentAttendance().remove(att);
+				if (att.getStudent().getRollNo().equals(std.getRollNo()))
+					toRemove.add(att);
 			}
+			
+			crs.getStudentAttendance().remove(toRemove);
 		}
 
-		// Removing Fee
+
+		ArrayList<Fee> feeRemove = new ArrayList<>();
+		
 		for (Fee fee : Session.getAccountsDept().getAllFees()) {
-			if (fee.getStudent() == std)
-				Session.getAccountsDept().getAllFees().remove(fee);
+			if (fee.getStudent().getRollNo().equals(std.getRollNo()))
+				feeRemove.add(fee);
 		}
+		
+		Session.getAccountsDept().getAllFees().remove(feeRemove);
 
 		students.remove(std);
 		return true;
@@ -436,10 +440,10 @@ public class School {
 	}
 
 	////////////////////////////////// remove section helper///////////////////////
-	protected ArrayList<Student> getStudentFromStudents(char SectionID) {
+	public ArrayList<Student> getStudentFromStudents(char SectionID, String courseCode, String semester) {
 		ArrayList<Student> sectionStudent = new ArrayList<Student>();
 		for (Student s : this.students) {
-			if (s.ifSectionExists(SectionID) == true) {
+			if (s.ifSectionExists(SectionID, courseCode, semester) == true) {
 				sectionStudent.add(s);
 			}
 		}
