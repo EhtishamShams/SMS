@@ -50,6 +50,7 @@ public class FacFrame extends JFrame {
 	private JPanel addAttendance;
 	private JPanel updateGrade;
 	private JScrollPane updateAttendance;
+	private JPanel changePassword;
 	private ArrayList<CourseSection> cs;
 	private CourseSection c;
 	private ArrayList<CourseSection> facultyCurrSemCrsSecs = null;
@@ -59,6 +60,8 @@ public class FacFrame extends JFrame {
 	private JComboBox comboBox_5 = new JComboBox();
 	private JComboBox comboBox_4 = new JComboBox();
 	private JComboBox comboBox_6 = new JComboBox();
+	private JLabel lblNewPassword;
+	private JLabel lblOldPassword ;
 	
 	private ArrayList<Date> attendancesDate = null;
 	private ArrayList<JComboBox> attenCombos = null;
@@ -68,6 +71,8 @@ public class FacFrame extends JFrame {
 	private JTextField addDatefield = null;
 	
 	private ArrayList<Student> sectionStudents = null;
+	private JTextField newPassField;
+	private JTextField oldPassField;
 	/**
 	 * Launch the application.
 	 */
@@ -115,6 +120,9 @@ public class FacFrame extends JFrame {
 		{
 			containers.get(4).setVisible(true);
 		}
+		if (a.equals("Change Password")) {
+			containers.get(5).setVisible(true);
+		}
 	}
 
 	/**
@@ -129,6 +137,160 @@ public class FacFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		containers = new ArrayList<Container>();
+		
+		changePassword = new JPanel();
+		changePassword.setLayout(null);
+		changePassword.setPreferredSize(new Dimension(704, 430));
+		changePassword.setForeground(Color.WHITE);
+		changePassword.setBackground(Color.BLACK);
+		changePassword.setBounds(249, 152, 704, 442);
+		contentPane.add(changePassword);
+		
+		JLabel lblNewLabel = new JLabel("Change Password");
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 17));
+		lblNewLabel.setBounds(272, 20, 170, 45);
+		changePassword.add(lblNewLabel);
+		
+		lblNewPassword = new JLabel("New Password:");
+		lblNewPassword.setForeground(Color.WHITE);
+		lblNewPassword.setFont(new Font("Dialog", Font.PLAIN, 17));
+		lblNewPassword.setBounds(69, 214, 132, 45);
+		changePassword.add(lblNewPassword);
+		
+		newPassField = new JTextField();
+		newPassField.setBounds(234, 221, 270, 34);
+		changePassword.add(newPassField);
+		newPassField.setColumns(10);
+		
+		JButton btnNewButton_1 = new JButton("Change");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean check = Session.getUser().changePassword(oldPassField.getText(), newPassField.getText());
+				if (check)
+					JOptionPane.showMessageDialog(frame,"Successfully Updated!");
+				else
+					JOptionPane.showMessageDialog(frame,"Cannot Update the password! Make sure your old password is correct!","Alert",JOptionPane.WARNING_MESSAGE);
+					
+			}
+		});
+		btnNewButton_1.setBounds(312, 299, 117, 29);
+		changePassword.add(btnNewButton_1);
+		
+		lblOldPassword = new JLabel("Old Password:");
+		lblOldPassword.setForeground(Color.WHITE);
+		lblOldPassword.setFont(new Font("Dialog", Font.PLAIN, 17));
+		lblOldPassword.setBounds(69, 143, 132, 45);
+		changePassword.add(lblOldPassword);
+		
+		oldPassField = new JTextField();
+		oldPassField.setColumns(10);
+		oldPassField.setBounds(234, 154, 270, 34);
+		changePassword.add(oldPassField);
+		
+		updateGrade = new JPanel();
+		updateGrade.setLayout(null);
+		updateGrade.setPreferredSize(new Dimension(704, 430));
+		updateGrade.setForeground(Color.WHITE);
+		updateGrade.setBackground(Color.BLACK);
+		updateGrade.setBounds(249, 152, 704, 442);
+		contentPane.add(updateGrade);
+		
+		JLabel label_16 = new JLabel("Select Section");
+		label_16.setForeground(Color.WHITE);
+		label_16.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_16.setBounds(133, 84, 156, 35);
+		updateGrade.add(label_16);
+		
+		JSeparator separator_15 = new JSeparator();
+		separator_15.setBounds(133, 118, 139, 2);
+		updateGrade.add(separator_15);
+		comboBox_4.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (comboBox_4.getSelectedIndex() != -1) {
+					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
+					sectionStudents = Session.getSchl().getStudentFromStudents(crsSec.getSectionID(),crsSec.getCourse().getCourseCode(),Session.getSem().getSession());
+					comboBox_5.removeAllItems();
+					comboBox_6.removeAllItems();
+					if (sectionStudents != null && sectionStudents.size() > 0) {
+						for (Student s : sectionStudents) {
+							comboBox_5.addItem(s.getRollNo() + " " + s.getName());
+						}
+					}
+				}
+			}
+		});
+		
+		
+		comboBox_4.setBounds(305, 93, 156, 26);
+		updateGrade.add(comboBox_4);
+		
+		JLabel lblUpdateGrade = new JLabel("Update Grade");
+		lblUpdateGrade.setForeground(Color.WHITE);
+		lblUpdateGrade.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblUpdateGrade.setBounds(22, 13, 201, 35);
+		updateGrade.add(lblUpdateGrade);
+		
+		JSeparator separator_17 = new JSeparator();
+		separator_17.setBounds(22, 46, 149, 2);
+		updateGrade.add(separator_17);
+		
+		JButton button = new JButton("Update");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox_4.getSelectedIndex() != -1 && comboBox_5.getSelectedIndex() != -1 && comboBox_6.getSelectedIndex() != -1) {
+					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
+					boolean check = ((FacultyMember)Session.getUser()).updateGrade(sectionStudents.get(comboBox_5.getSelectedIndex()).getRollNo(), comboBox_6.getSelectedItem().toString(), crsSec);
+					if (check) {
+						JOptionPane.showMessageDialog(frame,"Successfuly updated!");
+					}
+				}
+			}
+		});
+		button.setBounds(267, 332, 97, 25);
+		updateGrade.add(button);
+		
+		JLabel lblSelectStudent = new JLabel("Select Student");
+		lblSelectStudent.setForeground(Color.WHITE);
+		lblSelectStudent.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblSelectStudent.setBounds(133, 166, 182, 35);
+		updateGrade.add(lblSelectStudent);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(133, 200, 139, 2);
+		updateGrade.add(separator_3);
+		comboBox_5.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				comboBox_6.removeAllItems();
+				LGrade[] grade_types = LGrade.values();
+				for (LGrade gr : grade_types)
+					comboBox_6.addItem(gr.toString());
+				if(comboBox_5.getSelectedIndex() != -1 && comboBox_4.getSelectedIndex() != -1) {
+					Grade g = sectionStudents.get(comboBox_5.getSelectedIndex()).getCourseGrade(facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex()));
+					if (g != null) {
+						comboBox_6.setSelectedItem(g.getGrade().toString());
+					}
+				}
+			}
+		});
+		
+		
+		comboBox_5.setBounds(305, 175, 156, 26);
+		updateGrade.add(comboBox_5);
+		
+		JLabel lblSelectStudent_1 = new JLabel("Select Grade");
+		lblSelectStudent_1.setForeground(Color.WHITE);
+		lblSelectStudent_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblSelectStudent_1.setBounds(133, 250, 182, 35);
+		updateGrade.add(lblSelectStudent_1);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setBounds(133, 284, 139, 2);
+		updateGrade.add(separator_4);
+		
+		
+		comboBox_6.setBounds(305, 259, 156, 26);
+		updateGrade.add(comboBox_6);
 		
 								
 		home = new JPanel();
@@ -242,107 +404,6 @@ public class FacFrame extends JFrame {
 		lblPosition.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblPosition.setBounds(417, 405, 281, 27);
 		home.add(lblPosition);
-		
-		updateGrade = new JPanel();
-		updateGrade.setLayout(null);
-		updateGrade.setPreferredSize(new Dimension(704, 430));
-		updateGrade.setForeground(Color.WHITE);
-		updateGrade.setBackground(Color.BLACK);
-		updateGrade.setBounds(249, 152, 704, 442);
-		contentPane.add(updateGrade);
-		
-		JLabel label_16 = new JLabel("Select Section");
-		label_16.setForeground(Color.WHITE);
-		label_16.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_16.setBounds(133, 84, 156, 35);
-		updateGrade.add(label_16);
-		
-		JSeparator separator_15 = new JSeparator();
-		separator_15.setBounds(133, 118, 139, 2);
-		updateGrade.add(separator_15);
-		comboBox_4.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (comboBox_4.getSelectedIndex() != -1) {
-					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
-					sectionStudents = Session.getSchl().getStudentFromStudents(crsSec.getSectionID(),crsSec.getCourse().getCourseCode(),Session.getSem().getSession());
-					comboBox_5.removeAllItems();
-					comboBox_6.removeAllItems();
-					if (sectionStudents != null && sectionStudents.size() > 0) {
-						for (Student s : sectionStudents) {
-							comboBox_5.addItem(s.getRollNo() + " " + s.getName());
-						}
-					}
-				}
-			}
-		});
-		
-		
-		comboBox_4.setBounds(305, 93, 156, 26);
-		updateGrade.add(comboBox_4);
-		
-		JLabel lblUpdateGrade = new JLabel("Update Grade");
-		lblUpdateGrade.setForeground(Color.WHITE);
-		lblUpdateGrade.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblUpdateGrade.setBounds(22, 13, 201, 35);
-		updateGrade.add(lblUpdateGrade);
-		
-		JSeparator separator_17 = new JSeparator();
-		separator_17.setBounds(22, 46, 149, 2);
-		updateGrade.add(separator_17);
-		
-		JButton button = new JButton("Update");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox_4.getSelectedIndex() != -1 && comboBox_5.getSelectedIndex() != -1 && comboBox_6.getSelectedIndex() != -1) {
-					CourseSection crsSec = facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex());
-					((FacultyMember)Session.getUser()).updateGrade(sectionStudents.get(comboBox_5.getSelectedIndex()).getRollNo(), comboBox_6.getSelectedItem().toString(), crsSec);
-				}
-			}
-		});
-		button.setBounds(267, 332, 97, 25);
-		updateGrade.add(button);
-		
-		JLabel lblSelectStudent = new JLabel("Select Student");
-		lblSelectStudent.setForeground(Color.WHITE);
-		lblSelectStudent.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblSelectStudent.setBounds(133, 166, 182, 35);
-		updateGrade.add(lblSelectStudent);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(133, 200, 139, 2);
-		updateGrade.add(separator_3);
-		comboBox_5.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				comboBox_6.removeAllItems();
-				LGrade[] grade_types = LGrade.values();
-				for (LGrade gr : grade_types)
-					comboBox_6.addItem(gr.toString());
-				if(comboBox_5.getSelectedIndex() != -1 && comboBox_4.getSelectedIndex() != -1) {
-					Grade g = sectionStudents.get(comboBox_5.getSelectedIndex()).getCourseGrade(facultyCurrSemCrsSecs.get(comboBox_4.getSelectedIndex()));
-					if (g != null) {
-						comboBox_6.setSelectedItem(g.getGrade().toString());
-					}
-				}
-			}
-		});
-		
-		
-		comboBox_5.setBounds(305, 175, 156, 26);
-		updateGrade.add(comboBox_5);
-		
-		JLabel lblSelectStudent_1 = new JLabel("Select Grade");
-		lblSelectStudent_1.setForeground(Color.WHITE);
-		lblSelectStudent_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblSelectStudent_1.setBounds(133, 250, 182, 35);
-		updateGrade.add(lblSelectStudent_1);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(133, 284, 139, 2);
-		updateGrade.add(separator_4);
-		
-		
-		comboBox_6.setBounds(305, 259, 156, 26);
-		updateGrade.add(comboBox_6);
 		
 		addAttendance = new JPanel();
 		addAttendance.setLayout(null);
@@ -740,6 +801,14 @@ public class FacFrame extends JFrame {
 		topPanel.add(lblHome);
 		
 		JLabel label_5 = new JLabel("");
+		label_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblOldPassword.setText("");
+				lblNewPassword.setText("");
+				showPanel("Change Password");
+			}
+		});
 		label_5.setIcon(new ImageIcon(HRFrame.class.getResource("/images/settings2.png")));
 		label_5.setBounds(12, 85, 56, 59);
 		topPanel.add(label_5);
@@ -765,6 +834,7 @@ public class FacFrame extends JFrame {
 		containers.add(updateAttendance);
 		containers.add(addAttendance);
 		containers.add(updateGrade);
+		containers.add(changePassword);
 	}
 	
 	public void viewDetails(User user)
