@@ -48,7 +48,7 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class HRFrame extends JFrame {
+public class HRFrame<Jlabel> extends JFrame {
 
 	private HRFrame frame;
 	private JPanel contentPane;
@@ -102,6 +102,7 @@ public class HRFrame extends JFrame {
 	private JTextField textField_13;
 	private JTextField textField_14;
 	JScrollPane scrollPane_3;
+	JScrollPane scrollPane_5;
 	/**
 	 * Launch the application.
 	 */
@@ -224,6 +225,15 @@ public class HRFrame extends JFrame {
 		label_13.setBounds(33, 140, 99, 27);
 		panel_2.add(label_13);
 		
+		JLabel label_d3 = new JLabel("DateFormat");
+		label_d3.setText("(yyyy-mm-dd)");
+		label_d3.setForeground(Color.WHITE);
+		label_d3.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		label_d3.setBorder(null);
+		label_d3.setBackground(new Color(36, 47, 65));
+		label_d3.setBounds(364, 140, 99, 27);
+		panel_2.add(label_d3);
+		
 		JLabel label_14 = new JLabel("Phone");
 		label_14.setForeground(Color.WHITE);
 		label_14.setFont(new Font("Century Gothic", Font.PLAIN, 15));
@@ -263,6 +273,7 @@ public class HRFrame extends JFrame {
 		panel_2.add(label_16);
 		
 		textField_7 = new JTextField();
+		textField_7.setEditable(false);
 		textField_7.setText("12345-6789123-4");
 		textField_7.setForeground(Color.WHITE);
 		textField_7.setFont(new Font("Century Gothic", Font.ITALIC, 13));
@@ -351,8 +362,18 @@ public class HRFrame extends JFrame {
 		JLabel label_21 = new JLabel("Date Hired");
 		label_21.setForeground(Color.WHITE);
 		label_21.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_21.setBounds(33, 447, 61, 27);
+		label_21.setBounds(33, 447, 85, 27);
 		panel_2.add(label_21);
+		
+	    
+		JLabel label_d4 = new JLabel("DateFormat");
+		label_d4.setText("(yyyy-mm-dd)");
+		label_d4.setForeground(Color.WHITE);
+		label_d4.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		label_d4.setBorder(null);
+		label_d4.setBackground(new Color(36, 47, 65));
+		label_d4.setBounds(364,447, 85, 27);
+		panel_2.add(label_d4);
 		
 		textField_14 = new JTextField();
 		textField_14.setForeground(Color.WHITE);
@@ -364,9 +385,10 @@ public class HRFrame extends JFrame {
 		panel_2.add(textField_14);
 		
 		JButton button_5 = new JButton("Update");
-		button_5.addMouseListener(new MouseAdapter() {
+		button_5.addMouseListener(new MouseAdapter() {	
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				try {
 				String empID = textField_11.getText();
 				String name = textField_9.getText();
 				Date dateOfBirth = Date.valueOf(textField.getText());
@@ -379,7 +401,16 @@ public class HRFrame extends JFrame {
 				String department = (String) comboBox_3.getSelectedItem();
 				Date dateHired = Date.valueOf(textField_14.getText());
 				
-				user.updateStaff(name, dateOfBirth, phone, email, cnic, gender, emergency, address, empID, dateHired);
+				if(user.updateStaff(name, dateOfBirth, phone, email, cnic, gender, emergency, address, empID, dateHired))
+				{
+					JOptionPane.showMessageDialog(frame,"Employee updated!","Alert",JOptionPane.OK_OPTION);
+				}
+			}
+				catch(Exception e1) 
+				{
+					JOptionPane.showMessageDialog(frame,"Could not update employee!","Alert",JOptionPane.WARNING_MESSAGE);
+				}
+				
 				
 			}
 		});
@@ -475,8 +506,8 @@ public class HRFrame extends JFrame {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						
-						panel_1.remove(scrollPane_3);
-						panel_1.remove(button_10);
+						//panel_1.remove(scrollPane_3);
+						//panel_1.remove(button_10);
 						panel_1.repaint();
 						
 						Staff staff = Session.getInst().getStaff(textField_21.getText());
@@ -583,6 +614,13 @@ public class HRFrame extends JFrame {
 		JList list_1 = new JList(listModel2);
 		scrollPane_1.setViewportView(list_1);
 		
+		JScrollPane scrollPane_2 = new JScrollPane((Component) null);
+		scrollPane_2.setBounds(359, 126, 100, 288);
+		updateAllotment.add(scrollPane_2);
+		
+		list_2 = new JList(listModel3);
+		scrollPane_2.setViewportView(list_2);
+		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			@Override
@@ -590,22 +628,26 @@ public class HRFrame extends JFrame {
 				//remove previous items
 				String empID = (String) list_2.getSelectedValue();
 				String officeID = (String) list_1.getSelectedValue();
-				
-				if(user.updateAllotment(empID,officeID))
-					JOptionPane.showMessageDialog(frame,"Allotment updated!","Alert",JOptionPane.OK_OPTION); 
-				else
-					JOptionPane.showMessageDialog(frame,"Could not update allotment!","Alert",JOptionPane.WARNING_MESSAGE);
-			}
+				try {
+					if(user.updateAllotment(empID,officeID))
+						{
+							JOptionPane.showMessageDialog(frame,"Allotment updated!","Alert",JOptionPane.OK_OPTION); 
+							fillUnallotedOfficeIDs(listModel2);
+							fillAllotedStaffMembers(listModel3);
+						}
+					else
+						JOptionPane.showMessageDialog(frame,"Could not update allotment!","Alert",JOptionPane.WARNING_MESSAGE);
+					}
+				catch(Exception ua)
+					{
+						System.out.println("Invalid Update Combo");
+					}
+				}
 		});
 		btnUpdate.setBounds(532, 256, 89, 23);
 		updateAllotment.add(btnUpdate);
 		
-		JScrollPane scrollPane_2 = new JScrollPane((Component) null);
-		scrollPane_2.setBounds(359, 126, 100, 288);
-		updateAllotment.add(scrollPane_2);
 		
-		list_2 = new JList(listModel3);
-		scrollPane_2.setViewportView(list_2);
 		
 		addAllotments = new JScrollPane();
 		addAllotments.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -652,14 +694,24 @@ public class HRFrame extends JFrame {
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				try {
 				String empID = (String) list.getSelectedValue();
 				String officeID = (String) list_3.getSelectedValue();
 				
 				if(user.addAllotment(officeID, empID))
-					JOptionPane.showMessageDialog(frame,"Allotment done!","Alert",JOptionPane.OK_OPTION); 
+					{
+						JOptionPane.showMessageDialog(frame,"Allotment done!","Alert",JOptionPane.OK_OPTION); 
+						fillUnallotedOfficeIDs(listModel4);
+						fillUnallotedStaffMembers(listModel5);
+					}
 				else
 					JOptionPane.showMessageDialog(frame,"Could not do allotment!","Alert",JOptionPane.WARNING_MESSAGE); 
-			}
+				}
+				catch(Exception e4)
+				{
+					System.out.print("INVALID SELECTION FOR ALLOTMENT");
+				}
+				}
 		});
 		btnAdd.setBounds(505, 239, 89, 23);
 		panel_3.add(btnAdd);
@@ -731,7 +783,7 @@ public class HRFrame extends JFrame {
 						dtm.setColumnIdentifiers(columnNames);
 						table2.setModel(dtm);
 						
-						JScrollPane scrollPane_5 = new JScrollPane(table2);
+						scrollPane_5 = new JScrollPane(table2);
 						scrollPane_5.setForeground(Color.WHITE);
 						scrollPane_5.setFont(new Font("Century Gothic", Font.PLAIN, 13));
 						scrollPane_5.setBackground(Color.WHITE);
@@ -796,6 +848,11 @@ public class HRFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JLabel evlbl = (JLabel) e.getComponent();
 				showPanel(evlbl.getText());
+				
+				if (scrollPane_5.isVisible())
+					scrollPane_5.setVisible(false);
+				if (btnRemove_1.isVisible())
+					btnRemove_1.setVisible(false);
 			}
 			
 		});
@@ -861,14 +918,20 @@ public class HRFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String id = textField_1.getText();
+				try {
 				boolean result = user.addOffice(id);
 				if (result == false)
 				{
-					JOptionPane.showMessageDialog(frame,"Could not add office!","Alert",JOptionPane.WARNING_MESSAGE);  
+					JOptionPane.showMessageDialog(frame,"Could not Add Office Or It Already Exists!","Alert",JOptionPane.WARNING_MESSAGE);  
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(frame,"Office added successfully!","Alert",JOptionPane.OK_OPTION);  
+				}
+				}
+				catch(Exception e2)
+				{
+					System.out.println("ERROR INVALID SELECTION");
 				}
 			}
 		});
@@ -882,7 +945,7 @@ public class HRFrame extends JFrame {
 		button_6.setBounds(539, 59, 130, 23);
 		panel_2.add(button_6);
 		
-		updateStaff = new JScrollPane();
+		updateStaff =  new JScrollPane();
 		updateStaff.setBounds(249, 152, 704, 442);
 		contentPane.add(updateStaff);
 		updateStaff.setViewportView(panel_2);
@@ -928,6 +991,11 @@ public class HRFrame extends JFrame {
 					public void mouseClicked(MouseEvent e) {
 						JLabel evlbl = (JLabel) e.getComponent();
 						showPanel(evlbl.getText());
+						
+						if (scrollPane_3.isVisible())
+							scrollPane_3.setVisible(false);
+						if (button_10.isVisible())
+							button_10.setVisible(false);
 					}
 				});
 				lblRemoveStaff.setForeground(Color.WHITE);
@@ -995,6 +1063,18 @@ public class HRFrame extends JFrame {
 		label_25.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		label_25.setBounds(33, 140, 99, 27);
 		panel.add(label_25);
+		
+		//added for date
+		JLabel label_d = new JLabel("DateFormat");
+		label_d.setText("(yyyy-mm-dd)");
+		label_d.setForeground(Color.WHITE);
+		label_d.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		label_d.setBorder(null);
+		label_d.setBackground(new Color(36, 47, 65));
+		label_d.setBounds(364, 145, 154, 20);
+		//191, 145, 154, 20 
+		panel.add(label_d);
+		
 		
 		JLabel label_26 = new JLabel("Phone");
 		label_26.setForeground(Color.WHITE);
@@ -1117,8 +1197,19 @@ public class HRFrame extends JFrame {
 		JLabel label_33 = new JLabel("Date Hired");
 		label_33.setForeground(Color.WHITE);
 		label_33.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		label_33.setBounds(33, 447, 61, 27);
+		label_33.setBounds(33, 447, 78, 27);
 		panel.add(label_33);
+		
+		
+		JLabel label_d2 = new JLabel("DateFormat");
+		label_d2.setText("(yyyy-mm-dd)");
+		label_d2.setForeground(Color.WHITE);
+		label_d2.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+		label_d2.setBorder(null);
+		label_d2.setBackground(new Color(36, 47, 65));
+		label_d2.setBounds(364, 447, 130, 27);
+		panel.add(label_d2);
+		
 		
 		textField_13 = new JTextField();
 		textField_13.setForeground(Color.WHITE);
@@ -1130,12 +1221,50 @@ public class HRFrame extends JFrame {
 		panel.add(textField_13);
 		
 		JButton button_8 = new JButton("Register");
+		
 		button_8.addMouseListener(new MouseAdapter() {
+			boolean dobcheck = false; boolean datehired=false;
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+			try {	
+				
 				String name = textField_19.getText() + " " + textField_12.getText();
-				Date dateOfBirth = Date.valueOf(textField_4.getText());
-				Date dateHired = Date.valueOf(textField_13.getText());
+				try {
+					Date temp_DOB = Date.valueOf(textField_4.getText());
+					dobcheck=true;
+					label_d.setText(" ");
+				}
+				catch(Exception e){
+					
+					System.out.println("INVALID DATE");
+					label_d.setText("Invalid Date");
+					label_d.setForeground(Color.RED);
+					label_d.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+					label_d.setBorder(null);
+					label_d.setBackground(new Color(36, 47, 65));
+					label_d.setBounds(364, 145, 154, 20);
+					dobcheck=false;
+				
+				}
+				//
+				try {
+					Date temp_DOB = Date.valueOf(textField_13.getText());
+					datehired=true;
+					label_d2.setText(" ");
+				}
+				catch(Exception e){
+					
+					System.out.println("INVALID DATE");
+					label_d2.setText("Invalid Date");
+					label_d2.setForeground(Color.RED);
+					label_d2.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+					label_d2.setBorder(null);
+					label_d2.setBackground(new Color(36, 47, 65));
+					label_d2.setBounds(364, 447, 130, 27);
+					datehired=false;
+				
+				}
+				
 				String phone = textField_15.getText();
 				String email = textField_16.getText();
 				String cnic = textField_17.getText();
@@ -1150,15 +1279,27 @@ public class HRFrame extends JFrame {
 					EID++;
 				}
 				
-				if(user.hireEmployee(department, name, "12345", dateOfBirth, phone, email, cnic, gender, emergency, address, "E"+Integer.toString(EID), dateHired))
-					JOptionPane.showMessageDialog(frame,"Employee hired!","Alert",JOptionPane.OK_OPTION);
-				else
-					JOptionPane.showMessageDialog(frame,"Could not hire employee!","Alert",JOptionPane.WARNING_MESSAGE);
 				
-				
-				
+				if(dobcheck==true && datehired==true && cnic!="")
+				{
+					Date dateOfBirth=Date.valueOf(textField_4.getText());
+					
+					Date dateHired = Date.valueOf(textField_13.getText());
+					
+					if(user.hireEmployee(department, name, "12345", dateOfBirth, phone, email, cnic, gender, emergency, address, "E"+Integer.toString(EID), dateHired))
+						JOptionPane.showMessageDialog(frame,"Employee hired!","Alert",JOptionPane.OK_OPTION);
+					else
+						JOptionPane.showMessageDialog(frame,"Could not hire Employee \n Invalid Fields !","Alert",JOptionPane.WARNING_MESSAGE);
+				}
 			}
-		});
+			catch(Exception e)
+			{
+				System.out.println("INVALID INPUTS");
+				return;
+			}
+				
+		}
+			});
 		button_8.setForeground(Color.BLACK);
 		button_8.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 		button_8.setBackground(new Color(36, 47, 65));
@@ -1173,6 +1314,7 @@ public class HRFrame extends JFrame {
 		textField_4.setBackground(new Color(36, 47, 65));
 		textField_4.setBounds(191, 145, 154, 20);
 		panel.add(textField_4);
+		
 		
 		
 		home = new JPanel();

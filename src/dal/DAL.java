@@ -550,13 +550,13 @@ public class DAL {
 		return false;
 	}
 
-	public static boolean addFee(Fee f) {
+ 	public static boolean addFee(Fee f) {
 		try {
 			Connection con = DBAccess.getConnection();
 			Statement stmt = DBAccess.getStatement();
 
-			stmt.executeUpdate("insert into fee (Amount,DatePaid,DueDate,RollNo,Session) values (" + f.getAmount()
-					+ ",'" + f.getDatePaid() + "','" + f.getDueDate() + "','" + f.getStudent().getRollNo() + "','"
+			stmt.executeUpdate("insert into fee (Amount,DueDate,RollNo,Session) values (" + f.getAmount()
+					+ ",'" + f.getDueDate() + "','" + f.getStudent().getRollNo() + "','"
 					+ f.getSemester().getSession() + "');");
 
 			con.commit();

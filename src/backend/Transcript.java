@@ -21,21 +21,24 @@ public class Transcript {
 	public boolean checkCoursesPassed(ArrayList<Course> cList) {
 		boolean passed;
 
-		for (Course c : cList) {
-			passed = false;
+		if (cList != null) {
+			for (Course c : cList) {
+				passed = false;
 
-			for (Grade g : grades) {
-				if (g.getCourseSection().getCourse().getCourseCode().equals(c.getCourseCode())
-						&& !g.getGrade().equals(LGrade.F)) {
-					passed = true;
+				for (Grade g : grades) {
+					if (g.getCourseSection().getCourse().getCourseCode().equals(c.getCourseCode())
+							&& !g.getGrade().equals(LGrade.F) && !g.getGrade().equals(LGrade.I)) {
+						passed = true;
+					}
 				}
+
+				if (!passed)
+					return false;
 			}
 
-			if (!passed)
-				return false;
-		}
-
-		return true;
+			return true;
+		} else
+			return true;
 	}
 
 	public boolean checkCoursePassed(Course course) {

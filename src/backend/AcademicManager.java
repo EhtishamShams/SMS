@@ -324,14 +324,15 @@ public class AcademicManager extends Staff {
 		boolean add = false;
 		ArrayList<Attendance> attendances = new ArrayList<Attendance>();
 		index = Session.getInst().getSchool(schoolid).courseExistsByIndex(c_code);
+		School sch = Session.getInst().getSchool(schoolid);
 
-		FacultyMember f = Session.getSchl().getFacultyfromList(EmpID);
+		FacultyMember f = sch.getFacultyfromList(EmpID);
 
 		if (index != -1) {
-			Course tempcourse = Session.getSchl().getCourseFromCourses(index);
+			Course tempcourse = sch.getCourseFromCourses(index);
 			secIndex = tempcourse.ifSectionExists(sID);
 			if (secIndex == false) {
-				if (Session.getSchl().facultyExists(f) == true) {
+				if (sch.facultyExists(f) == true) {
 
 					CourseSection cs = new CourseSection(sID, 50, 0, f, Session.getSem(), tempcourse, attendances);
 					tempcourse.addCourseSection(cs);
@@ -339,7 +340,7 @@ public class AcademicManager extends Staff {
 					//// SQL CONN/////////////////
 					DAL.addSection(sID, 50, 0, f, Session.getSem(), tempcourse);
 
-					Session.getInst().getSchool(schoolid).updateCourseToCourses(index, tempcourse);
+					sch.updateCourseToCourses(index, tempcourse);
 					add = true;
 				}
 			} else {
@@ -348,10 +349,6 @@ public class AcademicManager extends Staff {
 			}
 
 		}
-
-		/*
-	
-		 */
 
 		return add;
 

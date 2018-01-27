@@ -181,6 +181,7 @@ public class FMFrame extends JFrame {
 		txtEnterDate.setVisible(false);
 
 		errorMsg.setBounds(238, 93, 198, 20);
+		errorMsg.setForeground(Color.WHITE);
 		panel_2.add(errorMsg);
 		
 		
@@ -270,6 +271,8 @@ public class FMFrame extends JFrame {
 						errorMsg.setText("");
 						try {
 							double amount = Double.parseDouble(txtEnterAmount.getText());
+							if(amount<0)
+								amount = 1/0;
 							String datePaid = txtEnterDate.getText();
 							// System.out.println("HAHAAH");
 
